@@ -1,0 +1,27 @@
+{
+  "name": "esas/hutkigrosh-api-php",
+  "description": "Hutkigrosh API library",
+  "keywords": [
+    "hutkigrosh",
+    "esas",
+    "payment gateway",
+    "api"
+  ],
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Esas",
+      "email": "hutkigrosh@esas.com"
+    }
+  ],
+  "require": {
+    "php": ">= 5.3.0",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "src"
+    }
+  }
+}
