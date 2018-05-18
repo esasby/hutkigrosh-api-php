@@ -19,7 +19,7 @@ abstract class ConfigurationWrapper
     const CONFIG_HG_EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
     const CONFIG_HG_SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
     const CONFIG_HG_COMPLETION_TEXT = 'hutkigrosh_completion_text';
-    const CONFIG_HG_PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_description';
+    const CONFIG_HG_PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_name';
     const CONFIG_HG_PAYMENT_METHOD_DESCRIPTION = 'hutkigrosh_payment_method_description';
     const CONFIG_HG_BILL_STATUS_PENDING = 'hutkigrosh_bill_status_pending';
     const CONFIG_HG_BILL_STATUS_PAYED = 'hutkigrosh_bill_status_payed';
