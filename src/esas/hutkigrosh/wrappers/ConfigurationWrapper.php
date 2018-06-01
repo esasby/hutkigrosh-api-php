@@ -46,6 +46,12 @@ abstract class ConfigurationWrapper
     public abstract function getHutkigroshPassword();
 
     /**
+     * Описание системы ХуткиГрош, отображаемое клиенту на этапе оформления заказа
+     * @return string
+     */
+    public abstract function getPaymentMethodDescription();
+
+    /**
      * Включен ли режим песчоницы
      * @return boolean
      */

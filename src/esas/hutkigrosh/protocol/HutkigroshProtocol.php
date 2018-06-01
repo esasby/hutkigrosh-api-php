@@ -133,10 +133,10 @@ class HutkigroshProtocol
             $Bill->addChild('addedDt', date('c'));
             $Bill->addChild('fullName', $billNewRq->getFullName());
             $Bill->addChild('mobilePhone', $billNewRq->getMobilePhone());
-            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone());
+            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone() ? "true" : "false");
             if (!empty($billNewRq->getEmail())) {
                 $Bill->addChild('email', $billNewRq->getEmail()); // опционально
-                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail());
+                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail() ? "true" : "false");
             }
             if (!empty($billNewRq->getFullAddress())) {
                 $Bill->addChild('fullAddress', $billNewRq->getFullAddress()); // опционально
