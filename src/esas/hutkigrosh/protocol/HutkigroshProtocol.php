@@ -2,6 +2,8 @@
 
 namespace esas\hutkigrosh\protocol;
 
+use esas\hutkigrosh\Logger;
+use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use \Exception;
 use Throwable;
 
@@ -13,36 +15,33 @@ use Throwable;
 class HutkigroshProtocol
 {
     private static $cookies_file;
-
     private $base_url; // url api
-
     private $ch; // curl object
-    private $response; // тело ответа
-    private $status; // код статуса
-
     public $cookies_dir;
-
     // api url
     const API_URL = 'https://www.hutkigrosh.by/API/v1/'; // рабочий
     const API_URL_TEST = 'https://trial.hgrosh.by/API/v1/'; // тестовый
 
-    // Список статусов счета
-    private $purch_item_status = array(
-        'NotSet' => 'Не установлено',
-        'PaymentPending' => 'Ожидание оплаты',
-        'Outstending' => 'Просроченный',
-        'DeletedByUser' => 'Удален',
-        'PaymentCancelled' => 'Прерван',
-        'Payed' => 'Оплачен',
-    );
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var ConfigurationWrapper
+     */
+    private $configurationWrapper;
 
     /**
      * @param bool $is_test Использовать ли тестовый api
      */
-    public function __construct($is_test = false)
+    public function __construct($configurationWrapper, $logger)
     {
-        if ($is_test) {
+        $this->configurationWrapper = $configurationWrapper;
+        $this->logger = $logger;
+        if ($this->configurationWrapper->isSandbox()) {
             $this->base_url = self::API_URL_TEST;
+            $this->logger->info("Test mode is on");
         } else {
             $this->base_url = self::API_URL;
         }
@@ -50,7 +49,6 @@ class HutkigroshProtocol
         if (!isset(self::$cookies_file)) {
             self::$cookies_file = 'cookies-' . time() . '.txt';
         }
-
         $this->setCookiesDir(dirname(__FILE__));
     }
 
@@ -67,6 +65,7 @@ class HutkigroshProtocol
         } else {
             $this->cookies_dir = dirname(__FILE__);
         }
+        $this->logger->debug("Cookies dir is set to: " . $this->cookies_dir);
     }
 
     /**
@@ -77,26 +76,26 @@ class HutkigroshProtocol
     public function apiLogIn(LoginRq $loginRq)
     {
         $resp = new LoginRs();
-        if (empty($loginRq->getUsername()) || empty($loginRq->getPassword())) {
-            $resp->setResponseCode(999); //todo в справочник
-            $resp->setResponseMessage("Ошибка конфигурации! Не задан login или password");
-            return $resp;
-        }
-        // формируем xml
-        $Credentials = new \SimpleXMLElement("<Credentials></Credentials>");
-        $Credentials->addAttribute('xmlns', 'http://www.hutkigrosh.by/api');
-        $Credentials->addChild('user', $loginRq->getUsername());
-        $Credentials->addChild('pwd', $loginRq->getPassword());
-
-        $xml = $Credentials->asXML();
-
-        // запрос
-        $res = $this->requestPost('Security/LogIn', $xml);
-
-        // проверим, верны ли логин/пароль
-        if ($res && !preg_match('/true/', $this->response)) {
-            $resp->setResponseCode(999); //todo в справочник
-            $resp->setResponseMessage('Ошибка авторизации');
+        try {
+            $this->logger->info("Logging in. Host[" . $this->base_url . "] username[" . $loginRq->getUsername() . "]");
+            if (empty($loginRq->getUsername()) || empty($loginRq->getPassword())) {
+                throw new Exception("Ошибка конфигурации! Не задан login или password", HutkigroshRs::ERROR_CONFIG);
+            }
+            // формируем xml
+            $Credentials = new \SimpleXMLElement("<Credentials></Credentials>");
+            $Credentials->addAttribute('xmlns', 'http://www.hutkigrosh.by/api');
+            $Credentials->addChild('user', $loginRq->getUsername());
+            $Credentials->addChild('pwd', $loginRq->getPassword());
+            $xml = $Credentials->asXML();
+            // запрос
+            $res = $this->requestPost('Security/LogIn', $xml, RS_TYPE::_STRING);
+            // проверим, верны ли логин/пароль
+            if (!preg_match('/true/', $res)) {
+                throw new Exception("Ошибка авторизации сервисом Hutkigrosh!", HutkigroshRs::ERROR_AUTH);
+            }
+        } catch (Exception $e) {
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -107,6 +106,7 @@ class HutkigroshProtocol
      */
     public function apiLogOut()
     {
+        $this->logger->info("Logging out");
         $res = $this->requestPost('Security/LogOut');
         // удалим файл с cookies
         $cookies_path = $this->cookies_dir . DIRECTORY_SEPARATOR . self::$cookies_file;
@@ -119,12 +119,15 @@ class HutkigroshProtocol
     /**
      * Добавляет новый счет в систему
      *
+     * @param BillNewRq $billNewRq
      * @return BillNewRs
+     * @throws Exception
      */
     public function apiBillNew(BillNewRq $billNewRq)
     {
         $resp = new BillNewRs();
         try {// формируем xml
+            $this->logger->info("Adding new bill for order[" . $billNewRq->getInvId() . "]");
             $Bill = new \SimpleXMLElement("<Bill></Bill>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/api/invoicing');
             $Bill->addChild('eripId', $billNewRq->getEripId());
@@ -133,10 +136,10 @@ class HutkigroshProtocol
             $Bill->addChild('addedDt', date('c'));
             $Bill->addChild('fullName', $billNewRq->getFullName());
             $Bill->addChild('mobilePhone', $billNewRq->getMobilePhone());
-            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone() ? "true" : "false");
+            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone());
             if (!empty($billNewRq->getEmail())) {
                 $Bill->addChild('email', $billNewRq->getEmail()); // опционально
-                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail() ? "true" : "false");
+                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail());
             }
             if (!empty($billNewRq->getFullAddress())) {
                 $Bill->addChild('fullAddress', $billNewRq->getFullAddress()); // опционально
@@ -162,22 +165,16 @@ class HutkigroshProtocol
 
             $xml = $Bill->asXML();
             // запрос
-            $res = $this->requestPost('Invoicing/Bill', $xml);
-            if ($res) {
-                $array = $this->responseToArray();
-
-                if (is_array($array) && isset($array['status']) && isset($array['billID'])) {
-                    $resp->setResponseCode($array['status']);
-                    $resp->setBillId($array['billID']);
-                } else {
-                    $resp->setResponseCode(HutkigroshRs::ERROR_RESP_FORMAT);
-                }
-            } else {
-                $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULTT);
+            $resArray = $this->requestPost('Invoicing/Bill', $xml, RS_TYPE::_ARRAY);
+            if (!is_array($resArray) || !isset($resArray['status']) || !isset($resArray['billID'])) {
+                throw new Exception("Wrong response!", HutkigroshRs::ERROR_RESP_FORMAT);
             }
+            $resp->setResponseCode($resArray['status']);
+            $resp->setBillId($resArray['billID']);
         } catch (Throwable $e) {
             //TODO добавить логировангие
-            $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -186,46 +183,48 @@ class HutkigroshProtocol
      * Добавляет новый счет в систему БелГазПромБанк
      *
      * @param array $data
-     *
+     * @deprecated не работает
      * @return bool|string
      */
     public function apiBgpbPay($data)
     {
-        // формируем xml
-        $Bill = new \SimpleXMLElement("<BgpbPayParam></BgpbPayParam>");
-        $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
-        $Bill->addChild('billId', $data['billId']);
-//        $products = $Bill->addChild('orderData');
-//        $products->addChild('eripId',$data['eripId']);
-//        $products->addChild('spClaimId',$data['spClaimId']);
-//        $products->addChild('amount', $data['amount']);
-//        $products->addChild('currency', '933');
-//        $products->addChild('clientFio', $data['clientFio']);
-//        $products->addChild('clientAddress', $data['clientAddress']);
-//        $products->addChild('trxId');
-        $Bill->addChild('returnUrl', htmlspecialchars($data['returnUrl']));
-        $Bill->addChild('cancelReturnUrl', htmlspecialchars($data['cancelReturnUrl']));
-        $Bill->addChild('submitValue', 'Оплатить картой на i24.by(БГПБ)');
-
-        $xml = $Bill->asXML();
-        // запрос
-        $this->requestPost('Pay/BgpbPay', $xml);
-        $responseXML = simplexml_load_string($this->response);
-        return $responseXML->form->__toString();
+//        // формируем xml
+//        $Bill = new \SimpleXMLElement("<BgpbPayParam></BgpbPayParam>");
+//        $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
+//        $Bill->addChild('billId', $data['billId']);
+////        $products = $Bill->addChild('orderData');
+////        $products->addChild('eripId',$data['eripId']);
+////        $products->addChild('spClaimId',$data['spClaimId']);
+////        $products->addChild('amount', $data['amount']);
+////        $products->addChild('currency', '933');
+////        $products->addChild('clientFio', $data['clientFio']);
+////        $products->addChild('clientAddress', $data['clientAddress']);
+////        $products->addChild('trxId');
+//        $Bill->addChild('returnUrl', htmlspecialchars($data['returnUrl']));
+//        $Bill->addChild('cancelReturnUrl', htmlspecialchars($data['cancelReturnUrl']));
+//        $Bill->addChild('submitValue', 'Оплатить картой на i24.by(БГПБ)');
+//
+//        $xml = $Bill->asXML();
+//        // запрос
+//        $this->requestPost('Pay/BgpbPay', $xml);
+//        $responseXML = simplexml_load_string($this->response);
+//        return $responseXML->form->__toString();
     }
 
 
     /**
      * Добавляет новый счет в систему AllfaClick
      *
-     * @param array $data
-     *
+     * @param AlfaclickRq $alfaclickRq
      * @return AlfaclickRs
+     * @internal param array $data
+     *
      */
     public function apiAlfaClick(AlfaclickRq $alfaclickRq)
     {
         $resp = new AlfaclickRs();
         try {
+            $this->logger->info("Adding bill[" . $alfaclickRq->getBillId() . "] to alfaclick");
             // формируем xml
             $Bill = new \SimpleXMLElement("<AlfaClickParam></AlfaClickParam>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
@@ -233,14 +232,14 @@ class HutkigroshProtocol
             $Bill->addChild('phone', $alfaclickRq->getPhone());
             $xml = $Bill->asXML();
             // запрос
-            $this->requestPost('Pay/AlfaClick', $xml);
-            $responseXML = simplexml_load_string($this->response); // 0 – если произошла ошибка, billId – если удалось выставить счет в AlfaClick
+            $responseXML = $this->requestPost('Pay/AlfaClick', $xml, RS_TYPE::_XML); // 0 – если произошла ошибка, billId – если удалось выставить счет в AlfaClick
             if (intval($responseXML->__toString()) == '0') {
-                $resp->setResponseCode(HutkigroshRs::ERROR_ALFACLICK_BILL_NOT_ADDED);
+                throw new Exception("Ошибка выставления счета в Альфаклик", HutkigroshRs::ERROR_ALFACLICK_BILL_NOT_ADDED);
             }
         } catch (Throwable $e) {
             //TODO добавить логировангие
-            $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -256,6 +255,7 @@ class HutkigroshProtocol
     {
         $resp = new WebPayRs();
         try {// формируем xml
+            $this->logger->info("Getting webpay form for bill[" . $webPayRq->getBillId() . "]");
             $Bill = new \SimpleXMLElement("<WebPayParam></WebPayParam>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
             $Bill->addChild('billId', $webPayRq->getBillId());
@@ -264,20 +264,16 @@ class HutkigroshProtocol
             $Bill->addChild('submitValue', "Pay with card");
             $xml = $Bill->asXML();
             // запрос
-            $res = $this->requestPost('Pay/WebPay', $xml);
-            if ($res) {
-                $responseXML = simplexml_load_string($this->response, null, LIBXML_NOCDATA);
-                if (isset($responseXML->status)) {
-                    $resp->setResponseCode($responseXML->status);
-                    $resp->setHtmlForm($responseXML->form->__toString());
-                } else {
-                    $resp->setResponseCode(HutkigroshRs::ERROR_RESP_FORMAT);
-                }
-            } else {
-                $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULTT);
+            $resStr = $this->requestPost('Pay/WebPay', $xml, RS_TYPE::_STRING);
+            $resXml = simplexml_load_string($resStr, null, LIBXML_NOCDATA);
+            if (!isset($resXml->status)) {
+                throw new Exception("Неверный формат ответа", HutkigroshRs::ERROR_RESP_FORMAT);
             }
+            $resp->setResponseCode($resXml->status);
+            $resp->setHtmlForm($resXml->form->__toString());
         } catch (Throwable $e) {
             $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -294,30 +290,24 @@ class HutkigroshProtocol
     {
         $resp = new BillInfoRs();
         try {// запрос
-            $res = $this->requestGet('Invoicing/Bill(' . $billInfoRq->getBillId() . ')');
-            if (!$res) {
+            $this->logger->info("Getting info for bill[" . $billInfoRq->getBillId() . "]");
+            $resArray = $this->requestGet('Invoicing/Bill(' . $billInfoRq->getBillId() . ')', '', RS_TYPE::_ARRAY);
+            if (empty($resArray)) {
                 throw new Exception("Wrong message format", HutkigroshRs::ERROR_RESP_FORMAT);
             }
-            $array = $this->responseToArray();
-            if (empty($array)) {
-                throw new Exception("Wrong message format", HutkigroshRs::ERROR_RESP_FORMAT);
-            }
-            $resp->setResponseCode($array['status']);
-            $resp->setInvId($array["bill"]["invId"]);
-            $resp->setEripId($array["bill"]["eripId"]);
-            $resp->setFullName($array["bill"]["fullName"]);
-            $resp->setFullAddress($array["bill"]["fullAddress"]);
-            $resp->setAmount($array["bill"]["amt"]);
-            $resp->setCurrency($array["bill"]["curr"]);
-            $resp->setEmail($array["bill"]["email"]);
-            $resp->setMobilePhone($array["bill"]["mobilePhone"]);
-            $resp->setStatus($array["bill"]["statusEnum"]);
+            $resp->setResponseCode($resArray['status']);
+            $resp->setInvId($resArray["bill"]["invId"]);
+            $resp->setEripId($resArray["bill"]["eripId"]);
+            $resp->setFullName($resArray["bill"]["fullName"]);
+            $resp->setFullAddress($resArray["bill"]["fullAddress"]);
+            $resp->setAmount($resArray["bill"]["amt"]);
+            $resp->setCurrency($resArray["bill"]["curr"]);
+            $resp->setEmail($resArray["bill"]["email"]);
+            $resp->setMobilePhone($resArray["bill"]["mobilePhone"]);
+            $resp->setStatus($resArray["bill"]["statusEnum"]);
             //todo переложить продукты
         } catch (Throwable $e) {
-            if (empty($e->getCode()))
-                $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
-            else
-                $resp->setResponseCode($e->getCode());
+            $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
@@ -332,26 +322,22 @@ class HutkigroshProtocol
      */
     public function apiBillDelete($bill_id)
     {
-        $res = $this->requestDelete('Invoicing/Bill(' . $bill_id . ')');
-
-        if ($res) {
-            $array = $this->responseToArray();
-
-            if (is_array($array) && isset($array['status']) && isset($array['purchItemStatus'])) {
-                $this->status = (int)$array['status'];
-                $purchItemStatus = trim($array['purchItemStatus']); // статус счета
-
-                // есть ошибка
-                if ($this->status > 0) {
-                    $this->error = $this->getStatusError($this->status);
-                    return false;
-                }
-
-                return $purchItemStatus;
-            } else {
-                $this->error = 'Неверный ответ сервера';
-            }
-        }
+//        $res = $this->requestDelete('Invoicing/Bill(' . $bill_id . ')');
+//        if ($res) {
+//            $array = $this->responseToArray();
+//            if (is_array($array) && isset($array['status']) && isset($array['purchItemStatus'])) {
+//                $this->status = (int)$array['status'];
+//                $purchItemStatus = trim($array['purchItemStatus']); // статус счета
+//                // есть ошибка
+//                if ($this->status > 0) {
+//                    $this->error = $this->getStatusError($this->status);
+//                    return false;
+//                }
+//                return $purchItemStatus;
+//            } else {
+//                $this->error = 'Неверный ответ сервера';
+//            }
+//        }
 
         return false;
     }
@@ -365,70 +351,28 @@ class HutkigroshProtocol
      */
     public function apiBillStatus($bill_id)
     {
-        $res = $this->requestGet('Invoicing/BillStatus(' . $bill_id . ')');
-
-        if ($res) {
-            $array = $this->responseToArray();
-
-            if (is_array($array) && isset($array['status']) && isset($array['purchItemStatus'])) {
-                $this->status = (int)$array['status'];
-                $purchItemStatus = trim($array['purchItemStatus']); // статус счета
-
-                // есть ошибка
-                if ($this->status > 0) {
-                    $this->error = $this->getStatusError($this->status);
-                    return false;
-                }
-
-                return $purchItemStatus;
-            } else {
-                $this->error = 'Неверный ответ сервера';
-            }
-        }
+//        $res = $this->requestGet('Invoicing/BillStatus(' . $bill_id . ')');
+//
+//        if ($res) {
+//            $array = $this->responseToArray();
+//
+//            if (is_array($array) && isset($array['status']) && isset($array['purchItemStatus'])) {
+//                $this->status = (int)$array['status'];
+//                $purchItemStatus = trim($array['purchItemStatus']); // статус счета
+//
+//                // есть ошибка
+//                if ($this->status > 0) {
+//                    $this->error = $this->getStatusError($this->status);
+//                    return false;
+//                }
+//
+//                return $purchItemStatus;
+//            } else {
+//                $this->error = 'Неверный ответ сервера';
+//            }
+//        }
 
         return false;
-    }
-
-    /**
-     * Получить текст ошибки
-     *
-     * @return string
-     */
-    public function getError()
-    {
-        return 'Счет не выставлен! Произошла ошибка: ' . $this->error . '. <br> Повторите заказ.';
-    }
-
-    /**
-     * Ответ сервера в исходном виде
-     *
-     * @return mixed
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * Статус ответа
-     *
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Статус счета
-     *
-     * @param string $status
-     *
-     * @return string
-     */
-    public function getPurchItemStatus($status)
-    {
-        return (isset($this->purch_item_status[$status])) ? $this->purch_item_status[$status] : 'Статус не определен';
     }
 
     /**
@@ -436,12 +380,14 @@ class HutkigroshProtocol
      *
      * @param string $path
      * @param string $data
+     * @param int $rsType
+     * @internal param RS_TYPE $rqType
      *
-     * @return bool
+     * @return mixed
      */
-    private function requestGet($path, $data = '')
+    private function requestGet($path, $data = '', $rsType = RS_TYPE::_ARRAY)
     {
-        return $this->connect($path, $data, 'GET');
+        return $this->connect($path, $data, 'GET', $rsType);
     }
 
     /**
@@ -449,12 +395,13 @@ class HutkigroshProtocol
      *
      * @param string $path
      * @param string $data
-     *
+     * @param int $rsType
+     * @internal param RS_TYPE $rqType
      * @return bool
      */
-    private function requestPost($path, $data = '')
+    private function requestPost($path, $data = '', $rsType = RS_TYPE::_ARRAY)
     {
-        return $this->connect($path, $data, 'POST');
+        return $this->connect($path, $data, 'POST', $rsType);
     }
 
     /**
@@ -462,12 +409,15 @@ class HutkigroshProtocol
      *
      * @param string $path
      * @param string $data
+     * @param int $rsType
+     * @internal param RS_TYPE $rqType
      *
-     * @return bool
+     * @return mixed
+     * @throws Exception
      */
-    private function requestDelete($path, $data = '')
+    private function requestDelete($path, $data = '', $rsType = RS_TYPE::_ARRAY)
     {
-        return $this->connect($path, $data, 'DELETE');
+        return $this->connect($path, $data, 'DELETE', $rsType);
     }
 
     /**
@@ -476,53 +426,61 @@ class HutkigroshProtocol
      * @param string $path
      * @param string $data Сформированный для отправки XML
      * @param string $request
+     * @param $rsType
      *
-     * @return bool
+     * @return mixed
+     * @throws Exception
      */
-    private function connect($path, $data = '', $request = 'GET')
+    private function connect($path, $data = '', $request = 'GET', $rsType)
     {
         $headers = array('Content-Type: application/xml', 'Content-Length: ' . strlen($data));
 
-        $this->ch = curl_init();
-
-        curl_setopt($this->ch, CURLOPT_URL, $this->base_url . $path);
-        curl_setopt($this->ch, CURLOPT_HEADER, false); // включение заголовков в выводе
-        curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($this->ch, CURLOPT_VERBOSE, true); // вывод доп. информации в STDERR
-        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false); // не проверять сертификат узла сети
-        curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false); // проверка существования общего имени в сертификате SSL
-        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true); // возврат результата вместо вывода на экран
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers); // Массив устанавливаемых HTTP-заголовков
-        if ($request == 'POST') {
-            curl_setopt($this->ch, CURLOPT_POST, true);
-            curl_setopt($this->ch, CURLOPT_POSTFIELDS, $data);
-        }
-        if ($request == 'DELETE') {
-            curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        }
-
         $cookies_path = $this->cookies_dir . DIRECTORY_SEPARATOR . self::$cookies_file;
-
         // если файла еще нет, то создадим его при залогинивании и будем затем использовать при дальнейших запросах
-        if (!is_file($cookies_path)) {
-            if (!is_writable($this->cookies_dir)) {
-                $this->error = 'Cookie file[' . $cookies_path . '] is not writable! Check permissions for directory[' . $this->cookies_dir . ']';
-                return false;
-            }
+        if (!is_file($cookies_path) && !is_writable($this->cookies_dir)) {
+            throw new Exception('Cookie file[' . $cookies_path . '] is not writable! Check permissions for directory[' . $this->cookies_dir . ']');
+        }
+
+        try {
+            $this->ch = curl_init();
+            $url = $this->base_url . $path;
             curl_setopt($this->ch, CURLOPT_COOKIEJAR, $cookies_path);
-        }
-        curl_setopt($this->ch, CURLOPT_COOKIEFILE, $cookies_path);
-
-        $this->response = curl_exec($this->ch);
-
-        if (curl_errno($this->ch)) {
-            $this->error = curl_error($this->ch);
+            curl_setopt($this->ch, CURLOPT_COOKIEFILE, $cookies_path);
+            curl_setopt($this->ch, CURLOPT_URL, $url);
+            curl_setopt($this->ch, CURLOPT_HEADER, false); // включение заголовков в выводе
+            curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 30);
+            curl_setopt($this->ch, CURLOPT_VERBOSE, true); // вывод доп. информации в STDERR
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false); // не проверять сертификат узла сети
+            curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST, false); // проверка существования общего имени в сертификате SSL
+            curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true); // возврат результата вместо вывода на экран
+            curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers); // Массив устанавливаемых HTTP-заголовков
+            if ($request == 'POST') {
+                curl_setopt($this->ch, CURLOPT_POST, true);
+                curl_setopt($this->ch, CURLOPT_POSTFIELDS, $data);
+            }
+            if ($request == 'DELETE') {
+                curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            }
+            $this->logger->info('Sending ' . $request . ' request[' . $data . "] to url[" . $url . "]");
+            $response = curl_exec($this->ch);
+            $this->logger->info('Got response[' . $response . "]");
+            if (curl_errno($this->ch)) {
+                throw new Exception(curl_error($this->ch), curl_errno($this->ch));
+            }
+        } finally {
             curl_close($this->ch);
-            return false;
-        } else {
-            curl_close($this->ch);
-            return true;
         }
+        switch ($rsType) {
+            case RS_TYPE::_STRING:
+                return $response;
+            case RS_TYPE::_XML:
+                return simplexml_load_string($response);
+            case RS_TYPE::_ARRAY:
+                return $this->responseToArray($response);
+            default:
+                throw new Exception("Wrong rsType.");
+        }
+
     }
 
     /**
@@ -530,9 +488,9 @@ class HutkigroshProtocol
      *
      * @return mixed
      */
-    private function responseToArray()
+    private function responseToArray($response)
     {
-        $response = trim($this->response);
+        $response = trim($response);
         $array = array();
         // проверим, что это xml
         if (preg_match('/^<(.*)>$/', $response)) {
@@ -541,21 +499,11 @@ class HutkigroshProtocol
         }
         return $array;
     }
+}
 
-    /**
-     * Описание ошибки на основе ее кода в ответе
-     *
-     * @param string $status
-     *
-     * @return string
-     */
-    public static function getStatusError($status)
-    {
-        return (isset(self::STATUS_ERRORS[$status])) ? self::STATUS_ERRORS[$status] : 'Неизвестная ошибка';
-    }
-
-    public function getStatusResponce()
-    {
-        return $this->status;
-    }
+abstract class RS_TYPE
+{
+    const _STRING = 0;
+    const _ARRAY = 2;
+    const _XML = 2;
 }

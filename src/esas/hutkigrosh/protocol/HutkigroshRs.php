@@ -14,6 +14,8 @@ class HutkigroshRs
     const ERROR_DEFAULT = '100';
     const ERROR_RESP_FORMAT = '101';
     const ERROR_ALFACLICK_BILL_NOT_ADDED = '102';
+    const ERROR_CONFIG = '103';
+    const ERROR_AUTH = '104';
 
     // Список ошибок
     const STATUS_ERRORS = array(
@@ -37,6 +39,9 @@ class HutkigroshRs
         '3221292289' => 'Общая ошибка при получении курсов валют',
         '100' => 'Общая ошибка',
         '101' => 'Неверный ответ сервера',
+        '102' => 'Ошибка выставления счета в Альфаклик',
+        '103' => 'Ошибка конфигурации',
+        '104' => 'Ошибка аторизации сервисом Hutkigrosh',
     );
 
     private $responseCode;
@@ -79,7 +84,8 @@ class HutkigroshRs
      */
     public function setResponseMessage($responseMessage)
     {
-        $this->responseMessage = $responseMessage;
+        if (!empty($responseMessage))
+            $this->responseMessage = $responseMessage;
     }
 
 

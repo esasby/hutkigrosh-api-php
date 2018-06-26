@@ -2,9 +2,11 @@
 
 namespace esas\hutkigrosh\controllers;
 
+use esas\hutkigrosh\Logger;
 use esas\hutkigrosh\protocol\AlfaclickRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\LoginRq;
+use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use Exception;
 
 /**
@@ -13,17 +15,11 @@ use Exception;
  * Date: 22.03.2018
  * Time: 11:30
  */
-class ControllerAlfaclick
+class ControllerAlfaclick extends Controller
 {
-    private $configurationWrapper;
-
-    /**
-     * ControlllerAlfaclick constructor.
-     * @param $configurationWrapper
-     */
-    public function __construct($configurationWrapper)
+    public function __construct(ConfigurationWrapper $configurationWrapper, Logger $logger)
     {
-        $this->configurationWrapper = $configurationWrapper;
+        parent::__construct($configurationWrapper, $logger);
     }
 
     public function process($billId, $phone)
@@ -31,13 +27,12 @@ class ControllerAlfaclick
         try {
             if (empty($billId) || empty($phone))
                 throw new Exception('Wrong billid[' . $billId . "] or phone[" . $phone . "]");
-            $hg = new HutkigroshProtocol($this->configurationWrapper->isSandbox());
+            $hg = new HutkigroshProtocol($this->configurationWrapper);
             $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
             if ($resp->hasError()) {
                 $hg->apiLogOut();
-                throw new Exception($resp->getResponseMessage());
+                throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
             }
-
             $alfaclickRq = new AlfaclickRq();
             $alfaclickRq->setBillId($billId);
             $alfaclickRq->setPhone($phone);
@@ -46,6 +41,7 @@ class ControllerAlfaclick
             $hg->apiLogOut();
             $this->outputResult($resp->hasError());
         } catch (Exception $e) {
+            $this->getLogger()->error($e->getMessage(), $e);
             $this->outputResult(true);
         }
     }

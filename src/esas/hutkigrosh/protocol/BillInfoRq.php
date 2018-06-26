@@ -9,7 +9,7 @@
 namespace esas\hutkigrosh\protocol;
 
 
-class BillInfoRq
+class BillInfoRq extends HutkigroshRq
 {
     private $billId;
 

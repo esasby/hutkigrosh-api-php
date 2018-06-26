@@ -33,7 +33,7 @@ abstract class ControllerWebpayForm
      */
     public function process($billId)
     {
-        $hg = new HutkigroshProtocol($this->configurationWrapper->isSandbox());
+        $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
         if ($resp->hasError()) {
             $hg->apiLogOut();

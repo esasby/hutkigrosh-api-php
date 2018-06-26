@@ -9,6 +9,7 @@
 namespace esas\hutkigrosh\controllers;
 
 
+use esas\hutkigrosh\Logger;
 use esas\hutkigrosh\protocol\BillNewRq;
 use esas\hutkigrosh\protocol\BillProduct;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
@@ -17,17 +18,11 @@ use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 
-class ControllerAddBill
+class ControllerAddBill extends Controller
 {
-    protected $configurationWrapper;
-
-    /**
-     * ControllerNotify constructor.
-     * @param $configurationWrapper
-     */
-    public function __construct(ConfigurationWrapper $configurationWrapper)
+    public function __construct(ConfigurationWrapper $configurationWrapper, Logger $logger)
     {
-        $this->configurationWrapper = $configurationWrapper;
+        parent::__construct($configurationWrapper, $logger);
     }
 
     public function process(OrderWrapper $orderWrapper)
@@ -35,7 +30,7 @@ class ControllerAddBill
         if (empty($orderWrapper)) {
             throw new Exception("Incorrect method call! orderWrapper is null");
         }
-        $hg = new HutkigroshProtocol($this->configurationWrapper->isSandbox());
+        $hg = new HutkigroshProtocol($this->configurationWrapper, $this->getLogger());
         $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
         if ($resp->hasError()) {
             $hg->apiLogOut();
@@ -64,9 +59,11 @@ class ControllerAddBill
         $resp = $hg->apiBillNew($billNewRq);
         $hg->apiLogOut();
         if ($resp->hasError()) {
+            $this->getLogger()->error("Bill was not added. Updating order[." . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusFailed() . "]");
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
         } else {
+            $this->getLogger()->info("Bill[" . $resp->getBillId() . "] was successfully added. Updating order[." . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusPending() . "]");
             $orderWrapper->saveBillId($resp->getBillId());
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
         }

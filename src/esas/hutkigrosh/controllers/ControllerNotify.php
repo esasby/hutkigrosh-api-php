@@ -15,17 +15,11 @@ use Exception;
  * Date: 22.03.2018
  * Time: 11:37
  */
-abstract class ControllerNotify
+abstract class ControllerNotify extends Controller
 {
-    protected $configurationWrapper;
-
-    /**
-     * ControllerNotify constructor.
-     * @param $configurationWrapper
-     */
-    public function __construct(ConfigurationWrapper $configurationWrapper)
+    public function __construct(ConfigurationWrapper $configurationWrapper, Logger $logger)
     {
-        $this->configurationWrapper = $configurationWrapper;
+        parent::__construct($configurationWrapper, $logger);
     }
 
 
@@ -33,7 +27,7 @@ abstract class ControllerNotify
     {
         if (empty($billId))
             throw new Exception('Wrong billid[' . $billId . "]");
-        $hg = new HutkigroshProtocol($this->configurationWrapper->isSandbox());
+        $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
         if ($resp->hasError()) {
             $hg->apiLogOut();
@@ -43,6 +37,7 @@ abstract class ControllerNotify
         $hg->apiLogOut();
         if ($billInfoRs->hasError())
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
+        $this->getLogger()->info()
         $localOrderWrapper = $this->getOrderWrapper($billInfoRs->getInvId());
         if (empty($localOrderWrapper))
             throw new Exception('Can not load order info for id[' . $billInfoRs->getInvId() . "]");
