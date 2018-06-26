@@ -4,10 +4,10 @@ namespace esas\hutkigrosh\controllers;
 
 use esas\hutkigrosh\protocol\BillInfoRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\protocol\LoginRq;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
+use Logger;
 
 /**
  * Created by PhpStorm.
@@ -17,18 +17,27 @@ use Exception;
  */
 abstract class ControllerNotify extends Controller
 {
-    public function __construct(ConfigurationWrapper $configurationWrapper, Logger $logger)
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    public function __construct(ConfigurationWrapper $configurationWrapper)
     {
-        parent::__construct($configurationWrapper, $logger);
+        parent::__construct($configurationWrapper);
+        $this->logger = Logger::getLogger(ControllerNotify::class);
     }
 
-
+    /**
+     * @param $billId
+     * @throws Exception
+     */
     public function process($billId)
     {
         if (empty($billId))
             throw new Exception('Wrong billid[' . $billId . "]");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
-        $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
+        $resp = $hg->apiLogIn();
         if ($resp->hasError()) {
             $hg->apiLogOut();
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
@@ -37,7 +46,7 @@ abstract class ControllerNotify extends Controller
         $hg->apiLogOut();
         if ($billInfoRs->hasError())
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
-        $this->getLogger()->info()
+        $this->logger->info('Loading local order object for id[' + $billInfoRs->getInvId() + "]");
         $localOrderWrapper = $this->getOrderWrapper($billInfoRs->getInvId());
         if (empty($localOrderWrapper))
             throw new Exception('Can not load order info for id[' . $billInfoRs->getInvId() . "]");

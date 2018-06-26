@@ -16,6 +16,8 @@ abstract class ConfigurationWrapper
     const CONFIG_HG_PASSWORD = 'hutkigrosh_hg_password';
     const CONFIG_HG_ERIP_ID = 'hutkigrosh_erip_id';
     const CONFIG_HG_SANDBOX = 'hutkigrosh_sandbox';
+    const CONFIG_HG_ALFACLICK_BUTTON = 'hutkigrosh_alfaclick_button';
+    const CONFIG_HG_WEBPAY_BUTTON = 'hutkigrosh_webpay_button';
     const CONFIG_HG_EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
     const CONFIG_HG_SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
     const CONFIG_HG_COMPLETION_TEXT = 'hutkigrosh_completion_text';
@@ -56,6 +58,18 @@ abstract class ConfigurationWrapper
      * @return boolean
      */
     public abstract function isSandbox();
+
+    /**
+     * Необходимо ли добавлять кнопку "выставить в Alfaclick"
+     * @return boolean
+     */
+    public abstract function isAlfaclickButtonEnabled();
+
+    /**
+     * Необходимо ли добавлять кнопку "оплатить картой"
+     * @return boolean
+     */
+    public abstract function isWebpayButtonEnabled();
 
     /**
      * Уникальный идентификатор услуги в ЕРИП

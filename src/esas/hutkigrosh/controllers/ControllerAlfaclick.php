@@ -2,12 +2,11 @@
 
 namespace esas\hutkigrosh\controllers;
 
-use esas\hutkigrosh\Logger;
 use esas\hutkigrosh\protocol\AlfaclickRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\protocol\LoginRq;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use Exception;
+use Logger;
 
 /**
  * Created by PhpStorm.
@@ -17,9 +16,15 @@ use Exception;
  */
 class ControllerAlfaclick extends Controller
 {
-    public function __construct(ConfigurationWrapper $configurationWrapper, Logger $logger)
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    public function __construct(ConfigurationWrapper $configurationWrapper)
     {
-        parent::__construct($configurationWrapper, $logger);
+        parent::__construct($configurationWrapper);
+        $this->logger = Logger::getLogger(ControllerAlfaclick::class);
     }
 
     public function process($billId, $phone)
@@ -28,7 +33,7 @@ class ControllerAlfaclick extends Controller
             if (empty($billId) || empty($phone))
                 throw new Exception('Wrong billid[' . $billId . "] or phone[" . $phone . "]");
             $hg = new HutkigroshProtocol($this->configurationWrapper);
-            $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
+            $resp = $hg->apiLogIn();
             if ($resp->hasError()) {
                 $hg->apiLogOut();
                 throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
@@ -41,7 +46,7 @@ class ControllerAlfaclick extends Controller
             $hg->apiLogOut();
             $this->outputResult($resp->hasError());
         } catch (Exception $e) {
-            $this->getLogger()->error($e->getMessage(), $e);
+            $this->logger->error($e->getMessage(), $e);
             $this->outputResult(true);
         }
     }

@@ -2,9 +2,9 @@
 
 namespace esas\hutkigrosh\protocol;
 
-use esas\hutkigrosh\Logger;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use \Exception;
+use Logger;
 use Throwable;
 
 /**
@@ -35,10 +35,10 @@ class HutkigroshProtocol
     /**
      * @param bool $is_test Использовать ли тестовый api
      */
-    public function __construct($configurationWrapper, $logger)
+    public function __construct($configurationWrapper)
     {
+        $this->logger = Logger::getLogger(HutkigroshProtocol::class);
         $this->configurationWrapper = $configurationWrapper;
-        $this->logger = $logger;
         if ($this->configurationWrapper->isSandbox()) {
             $this->base_url = self::API_URL_TEST;
             $this->logger->info("Test mode is on");
@@ -73,10 +73,12 @@ class HutkigroshProtocol
      *
      * @return LoginRs
      */
-    public function apiLogIn(LoginRq $loginRq)
+    public function apiLogIn(LoginRq $loginRq = null)
     {
         $resp = new LoginRs();
         try {
+            if ($loginRq == null)
+                $loginRq = new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword());
             $this->logger->info("Logging in. Host[" . $this->base_url . "] username[" . $loginRq->getUsername() . "]");
             if (empty($loginRq->getUsername()) || empty($loginRq->getPassword())) {
                 throw new Exception("Ошибка конфигурации! Не задан login или password", HutkigroshRs::ERROR_CONFIG);

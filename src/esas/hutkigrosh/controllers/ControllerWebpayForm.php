@@ -9,21 +9,21 @@
 namespace esas\hutkigrosh\controllers;
 
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\protocol\LoginRq;
 use esas\hutkigrosh\protocol\WebPayRq;
 use Exception;
+use Logger;
 
-abstract class ControllerWebpayForm
+abstract class ControllerWebpayForm extends Controller
 {
-    public $configurationWrapper;
-
     /**
-     * ControllerWebpayForm constructor.
-     * @param $configurationWrapper
+     * @var Logger
      */
+    private $logger;
+
     public function __construct($configurationWrapper)
     {
-        $this->configurationWrapper = $configurationWrapper;
+        parent::__construct($configurationWrapper);
+        $this->logger = Logger::getLogger(ControllerWebpayForm::class);
     }
 
     /**
@@ -34,7 +34,7 @@ abstract class ControllerWebpayForm
     public function process($billId)
     {
         $hg = new HutkigroshProtocol($this->configurationWrapper);
-        $resp = $hg->apiLogIn(new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword()));
+        $resp = $hg->apiLogIn();
         if ($resp->hasError()) {
             $hg->apiLogOut();
             throw new Exception($resp->getResponseMessage());
