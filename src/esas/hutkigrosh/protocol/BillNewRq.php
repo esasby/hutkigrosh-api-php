@@ -134,6 +134,8 @@ class BillNewRq extends HutkigroshRq
      */
     public function setAmount($amount)
     {
+        if ($amount <= 0)
+            $this->logger->warn('Incorrect bill amount[' . $amount . "]");
         $this->amount = $amount;
     }
 

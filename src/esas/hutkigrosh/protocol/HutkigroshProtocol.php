@@ -79,7 +79,7 @@ class HutkigroshProtocol
         try {
             if ($loginRq == null)
                 $loginRq = new LoginRq($this->configurationWrapper->getHutkigroshLogin(), $this->configurationWrapper->getHutkigroshPassword());
-            $this->logger->info("Logging in. Host[" . $this->base_url . "] username[" . $loginRq->getUsername() . "]");
+            $this->logger->info("Logging in: host[" . $this->base_url . "],  username[" . $loginRq->getUsername() . "]");
             if (empty($loginRq->getUsername()) || empty($loginRq->getPassword())) {
                 throw new Exception("Ошибка конфигурации! Не задан login или password", HutkigroshRs::ERROR_CONFIG);
             }
@@ -108,7 +108,7 @@ class HutkigroshProtocol
      */
     public function apiLogOut()
     {
-        $this->logger->info("Logging out");
+        $this->logger->info("Logging out...");
         $res = $this->requestPost('Security/LogOut');
         // удалим файл с cookies
         $cookies_path = $this->cookies_dir . DIRECTORY_SEPARATOR . self::$cookies_file;
@@ -138,10 +138,10 @@ class HutkigroshProtocol
             $Bill->addChild('addedDt', date('c'));
             $Bill->addChild('fullName', $billNewRq->getFullName());
             $Bill->addChild('mobilePhone', $billNewRq->getMobilePhone());
-            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone());
+            $Bill->addChild('notifyByMobilePhone', $billNewRq->isNotifyByMobilePhone() ? "true" : "false");
             if (!empty($billNewRq->getEmail())) {
                 $Bill->addChild('email', $billNewRq->getEmail()); // опционально
-                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail());
+                $Bill->addChild('notifyByEMail', $billNewRq->isNotifyByEMail() ? "true" : "false");
             }
             if (!empty($billNewRq->getFullAddress())) {
                 $Bill->addChild('fullAddress', $billNewRq->getFullAddress()); // опционально
@@ -506,6 +506,6 @@ class HutkigroshProtocol
 abstract class RS_TYPE
 {
     const _STRING = 0;
-    const _ARRAY = 2;
+    const _ARRAY = 1;
     const _XML = 2;
 }

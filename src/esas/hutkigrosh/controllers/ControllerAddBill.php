@@ -67,7 +67,7 @@ class ControllerAddBill extends Controller
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
         } else {
-            $this->logger->info("Bill[" . $resp->getBillId() . "] was successfully added. Updating order[." . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusPending() . "]");
+            $this->logger->info("Bill[" . $resp->getBillId() . "] was successfully added. Updating order[" . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusPending() . "]");
             $orderWrapper->saveBillId($resp->getBillId());
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
         }
