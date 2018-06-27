@@ -66,7 +66,7 @@ class HutkigroshRs
     public function setResponseCode($responseCode)
     {
         $this->responseCode = trim($responseCode);
-        if (in_array($this->responseCode, self::STATUS_ERRORS)) {
+        if (array_key_exists($this->responseCode, self::STATUS_ERRORS)) {
             $this->responseMessage = self::STATUS_ERRORS[$this->responseCode];
         }
     }
