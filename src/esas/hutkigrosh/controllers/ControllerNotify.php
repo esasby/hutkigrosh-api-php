@@ -34,6 +34,8 @@ abstract class ControllerNotify extends Controller
      */
     public function process($billId)
     {
+        $loggerMainString = "Bill[" . $billId . "]: ";
+        $this->logger->info($loggerMainString . "Controller started");
         if (empty($billId))
             throw new Exception('Wrong billid[' . $billId . "]");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
@@ -46,7 +48,7 @@ abstract class ControllerNotify extends Controller
         $hg->apiLogOut();
         if ($billInfoRs->hasError())
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
-        $this->logger->info('Loading local order object for id[' + $billInfoRs->getInvId() + "]");
+        $this->logger->info($loggerMainString . 'Loading local order object for id[' . $billInfoRs->getInvId() . "]");
         $localOrderWrapper = $this->getOrderWrapper($billInfoRs->getInvId());
         if (empty($localOrderWrapper))
             throw new Exception('Can not load order info for id[' . $billInfoRs->getInvId() . "]");
@@ -64,8 +66,10 @@ abstract class ControllerNotify extends Controller
             $status = $this->configurationWrapper->getBillStatusPending();
         }
         if (isset($status) && $localOrderWrapper->getStatus() != $status) {
+            $this->logger->info($loggerMainString . "Setting status[" . $status . "] for order[" . $billInfoRs->getInvId() . "]...");
             $localOrderWrapper->updateStatus($status);
         }
+        $this->logger->info($loggerMainString . "Controller ended");
     }
 
     /**

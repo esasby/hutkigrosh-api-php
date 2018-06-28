@@ -33,6 +33,8 @@ abstract class ControllerWebpayForm extends Controller
      */
     public function process($billId)
     {
+        $loggerMainString = "Bill[" . $billId . "]: ";
+        $this->logger->info($loggerMainString . "Controller started");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn();
         if ($resp->hasError()) {
@@ -45,6 +47,7 @@ abstract class ControllerWebpayForm extends Controller
         $webPayRq->setCancelReturnUrl($this->getReturnUrl() . '&webpay_status=failed');
         $webPayRs = $hg->apiWebPay($webPayRq);
         $hg->apiLogOut();
+        $this->logger->info($loggerMainString . "Controller ended");
         return $webPayRs;
     }
 

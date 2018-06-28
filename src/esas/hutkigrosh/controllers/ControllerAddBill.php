@@ -34,6 +34,8 @@ class ControllerAddBill extends Controller
         if (empty($orderWrapper)) {
             throw new Exception("Incorrect method call! orderWrapper is null");
         }
+        $loggerMainString = "Order[" . $orderWrapper->getOrderId() . "]: ";
+        $this->logger->info($loggerMainString . "Controller started");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn();
         if ($resp->hasError()) {
@@ -63,11 +65,11 @@ class ControllerAddBill extends Controller
         $resp = $hg->apiBillNew($billNewRq);
         $hg->apiLogOut();
         if ($resp->hasError()) {
-            $this->logger->error("Bill was not added. Updating order[." . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusFailed() . "]");
+            $this->logger->error($loggerMainString . "Bill was not added. Setting status[" . $this->configurationWrapper->getBillStatusFailed() . "]...");
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
         } else {
-            $this->logger->info("Bill[" . $resp->getBillId() . "] was successfully added. Updating order[" . $orderWrapper->getOrderId() . "] status[" . $this->configurationWrapper->getBillStatusPending() . "]");
+            $this->logger->info($loggerMainString . "Bill[" . $resp->getBillId() . "] was successfully added. Updating status[" . $this->configurationWrapper->getBillStatusPending() . "]...");
             $orderWrapper->saveBillId($resp->getBillId());
             $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
         }

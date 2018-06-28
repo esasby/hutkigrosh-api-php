@@ -128,8 +128,9 @@ class HutkigroshProtocol
     public function apiBillNew(BillNewRq $billNewRq)
     {
         $resp = new BillNewRs();
+        $loggerMainString = "Order[" . $billNewRq->getInvId() . "]: ";
         try {// формируем xml
-            $this->logger->info("Adding new bill for order[" . $billNewRq->getInvId() . "]");
+            $this->logger->debug($loggerMainString . "apiBillNew started");
             $Bill = new \SimpleXMLElement("<Bill></Bill>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/api/invoicing');
             $Bill->addChild('eripId', $billNewRq->getEripId());
@@ -173,8 +174,9 @@ class HutkigroshProtocol
             }
             $resp->setResponseCode($resArray['status']);
             $resp->setBillId($resArray['billID']);
+            $this->logger->debug($loggerMainString . "apiBillNew ended");
         } catch (Throwable $e) {
-            //TODO добавить логировангие
+            $this->logger->error($loggerMainString . "apiBillNew exception", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
         }
@@ -225,8 +227,9 @@ class HutkigroshProtocol
     public function apiAlfaClick(AlfaclickRq $alfaclickRq)
     {
         $resp = new AlfaclickRs();
+        $loggerMainString = "Bill[" . $alfaclickRq->getBillId() . "]: ";
         try {
-            $this->logger->info("Adding bill[" . $alfaclickRq->getBillId() . "] to alfaclick");
+            $this->logger->debug($loggerMainString . "apiAlfaClick started");
             // формируем xml
             $Bill = new \SimpleXMLElement("<AlfaClickParam></AlfaClickParam>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
@@ -238,8 +241,9 @@ class HutkigroshProtocol
             if (intval($responseXML->__toString()) == '0') {
                 throw new Exception("Ошибка выставления счета в Альфаклик", HutkigroshRs::ERROR_ALFACLICK_BILL_NOT_ADDED);
             }
+            $this->logger->debug($loggerMainString . "apiAlfaClick ended");
         } catch (Throwable $e) {
-            //TODO добавить логировангие
+            $this->logger->error($loggerMainString . "apiAlfaClick exception:", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
         }
@@ -256,8 +260,9 @@ class HutkigroshProtocol
     public function apiWebPay(WebPayRq $webPayRq)
     {
         $resp = new WebPayRs();
+        $loggerMainString = "Bill[" . $webPayRq->getBillId() . "]: ";
         try {// формируем xml
-            $this->logger->info("Getting webpay form for bill[" . $webPayRq->getBillId() . "]");
+            $this->logger->debug($loggerMainString . "apiWebPay started");
             $Bill = new \SimpleXMLElement("<WebPayParam></WebPayParam>");
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
             $Bill->addChild('billId', $webPayRq->getBillId());
@@ -273,7 +278,9 @@ class HutkigroshProtocol
             }
             $resp->setResponseCode($resXml->status);
             $resp->setHtmlForm($resXml->form->__toString());
+            $this->logger->debug($loggerMainString . "apiWebPay ended");
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "apiWebPay exception: ", $e);
             $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
             $resp->setResponseMessage($e->getMessage());
         }
@@ -291,8 +298,9 @@ class HutkigroshProtocol
     public function apiBillInfo(BillInfoRq $billInfoRq)
     {
         $resp = new BillInfoRs();
+        $loggerMainString = "Bill[" . $billInfoRq->getBillId() . "]: ";
         try {// запрос
-            $this->logger->info("Getting info for bill[" . $billInfoRq->getBillId() . "]");
+            $this->logger->debug($loggerMainString . "apiBillInfo started");
             $resArray = $this->requestGet('Invoicing/Bill(' . $billInfoRq->getBillId() . ')', '', RS_TYPE::_ARRAY);
             if (empty($resArray)) {
                 throw new Exception("Wrong message format", HutkigroshRs::ERROR_RESP_FORMAT);
@@ -308,7 +316,9 @@ class HutkigroshProtocol
             $resp->setMobilePhone($resArray["bill"]["mobilePhone"]);
             $resp->setStatus($resArray["bill"]["statusEnum"]);
             //todo переложить продукты
+            $this->logger->debug($loggerMainString . "apiBillInfo ended");
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "apiBillInfo exception.", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
         }

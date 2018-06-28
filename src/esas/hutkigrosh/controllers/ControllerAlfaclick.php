@@ -30,6 +30,8 @@ class ControllerAlfaclick extends Controller
     public function process($billId, $phone)
     {
         try {
+            $loggerMainString = "Bill[" . $billId . "]: ";
+            $this->logger->info($loggerMainString . "Controller started");
             if (empty($billId) || empty($phone))
                 throw new Exception('Wrong billid[' . $billId . "] or phone[" . $phone . "]");
             $hg = new HutkigroshProtocol($this->configurationWrapper);
@@ -45,8 +47,9 @@ class ControllerAlfaclick extends Controller
             $resp = $hg->apiAlfaClick($alfaclickRq);
             $hg->apiLogOut();
             $this->outputResult($resp->hasError());
+            $this->logger->info($loggerMainString . "Controller ended");
         } catch (Exception $e) {
-            $this->logger->error($e->getMessage(), $e);
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
             $this->outputResult(true);
         }
     }
