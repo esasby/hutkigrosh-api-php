@@ -9,6 +9,8 @@
 namespace esas\hutkigrosh\wrappers;
 
 
+use Logger;
+
 abstract class ConfigurationWrapper
 {
     const CONFIG_HG_SHOP_NAME = 'hutkigrosh_shop_name';
@@ -22,11 +24,21 @@ abstract class ConfigurationWrapper
     const CONFIG_HG_SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
     const CONFIG_HG_COMPLETION_TEXT = 'hutkigrosh_completion_text';
     const CONFIG_HG_PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_name';
-    const CONFIG_HG_PAYMENT_METHOD_DESCRIPTION = 'hutkigrosh_payment_method_description';
+    const CONFIG_HG_PAYMENT_METHOD_DETAILS = 'hutkigrosh_payment_method_details';
     const CONFIG_HG_BILL_STATUS_PENDING = 'hutkigrosh_bill_status_pending';
     const CONFIG_HG_BILL_STATUS_PAYED = 'hutkigrosh_bill_status_payed';
     const CONFIG_HG_BILL_STATUS_FAILED = 'hutkigrosh_bill_status_failed';
     const CONFIG_HG_BILL_STATUS_CANCELED = 'hutkigrosh_bill_status_canceled';
+
+    protected $logger;
+
+    /**
+     * ConfigurationWrapper constructor.
+     */
+    public function __construct()
+    {
+        $this->logger = Logger::getLogger(ConfigurationWrapper::class);
+    }
 
 
     /**
@@ -96,6 +108,23 @@ abstract class ConfigurationWrapper
      */
     public abstract function getCompletionText();
 
+    /**
+     * Производит подстановку переменных из заказа в итоговый текст
+     * @param OrderWrapper $orderWrapper
+     * @return string
+     */
+    public function cookCompletionText(OrderWrapper $orderWrapper)
+    {
+        return strtr($this->getCompletionText(), array(
+            "@order_id" => $orderWrapper->getOrderId(),
+            "@order_number" => $orderWrapper->getOrderNumber(),
+            "@order_total" => $orderWrapper->getAmount(),
+            "@order_currency" => $orderWrapper->getCurrency(),
+            "@order_fullname" => $orderWrapper->getFullName(),
+            "@order_phone" => $orderWrapper->getMobilePhone(),
+            "@order_address" => $orderWrapper->getAddress(),
+        ));
+    }
 
     /**
      * Какой статус присвоить заказу после успешно выставления счета в ЕРИП (на шлюз Хуткигрош_
@@ -120,4 +149,12 @@ abstract class ConfigurationWrapper
      * @return string
      */
     public abstract function getBillStatusCanceled();
+
+    public function warnIfEmpty($string, $name)
+    {
+        if (empty($string)) {
+            $this->logger->warn("Configuration field[" . $name . "] is empty.");
+        }
+        return $string;
+    }
 }

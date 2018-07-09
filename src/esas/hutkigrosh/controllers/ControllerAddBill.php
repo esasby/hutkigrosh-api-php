@@ -9,6 +9,7 @@
 namespace esas\hutkigrosh\controllers;
 
 use esas\hutkigrosh\protocol\BillNewRq;
+use esas\hutkigrosh\protocol\BillNewRs;
 use esas\hutkigrosh\protocol\BillProduct;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
@@ -29,12 +30,17 @@ class ControllerAddBill extends Controller
         $this->logger = Logger::getLogger(ControllerAddBill::class);
     }
 
+    /**
+     * @param OrderWrapper $orderWrapper
+     * @return BillNewRs
+     * @throws Exception
+     */
     public function process(OrderWrapper $orderWrapper)
     {
         if (empty($orderWrapper)) {
             throw new Exception("Incorrect method call! orderWrapper is null");
         }
-        $loggerMainString = "Order[" . $orderWrapper->getOrderId() . "]: ";
+        $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
         $this->logger->info($loggerMainString . "Controller started");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn();
@@ -44,7 +50,7 @@ class ControllerAddBill extends Controller
         }
         $billNewRq = new BillNewRq();
         $billNewRq->setEripId($this->configurationWrapper->getEripId());
-        $billNewRq->setInvId($orderWrapper->getOrderId());
+        $billNewRq->setInvId($orderWrapper->getOrderNumber());
         $billNewRq->setFullName($orderWrapper->getFullName());
         $billNewRq->setMobilePhone($orderWrapper->getMobilePhone());
         $billNewRq->setEmail($orderWrapper->getEmail());

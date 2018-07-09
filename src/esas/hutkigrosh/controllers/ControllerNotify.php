@@ -49,7 +49,7 @@ abstract class ControllerNotify extends Controller
         if ($billInfoRs->hasError())
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
         $this->logger->info($loggerMainString . 'Loading local order object for id[' . $billInfoRs->getInvId() . "]");
-        $localOrderWrapper = $this->getOrderWrapper($billInfoRs->getInvId());
+        $localOrderWrapper = $this->getOrderWrapperByOrderNumber($billInfoRs->getInvId());
         if (empty($localOrderWrapper))
             throw new Exception('Can not load order info for id[' . $billInfoRs->getInvId() . "]");
         if ($billInfoRs->getFullName() != $localOrderWrapper->getFullName() || $billInfoRs->getAmount() != $localOrderWrapper->getAmount()) {
@@ -73,10 +73,10 @@ abstract class ControllerNotify extends Controller
     }
 
     /**
-     * По локальному идентификатору заказа возвращает wrapper
+     * По локальному номеру счета (номеру заказа) возвращает wrapper
      * @param $orderId
      * @return OrderWrapper
      */
-    public abstract function getOrderWrapper($orderId);
+    public abstract function getOrderWrapperByOrderNumber($orderNumber);
 
 }

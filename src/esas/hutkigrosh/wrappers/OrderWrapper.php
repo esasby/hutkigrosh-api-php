@@ -18,6 +18,17 @@ abstract class OrderWrapper
     public abstract function getOrderId();
 
     /**
+     * Уникальный номер счета в рамках CMS отображаемый клиенту
+     * и отправляемый на шлюз
+     * (в некоторых CMS может не совпадать с OrderId и поэтому метод может быть переопределен)
+     * @return string
+     */
+    public function getOrderNumber()
+    {
+        return $this->getOrderId();
+    }
+
+    /**
      * Полное имя покупателя
      * @return string
      */

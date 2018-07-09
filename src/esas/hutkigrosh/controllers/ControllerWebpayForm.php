@@ -10,6 +10,7 @@ namespace esas\hutkigrosh\controllers;
 
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\WebPayRq;
+use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 use Logger;
 
@@ -31,9 +32,9 @@ abstract class ControllerWebpayForm extends Controller
      * @return \esas\hutkigrosh\protocol\WebPayRs
      * @throws Exception
      */
-    public function process($billId)
+    public function process(OrderWrapper $orderWrapper)
     {
-        $loggerMainString = "Bill[" . $billId . "]: ";
+        $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
         $this->logger->info($loggerMainString . "Controller started");
         $hg = new HutkigroshProtocol($this->configurationWrapper);
         $resp = $hg->apiLogIn();
@@ -42,9 +43,9 @@ abstract class ControllerWebpayForm extends Controller
             throw new Exception($resp->getResponseMessage());
         }
         $webPayRq = new WebPayRq();
-        $webPayRq->setBillId($billId);
-        $webPayRq->setReturnUrl($this->getReturnUrl() . '&webpay_status=payed');
-        $webPayRq->setCancelReturnUrl($this->getReturnUrl() . '&webpay_status=failed');
+        $webPayRq->setBillId($orderWrapper->getBillId());
+        $webPayRq->setReturnUrl($this->generateSuccessReturnUrl($orderWrapper));
+        $webPayRq->setCancelReturnUrl($this->generateUnsuccessReturnUrl($orderWrapper));
         $webPayRs = $hg->apiWebPay($webPayRq);
         $hg->apiLogOut();
         $this->logger->info($loggerMainString . "Controller ended");
@@ -52,8 +53,24 @@ abstract class ControllerWebpayForm extends Controller
     }
 
     /**
+     * При необходимости, может быть переопределен в дочерних классах
+     * @param OrderWrapper $orderWrapper
+     * @return string
+     */
+    public function generateSuccessReturnUrl(OrderWrapper $orderWrapper)
+    {
+        return $this->getReturnUrl($orderWrapper) . '&webpay_status=payed';
+    }
+
+    public function generateUnsuccessReturnUrl(OrderWrapper $orderWrapper)
+    {
+        return $this->getReturnUrl($orderWrapper) . '&webpay_status=failed';
+    }
+
+
+    /**
      * Основная часть URL для возврата с формы webpay (чаще всего current_url)
      * @return string
      */
-    public abstract function getReturnUrl();
+    public abstract function getReturnUrl(OrderWrapper $orderWrapper);
 }
