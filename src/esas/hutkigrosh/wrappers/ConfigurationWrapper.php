@@ -40,6 +40,51 @@ abstract class ConfigurationWrapper
         $this->logger = Logger::getLogger(ConfigurationWrapper::class);
     }
 
+    /**
+     * Метод для получения значения праметра по ключу
+     * @param $config_key
+     * @return bool|string
+     */
+    public function get($config_key)
+    {
+        switch ($config_key) {
+            case CONFIG_HG_SHOP_NAME:
+                return $this->getShopName();
+            case CONFIG_HG_LOGIN:
+                return $this->getHutkigroshLogin();
+            case CONFIG_HG_PASSWORD:
+                return $this->getHutkigroshPassword();
+            case CONFIG_HG_ERIP_ID:
+                return $this->getEripId();
+            case CONFIG_HG_SANDBOX:
+                return $this->isSandbox();
+            case CONFIG_HG_ALFACLICK_BUTTON:
+                return $this->isAlfaclickButtonEnabled();
+            case CONFIG_HG_WEBPAY_BUTTON:
+                return $this->isWebpayButtonEnabled();
+            case CONFIG_HG_EMAIL_NOTIFICATION:
+                return $this->isEmailNotification();
+            case CONFIG_HG_SMS_NOTIFICATION:
+                return $this->isSmsNotification();
+            case CONFIG_HG_COMPLETION_TEXT:
+                return $this->getCompletionText();
+            case CONFIG_HG_PAYMENT_METHOD_NAME:
+                return $this->getPaymentMethodName();
+            case CONFIG_HG_PAYMENT_METHOD_DETAILS:
+                return $this->getPaymentMethodDetails();
+            case CONFIG_HG_BILL_STATUS_PENDING:
+                return $this->getBillStatusPending();
+            case CONFIG_HG_BILL_STATUS_PAYED:
+                return $this->getBillStatusPending();
+            case CONFIG_HG_BILL_STATUS_FAILED:
+                return $this->getBillStatusFailed();
+            case CONFIG_HG_BILL_STATUS_CANCELED:
+                return $this->getBillStatusCanceled();
+            default:
+                return null;
+        }
+    }
+
 
     /**
      * Произольно название интернет-мазагина
@@ -60,10 +105,16 @@ abstract class ConfigurationWrapper
     public abstract function getHutkigroshPassword();
 
     /**
+     * Название системы ХуткиГрош, отображаемое клиенту на этапе оформления заказа
+     * @return string
+     */
+    public abstract function getPaymentMethodName();
+
+    /**
      * Описание системы ХуткиГрош, отображаемое клиенту на этапе оформления заказа
      * @return string
      */
-    public abstract function getPaymentMethodDescription();
+    public abstract function getPaymentMethodDetails();
 
     /**
      * Включен ли режим песчоницы
