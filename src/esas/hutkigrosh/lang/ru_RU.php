@@ -70,6 +70,9 @@ return array(
     ConfigurationWrapper::CONFIG_HG_BILL_STATUS_CANCELED => 'Статус при отмене оплаты счета',
     ConfigurationWrapper::CONFIG_HG_BILL_STATUS_CANCELED . _DESC => 'Какой статус выставить заказу при отмене оплаты счета (идентификатор существующего статуса)',
 
+    ConfigurationWrapper::CONFIG_HG_DUE_INTERVAL => 'Срок действия счета',
+    ConfigurationWrapper::CONFIG_HG_DUE_INTERVAL . _DESC => 'Как долго счет, будет доступен в ЕРИП для оплаты',
+
     'hutkigrosh_alfaclick_label' => 'Выставить счет в Alfaclick',
     'hutkigrosh_alfaclick_msg_success' => 'Счет успешно выставлен в систему Alfaclick',
     'hutkigrosh_alfaclick_msg_unsuccess' => 'Ошибка выставления счета в систему Alfaclick',

@@ -29,6 +29,7 @@ abstract class ConfigurationWrapper
     const CONFIG_HG_BILL_STATUS_PAYED = 'hutkigrosh_bill_status_payed';
     const CONFIG_HG_BILL_STATUS_FAILED = 'hutkigrosh_bill_status_failed';
     const CONFIG_HG_BILL_STATUS_CANCELED = 'hutkigrosh_bill_status_canceled';
+    const CONFIG_HG_DUE_INTERVAL = 'hutkigrosh_due_interval';
 
     protected $logger;
 
@@ -80,6 +81,8 @@ abstract class ConfigurationWrapper
                 return $this->getBillStatusFailed();
             case self::CONFIG_HG_BILL_STATUS_CANCELED:
                 return $this->getBillStatusCanceled();
+            case self::CONFIG_HG_DUE_INTERVAL:
+                return $this->getDueInterval();
             default:
                 return null;
         }
@@ -201,11 +204,23 @@ abstract class ConfigurationWrapper
      */
     public abstract function getBillStatusCanceled();
 
+    /**
+     * Какой срок действия счета после его выставления (в днях)
+     * @return string
+     */
+    public abstract function getDueInterval();
+
     public function warnIfEmpty($string, $name)
     {
         if (empty($string)) {
             $this->logger->warn("Configuration field[" . $name . "] is empty.");
         }
         return $string;
+    }
+
+    public function getNumeric($value, $default = 0) {
+        if (empty($value))
+            $value = $default;
+        return intval($value);
     }
 }

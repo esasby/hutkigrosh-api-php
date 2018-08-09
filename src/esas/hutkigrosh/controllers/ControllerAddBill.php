@@ -59,6 +59,7 @@ class ControllerAddBill extends Controller
         $billNewRq->setCurrency($orderWrapper->getCurrency());
         $billNewRq->setNotifyByEMail($this->configurationWrapper->isEmailNotification());
         $billNewRq->setNotifyByMobilePhone($this->configurationWrapper->isSmsNotification());
+        $billNewRq->setDueInterval($this->configurationWrapper->getDueInterval());
         foreach ($orderWrapper->getProducts() as $cartProduct) {
             $product = new BillProduct();
             $product->setName($cartProduct->getName());
@@ -72,13 +73,28 @@ class ControllerAddBill extends Controller
         $hg->apiLogOut();
         if ($resp->hasError()) {
             $this->logger->error($loggerMainString . "Bill was not added. Setting status[" . $this->configurationWrapper->getBillStatusFailed() . "]...");
-            $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
+            $this->onFailed($orderWrapper, $resp);
             throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
         } else {
             $this->logger->info($loggerMainString . "Bill[" . $resp->getBillId() . "] was successfully added. Updating status[" . $this->configurationWrapper->getBillStatusPending() . "]...");
-            $orderWrapper->saveBillId($resp->getBillId());
-            $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
+            $this->onSuccess($orderWrapper, $resp);
         }
         return $resp;
+    }
+
+    /**
+     * Изменяет статус заказа при успешном высталении счета
+     * Вынесено в отдельный метод, для возможности owerrid-а
+     * (например, кроме статуса заказа надо еще обновить статус транзакции)
+     * @param OrderWrapper $orderWrapper
+     * @param BillNewRs $resp
+     */
+    public function onSuccess(OrderWrapper $orderWrapper, BillNewRs $resp) {
+        $orderWrapper->saveBillId($resp->getBillId());
+        $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
+    }
+
+    public function onFailed(OrderWrapper $orderWrapper, BillNewRs $resp) {
+        $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
     }
 }

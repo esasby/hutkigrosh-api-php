@@ -22,6 +22,7 @@ class BillNewRq extends HutkigroshRq
     private $products;
     private $notifyByEMail = false;
     private $notifyByMobilePhone = false;
+    private $dueInterval;
 
     const validCurrencies = array('BYN', 'USD', 'EUR', 'RUB');
 
@@ -212,5 +213,19 @@ class BillNewRq extends HutkigroshRq
         $this->notifyByMobilePhone = $notifyByMobilePhone;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDueInterval()
+    {
+        return $this->dueInterval;
+    }
 
+    /**
+     * @param mixed $dueInterval
+     */
+    public function setDueInterval($dueInterval)
+    {
+        $this->dueInterval = $dueInterval;
+    }
 }

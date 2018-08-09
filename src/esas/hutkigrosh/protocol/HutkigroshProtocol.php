@@ -135,7 +135,7 @@ class HutkigroshProtocol
             $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/api/invoicing');
             $Bill->addChild('eripId', $billNewRq->getEripId());
             $Bill->addChild('invId', $billNewRq->getInvId());
-            $Bill->addChild('dueDt', date('c', strtotime('+1 day'))); // +1 день
+            $Bill->addChild('dueDt', date('c', strtotime('+' . $billNewRq->getDueInterval() . ' days'))); // +N день
             $Bill->addChild('addedDt', date('c'));
             $Bill->addChild('fullName', $billNewRq->getFullName());
             $Bill->addChild('mobilePhone', $billNewRq->getMobilePhone());

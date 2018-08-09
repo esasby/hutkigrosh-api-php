@@ -69,6 +69,9 @@ return array(
     ConfigurationWrapper::CONFIG_HG_BILL_STATUS_CANCELED => 'Bill status canceled',
     ConfigurationWrapper::CONFIG_HG_BILL_STATUS_CANCELED . _DESC => 'Mapped status for canceled bills',
 
+    ConfigurationWrapper::CONFIG_HG_DUE_INTERVAL => 'Bill due interval (days)',
+    ConfigurationWrapper::CONFIG_HG_DUE_INTERVAL . _DESC => 'How many days new bill will be availible for payment',
+
     'hutkigrosh_alfaclick_label' => 'Add bill ti Alfaclick',
     'hutkigrosh_alfaclick_msg_success' => 'Bill was added to Alfaclick',
     'hutkigrosh_alfaclick_msg_unsuccess' => 'Can not add bill to Alfaclick',
