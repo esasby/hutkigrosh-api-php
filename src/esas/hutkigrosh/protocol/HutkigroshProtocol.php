@@ -396,6 +396,7 @@ class HutkigroshProtocol
      * @internal param RS_TYPE $rqType
      *
      * @return mixed
+     * @throws Exception
      */
     private function requestGet($path, $data = '', $rsType = RS_TYPE::_ARRAY)
     {
@@ -410,6 +411,7 @@ class HutkigroshProtocol
      * @param int $rsType
      * @internal param RS_TYPE $rqType
      * @return bool
+     * @throws Exception
      */
     private function requestPost($path, $data = '', $rsType = RS_TYPE::_ARRAY)
     {

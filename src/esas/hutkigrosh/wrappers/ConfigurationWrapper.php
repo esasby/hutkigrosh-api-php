@@ -9,28 +9,11 @@
 namespace esas\hutkigrosh\wrappers;
 
 
+use esas\hutkigrosh\ConfigurationFields;
 use Logger;
 
 abstract class ConfigurationWrapper
 {
-    const CONFIG_HG_SHOP_NAME = 'hutkigrosh_shop_name';
-    const CONFIG_HG_LOGIN = 'hutkigrosh_hg_login';
-    const CONFIG_HG_PASSWORD = 'hutkigrosh_hg_password';
-    const CONFIG_HG_ERIP_ID = 'hutkigrosh_erip_id';
-    const CONFIG_HG_SANDBOX = 'hutkigrosh_sandbox';
-    const CONFIG_HG_ALFACLICK_BUTTON = 'hutkigrosh_alfaclick_button';
-    const CONFIG_HG_WEBPAY_BUTTON = 'hutkigrosh_webpay_button';
-    const CONFIG_HG_EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
-    const CONFIG_HG_SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
-    const CONFIG_HG_COMPLETION_TEXT = 'hutkigrosh_completion_text';
-    const CONFIG_HG_PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_name';
-    const CONFIG_HG_PAYMENT_METHOD_DETAILS = 'hutkigrosh_payment_method_details';
-    const CONFIG_HG_BILL_STATUS_PENDING = 'hutkigrosh_bill_status_pending';
-    const CONFIG_HG_BILL_STATUS_PAYED = 'hutkigrosh_bill_status_payed';
-    const CONFIG_HG_BILL_STATUS_FAILED = 'hutkigrosh_bill_status_failed';
-    const CONFIG_HG_BILL_STATUS_CANCELED = 'hutkigrosh_bill_status_canceled';
-    const CONFIG_HG_DUE_INTERVAL = 'hutkigrosh_due_interval';
-
     protected $logger;
 
     /**
@@ -49,39 +32,39 @@ abstract class ConfigurationWrapper
     public function get($config_key)
     {
         switch ($config_key) {
-            case self::CONFIG_HG_SHOP_NAME:
+            case ConfigurationFields::SHOP_NAME:
                 return $this->getShopName();
-            case self::CONFIG_HG_LOGIN:
+            case ConfigurationFields::LOGIN:
                 return $this->getHutkigroshLogin();
-            case self::CONFIG_HG_PASSWORD:
+            case ConfigurationFields::PASSWORD:
                 return $this->getHutkigroshPassword();
-            case self::CONFIG_HG_ERIP_ID:
+            case ConfigurationFields::ERIP_ID:
                 return $this->getEripId();
-            case self::CONFIG_HG_SANDBOX:
+            case ConfigurationFields::SANDBOX:
                 return $this->isSandbox();
-            case self::CONFIG_HG_ALFACLICK_BUTTON:
+            case ConfigurationFields::ALFACLICK_BUTTON:
                 return $this->isAlfaclickButtonEnabled();
-            case self::CONFIG_HG_WEBPAY_BUTTON:
+            case ConfigurationFields::WEBPAY_BUTTON:
                 return $this->isWebpayButtonEnabled();
-            case self::CONFIG_HG_EMAIL_NOTIFICATION:
+            case ConfigurationFields::EMAIL_NOTIFICATION:
                 return $this->isEmailNotification();
-            case self::CONFIG_HG_SMS_NOTIFICATION:
+            case ConfigurationFields::SMS_NOTIFICATION:
                 return $this->isSmsNotification();
-            case self::CONFIG_HG_COMPLETION_TEXT:
+            case ConfigurationFields::COMPLETION_TEXT:
                 return $this->getCompletionText();
-            case self::CONFIG_HG_PAYMENT_METHOD_NAME:
+            case ConfigurationFields::PAYMENT_METHOD_NAME:
                 return $this->getPaymentMethodName();
-            case self::CONFIG_HG_PAYMENT_METHOD_DETAILS:
+            case ConfigurationFields::PAYMENT_METHOD_DETAILS:
                 return $this->getPaymentMethodDetails();
-            case self::CONFIG_HG_BILL_STATUS_PENDING:
+            case ConfigurationFields::BILL_STATUS_PENDING:
                 return $this->getBillStatusPending();
-            case self::CONFIG_HG_BILL_STATUS_PAYED:
+            case ConfigurationFields::BILL_STATUS_PAYED:
                 return $this->getBillStatusPayed();
-            case self::CONFIG_HG_BILL_STATUS_FAILED:
+            case ConfigurationFields::BILL_STATUS_FAILED:
                 return $this->getBillStatusFailed();
-            case self::CONFIG_HG_BILL_STATUS_CANCELED:
+            case ConfigurationFields::BILL_STATUS_CANCELED:
                 return $this->getBillStatusCanceled();
-            case self::CONFIG_HG_DUE_INTERVAL:
+            case ConfigurationFields::DUE_INTERVAL:
                 return $this->getDueInterval();
             default:
                 return null;
