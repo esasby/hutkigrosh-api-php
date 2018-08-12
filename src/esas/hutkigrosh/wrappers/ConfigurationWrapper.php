@@ -10,6 +10,7 @@ namespace esas\hutkigrosh\wrappers;
 
 
 use esas\hutkigrosh\ConfigurationFields;
+use esas\hutkigrosh\lang\Translator;
 use Logger;
 
 abstract class ConfigurationWrapper
@@ -66,6 +67,8 @@ abstract class ConfigurationWrapper
                 return $this->getBillStatusCanceled();
             case ConfigurationFields::DUE_INTERVAL:
                 return $this->getDueInterval();
+            case ConfigurationFields::ERIP_PATH:
+                return $this->get();
             default:
                 return null;
         }
@@ -140,10 +143,18 @@ abstract class ConfigurationWrapper
 
     /**
      * Итоговый текст, отображаемый клменту после успешного выставления счета
-     * Чаще всего содержит подробную инструкцию по оплате счета в ЕРИП
+     * Чаще всего содержит подробную инструкцию по оплате счета в ЕРИП.
+     * При необходимости может быть переопрделен
      * @return string
      */
     public abstract function getCompletionText();
+
+    /***
+     * В некоторых CMS не получается в настройках хранить html, поэтому использует текст итогового экрана по умолчанию,
+     * в который проставлятся значение ERIPPATh
+     * @return string
+     */
+    public abstract function getEripPath();
 
     /**
      * Производит подстановку переменных из заказа в итоговый текст
@@ -160,6 +171,7 @@ abstract class ConfigurationWrapper
             "@order_fullname" => $orderWrapper->getFullName(),
             "@order_phone" => $orderWrapper->getMobilePhone(),
             "@order_address" => $orderWrapper->getAddress(),
+            "@erip_path" => $this->getEripPath(),
         ));
     }
 

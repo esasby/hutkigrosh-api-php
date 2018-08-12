@@ -21,6 +21,7 @@ class ConfigurationFields
     const EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
     const SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
     const COMPLETION_TEXT = 'hutkigrosh_completion_text';
+    const ERIP_PATH = 'hutkigrosh_erip_path';
     const PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_name';
     const PAYMENT_METHOD_DETAILS = 'hutkigrosh_payment_method_details';
     const BILL_STATUS_PENDING = 'hutkigrosh_bill_status_pending';

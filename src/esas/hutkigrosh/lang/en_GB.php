@@ -43,7 +43,7 @@ return array(
 <p>To pay an bill in ERIP:</p>
 <ol>
     <li>Select the ERIP payment tree</li>
-    <li>Select a service: <strong>Payments &gt; Online stores</strong></li>
+    <li>Select a service: <strong>@erip_path</strong></li>
     <li>Enter bill number <strong>@order_number</strong></li>
     <li>Verify information is correct</li>
     <li>Make a payment</li>
@@ -71,6 +71,9 @@ return array(
 
     ConfigurationFields::DUE_INTERVAL => 'Bill due interval (days)',
     ConfigurationFields::DUE_INTERVAL . _DESC => 'How many days new bill will be availible for payment',
+
+    ConfigurationFields::ERIP_PATH => 'ERIP PATH',
+    ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
     'hutkigrosh_alfaclick_label' => 'Add bill ti Alfaclick',
     'hutkigrosh_alfaclick_msg_success' => 'Bill was added to Alfaclick',

@@ -49,22 +49,22 @@ class HutkigroshProtocol
         if (!isset(self::$cookies_file)) {
             self::$cookies_file = 'cookies-' . time() . '.txt';
         }
-        $this->setCookiesDir(dirname(__FILE__));
+        $this->setCookiesDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . "cookies");
     }
 
     /**
      * Задать путь к папке, где будет находиться файл cookies
      *
      * @param string $dir
+     * @throws Exception
      */
     public function setCookiesDir($dir)
     {
         $dir = rtrim($dir, '\\/');
-        if (is_dir($dir)) {
-            $this->cookies_dir = $dir;
-        } else {
-            $this->cookies_dir = dirname(__FILE__);
+        if (!is_dir($dir) && !mkdir($dir)) {
+            throw new Exception("Can not create dir[" . $dir . "]");
         }
+        $this->cookies_dir = $dir;
         $this->logger->debug("Cookies dir is set to: " . $this->cookies_dir);
     }
 

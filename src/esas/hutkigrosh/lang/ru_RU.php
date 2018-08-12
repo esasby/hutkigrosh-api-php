@@ -43,7 +43,7 @@ return array(
 <p>Для оплаты счета в ЕРИП необходимо:</p>
 <ol>
     <li>Выберите дерево платежей ЕРИП</li>
-    <li>Выберите услугу: <strong>Платежи &gt; Интернет магазины</strong></li>
+    <li>Выберите услугу: <strong>@erip_path</strong></li>
     <li>Введите номер счета <strong>@order_number</strong></li>
     <li>Проверить корректность информации</li>
     <li>Совершить платеж.</li>
@@ -58,7 +58,7 @@ return array(
     ConfigurationFields::PAYMENT_METHOD_DETAILS . _DEFAULT => '«Хуткi Грош»™ — платежный сервис по выставлению счетов в АИС *Расчет* (ЕРИП). ' .
         'После выставления счета Вам будет доступна его оплата пластиковой карточкой и электронными деньгами, в любом из отделений банков, кассах, банкоматах, платежных терминалах, в системе электронных денег, через Интернет-банкинг, М-банкинг, интернет-эквайринг',
 
-    ConfigurationFields::BILL_STATUS_PENDING => 'Статус при выствылениии счета',
+    ConfigurationFields::BILL_STATUS_PENDING => 'Статус при выставлении счета',
     ConfigurationFields::BILL_STATUS_PENDING . _DESC => 'Какой статус выставить заказу при успешном выставлении счета в ЕРИП (идентификатор существующего статуса)',
 
     ConfigurationFields::BILL_STATUS_PAYED => 'Статус при успешной оплате счета',
@@ -72,6 +72,9 @@ return array(
 
     ConfigurationFields::DUE_INTERVAL => 'Срок действия счета',
     ConfigurationFields::DUE_INTERVAL . _DESC => 'Как долго счет, будет доступен в ЕРИП для оплаты',
+
+    ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
+    ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
     'hutkigrosh_alfaclick_label' => 'Выставить счет в Alfaclick',
     'hutkigrosh_alfaclick_msg_success' => 'Счет успешно выставлен в систему Alfaclick',
