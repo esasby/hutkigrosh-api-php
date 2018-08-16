@@ -70,7 +70,7 @@ return array(
     ConfigurationFields::BILL_STATUS_CANCELED => 'Статус при отмене оплаты счета',
     ConfigurationFields::BILL_STATUS_CANCELED . _DESC => 'Какой статус выставить заказу при отмене оплаты счета (идентификатор существующего статуса)',
 
-    ConfigurationFields::DUE_INTERVAL => 'Срок действия счета',
+    ConfigurationFields::DUE_INTERVAL => 'Срок действия счета (дней)',
     ConfigurationFields::DUE_INTERVAL . _DESC => 'Как долго счет, будет доступен в ЕРИП для оплаты',
 
     ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
