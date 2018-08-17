@@ -475,7 +475,8 @@ class HutkigroshProtocol
             if ($request == 'DELETE') {
                 curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
             }
-            $this->logger->info('Sending ' . $request . ' request[' . $data . "] to url[" . $url . "]");
+            // для безопасности прячем пароли из лога
+            $this->logger->info('Sending ' . $request . ' request[' . preg_replace('/(<pwd>).*(<\/pwd>)/', '$1********$2', $data) . "] to url[" . $url . "]");
             $response = curl_exec($this->ch);
             $this->logger->info('Got response[' . $response . "]");
             if (curl_errno($this->ch)) {
