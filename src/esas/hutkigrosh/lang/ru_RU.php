@@ -1,6 +1,7 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
+use esas\hutkigrosh\lang\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
@@ -76,9 +77,9 @@ return array(
     ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
-    'hutkigrosh_alfaclick_label' => 'Выставить счет в Alfaclick',
-    'hutkigrosh_alfaclick_msg_success' => 'Счет успешно выставлен в систему Alfaclick',
-    'hutkigrosh_alfaclick_msg_unsuccess' => 'Ошибка выставления счета в систему Alfaclick',
-    'hutkigrosh_webpay_msg_payed' => 'Счет успешно оплачен через сервис WebPay',
-    'hutkigrosh_webpay_msg_failed' => 'Ошибка оплаты счета через сервис WebPay',
+    ViewFields::ALFACLICK_LABEL => 'Выставить счет в Alfaclick',
+    ViewFields::ALFACLICK_MSG_SUCCESS => 'Счет успешно выставлен в систему Alfaclick',
+    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Ошибка выставления счета в систему Alfaclick',
+    ViewFields::WEBPAY_MSG_SUCCESS => 'Счет успешно оплачен через сервис WebPay',
+    ViewFields::WEBPAY_MSG_UNSUCCESS => 'Ошибка оплаты счета через сервис WebPay',
 );

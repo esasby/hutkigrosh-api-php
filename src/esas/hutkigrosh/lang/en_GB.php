@@ -1,6 +1,7 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
+use esas\hutkigrosh\lang\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
@@ -70,14 +71,14 @@ return array(
     ConfigurationFields::BILL_STATUS_CANCELED . _DESC => 'Mapped status for canceled bills',
 
     ConfigurationFields::DUE_INTERVAL => 'Bill due interval (days)',
-    ConfigurationFields::DUE_INTERVAL . _DESC => 'How many days new bill will be availible for payment',
+    ConfigurationFields::DUE_INTERVAL . _DESC => 'How many days new bill will be available for payment',
 
     ConfigurationFields::ERIP_PATH => 'ERIP PATH',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
-    'hutkigrosh_alfaclick_label' => 'Add bill ti Alfaclick',
-    'hutkigrosh_alfaclick_msg_success' => 'Bill was added to Alfaclick',
-    'hutkigrosh_alfaclick_msg_unsuccess' => 'Can not add bill to Alfaclick',
-    'hutkigrosh_webpay_msg_payed' => 'Webpay: payment completed!',
-    'hutkigrosh_webpay_msg_failed' => 'Webpay: payment failed!',
+    ViewFields::ALFACLICK_LABEL => 'Add bill ti Alfaclick',
+    ViewFields::ALFACLICK_MSG_SUCCESS => 'Bill was added to Alfaclick',
+    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Can not add bill to Alfaclick',
+    ViewFields::WEBPAY_MSG_SUCCESS => 'Webpay: payment completed!',
+    ViewFields::WEBPAY_MSG_UNSUCCESS => 'Webpay: payment failed!',
 );

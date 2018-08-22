@@ -16,15 +16,13 @@ use Logger;
 abstract class ConfigurationWrapper
 {
     protected $logger;
-    protected $translator;
 
     /**
      * ConfigurationWrapper constructor.
      */
-    public function __construct(Translator $translator)
+    public function __construct()
     {
         $this->logger = Logger::getLogger(ConfigurationWrapper::class);
-        $this->translator = $translator;
     }
 
     /**
@@ -75,19 +73,6 @@ abstract class ConfigurationWrapper
                 return null;
         }
     }
-
-    public function translateFieldName($key) {
-        return $this->translator->getConfigFieldName($key);
-    }
-
-    public function translateFieldDescription($key) {
-        return $this->translator->getConfigFieldDescription($key);
-    }
-
-    public function translateFieldDefault($key) {
-        return $this->translator->getConfigFieldDefault($key);
-    }
-
 
     /**
      * Произольно название интернет-мазагина
