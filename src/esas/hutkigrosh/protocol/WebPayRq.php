@@ -14,6 +14,7 @@ class WebPayRq extends HutkigroshRq
     private $billId;
     private $returnUrl;
     private $cancelReturnUrl;
+    private $buttonLabel = "Pay with card";
 
     /**
      * @return mixed
@@ -62,6 +63,24 @@ class WebPayRq extends HutkigroshRq
     {
         $this->cancelReturnUrl = $cancelReturnUrl;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getButtonLabel()
+    {
+        return $this->buttonLabel;
+    }
+
+    /**
+     * @param mixed $buttonLabel
+     */
+    public function setButtonLabel($buttonLabel)
+    {
+        $this->buttonLabel = $buttonLabel;
+    }
+
+
 
 
 }

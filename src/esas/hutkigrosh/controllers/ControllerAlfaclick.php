@@ -2,11 +2,12 @@
 
 namespace esas\hutkigrosh\controllers;
 
+use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\AlfaclickRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use Exception;
-use Logger;
+use Throwable;
 
 /**
  * Created by PhpStorm.
@@ -16,15 +17,9 @@ use Logger;
  */
 class ControllerAlfaclick extends Controller
 {
-    /**
-     * @var Logger
-     */
-    private $logger;
-
-    public function __construct(ConfigurationWrapper $configurationWrapper)
+    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator)
     {
-        parent::__construct($configurationWrapper);
-        $this->logger = Logger::getLogger(ControllerAlfaclick::class);
+        parent::__construct($configurationWrapper, $translator);
     }
 
     public function process($billId, $phone)
@@ -48,7 +43,7 @@ class ControllerAlfaclick extends Controller
             $hg->apiLogOut();
             $this->outputResult($resp->hasError());
             $this->logger->info($loggerMainString . "Controller ended");
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
             $this->outputResult(true);
         }

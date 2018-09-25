@@ -8,23 +8,10 @@
 
 namespace esas\hutkigrosh\wrappers;
 
-
 use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\lang\Translator;
-use Logger;
 
-abstract class ConfigurationWrapper
+abstract class ConfigurationWrapper extends Wrapper
 {
-    protected $logger;
-
-    /**
-     * ConfigurationWrapper constructor.
-     */
-    public function __construct()
-    {
-        $this->logger = Logger::getLogger(ConfigurationWrapper::class);
-    }
-
     /**
      * Метод для получения значения праметра по ключу
      * @param $config_key

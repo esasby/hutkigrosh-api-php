@@ -1,7 +1,7 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\lang\ViewFields;
+use esas\hutkigrosh\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
@@ -79,6 +79,8 @@ return array(
     ViewFields::ALFACLICK_LABEL => 'Add bill ti Alfaclick',
     ViewFields::ALFACLICK_MSG_SUCCESS => 'Bill was added to Alfaclick',
     ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Can not add bill to Alfaclick',
+
+    ViewFields::WEBPAY_LABEL => 'Pay with card',
     ViewFields::WEBPAY_MSG_SUCCESS => 'Webpay: payment completed!',
     ViewFields::WEBPAY_MSG_UNSUCCESS => 'Webpay: payment failed!',
 );

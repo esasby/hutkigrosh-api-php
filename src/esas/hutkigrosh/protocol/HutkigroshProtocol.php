@@ -3,8 +3,8 @@
 namespace esas\hutkigrosh\protocol;
 
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
-use \Exception;
-use Logger;
+use Exception;
+use esas\hutkigrosh\utils\Logger;
 use Throwable;
 
 /**
@@ -268,7 +268,7 @@ class HutkigroshProtocol
             $Bill->addChild('billId', $webPayRq->getBillId());
             $Bill->addChild('returnUrl', htmlspecialchars($webPayRq->getReturnUrl()));
             $Bill->addChild('cancelReturnUrl', htmlspecialchars($webPayRq->getCancelReturnUrl()));
-            $Bill->addChild('submitValue', "Pay with card");
+            $Bill->addChild('submitValue', $webPayRq->getButtonLabel());
             $xml = $Bill->asXML();
             // запрос
             $resStr = $this->requestPost('Pay/WebPay', $xml, RS_TYPE::_STRING);

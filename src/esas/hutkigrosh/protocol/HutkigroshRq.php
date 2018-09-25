@@ -8,8 +8,7 @@
 
 namespace esas\hutkigrosh\protocol;
 
-
-use Logger;
+use esas\hutkigrosh\utils\Logger;
 
 class HutkigroshRq
 {
@@ -23,8 +22,6 @@ class HutkigroshRq
      */
     public function __construct()
     {
-        $this->logger = Logger::getLogger(BillNewRq::class);
+        $this->logger = Logger::getLogger(get_class($this));
     }
-
-
 }

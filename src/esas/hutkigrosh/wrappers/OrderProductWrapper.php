@@ -9,7 +9,7 @@
 namespace esas\hutkigrosh\wrappers;
 
 
-abstract class OrderProductWrapper
+abstract class OrderProductWrapper extends Wrapper
 {
 
     /**

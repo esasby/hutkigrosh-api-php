@@ -8,48 +8,49 @@
 
 namespace esas\hutkigrosh\controllers;
 
+use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\WebPayRq;
+use esas\hutkigrosh\ViewFields;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
-use Logger;
+use Throwable;
 
 abstract class ControllerWebpayForm extends Controller
 {
-    /**
-     * @var Logger
-     */
-    private $logger;
-
-    public function __construct($configurationWrapper)
+    public function __construct($configurationWrapper, Translator $translator)
     {
-        parent::__construct($configurationWrapper);
-        $this->logger = Logger::getLogger(ControllerWebpayForm::class);
+        parent::__construct($configurationWrapper, $translator);
     }
 
     /**
      * @param $billId
      * @return \esas\hutkigrosh\protocol\WebPayRs
-     * @throws Exception
+     * @throws Throwable
      */
     public function process(OrderWrapper $orderWrapper)
     {
-        $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
-        $this->logger->info($loggerMainString . "Controller started");
-        $hg = new HutkigroshProtocol($this->configurationWrapper);
-        $resp = $hg->apiLogIn();
-        if ($resp->hasError()) {
+        try {
+            $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
+            $this->logger->info($loggerMainString . "Controller started");
+            $hg = new HutkigroshProtocol($this->configurationWrapper);
+            $resp = $hg->apiLogIn();
+            if ($resp->hasError()) {
+                $hg->apiLogOut();
+                throw new Exception($resp->getResponseMessage());
+            }
+            $webPayRq = new WebPayRq();
+            $webPayRq->setBillId($orderWrapper->getBillId());
+            $webPayRq->setReturnUrl($this->generateSuccessReturnUrl($orderWrapper));
+            $webPayRq->setCancelReturnUrl($this->generateUnsuccessReturnUrl($orderWrapper));
+            $webPayRq->setButtonLabel($this->translator->translate(ViewFields::WEBPAY_LABEL));
+            $webPayRs = $hg->apiWebPay($webPayRq);
             $hg->apiLogOut();
-            throw new Exception($resp->getResponseMessage());
+            $this->logger->info($loggerMainString . "Controller ended");
+            return $webPayRs;
+        } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
         }
-        $webPayRq = new WebPayRq();
-        $webPayRq->setBillId($orderWrapper->getBillId());
-        $webPayRq->setReturnUrl($this->generateSuccessReturnUrl($orderWrapper));
-        $webPayRq->setCancelReturnUrl($this->generateUnsuccessReturnUrl($orderWrapper));
-        $webPayRs = $hg->apiWebPay($webPayRq);
-        $hg->apiLogOut();
-        $this->logger->info($loggerMainString . "Controller ended");
-        return $webPayRs;
     }
 
     /**

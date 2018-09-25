@@ -2,13 +2,14 @@
 
 namespace esas\hutkigrosh\controllers;
 
+use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\BillInfoRq;
 use esas\hutkigrosh\protocol\BillInfoRs;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
-use Logger;
+use Throwable;
 
 /**
  * Created by PhpStorm.
@@ -19,11 +20,6 @@ use Logger;
 abstract class ControllerNotify extends Controller
 {
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
      * @var OrderWrapper
      */
     protected $localOrderWrapper;
@@ -33,10 +29,9 @@ abstract class ControllerNotify extends Controller
      */
     protected $billInfoRs;
 
-    public function __construct(ConfigurationWrapper $configurationWrapper)
+    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator)
     {
-        parent::__construct($configurationWrapper);
-        $this->logger = Logger::getLogger(ControllerNotify::class);
+        parent::__construct($configurationWrapper, $translator);
     }
 
     /**
@@ -45,38 +40,46 @@ abstract class ControllerNotify extends Controller
      */
     public function process($billId)
     {
-        $loggerMainString = "Bill[" . $billId . "]: ";
-        $this->logger->info($loggerMainString . "Controller started");
-        if (empty($billId))
-            throw new Exception('Wrong billid[' . $billId . "]");
-        $hg = new HutkigroshProtocol($this->configurationWrapper);
-        $resp = $hg->apiLogIn();
-        if ($resp->hasError()) {
+        try {
+            $loggerMainString = "Bill[" . $billId . "]: ";
+            $this->logger->info($loggerMainString . "Controller started");
+            if (empty($billId))
+                throw new Exception('Wrong billid[' . $billId . "]");
+            $this->logger->info($loggerMainString . "Loading order data from Hutkigrosh gateway...");
+            $hg = new HutkigroshProtocol($this->configurationWrapper);
+            $resp = $hg->apiLogIn();
+            if ($resp->hasError()) {
+                $hg->apiLogOut();
+                throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
+            }
+            $this->billInfoRs = $hg->apiBillInfo(new BillInfoRq($billId));
             $hg->apiLogOut();
-            throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
+            if ($this->billInfoRs->hasError())
+                throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
+            $this->logger->info($loggerMainString . 'Loading local order object for id[' . $this->billInfoRs->getInvId() . "]");
+            $this->localOrderWrapper = $this->getOrderWrapperByOrderNumber($this->billInfoRs->getInvId());
+            if (empty($this->localOrderWrapper))
+                throw new Exception('Can not load order info for id[' . $this->billInfoRs->getInvId() . "]");
+            if ($this->billInfoRs->getFullName() != $this->localOrderWrapper->getFullName() || $this->billInfoRs->getAmount() != $this->localOrderWrapper->getAmount()) {
+                throw new Exception("Unmapped purchaseid: localFullname[" . $this->localOrderWrapper->getFullName()
+                    . "], remoteFullname[" . $this->billInfoRs->getFullName()
+                    . "], localAmount[" . $this->localOrderWrapper->getAmount()
+                    . "], remoteAmount[" . $this->billInfoRs->getAmount() . "]");
+            }
+            if ($this->billInfoRs->isStatusPayed()) {
+                $this->logger->info($loggerMainString . "Remote order status is 'Payed'");
+                $this->onStatusPayed();
+            } elseif ($this->billInfoRs->isStatusCanceled()) {
+                $this->logger->info($loggerMainString . "Remote order status is 'Canceled'");
+                $this->onStatusCanceled();
+            } elseif ($this->billInfoRs->isStatusPending()) {
+                $this->logger->info($loggerMainString . "Remote order status is 'Pending'");
+                $this->onStatusPending();
+            }
+            $this->logger->info($loggerMainString . "Controller ended");
+        } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
         }
-        $this->billInfoRs = $hg->apiBillInfo(new BillInfoRq($billId));
-        $hg->apiLogOut();
-        if ($this->billInfoRs->hasError())
-            throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
-        $this->logger->info($loggerMainString . 'Loading local order object for id[' . $this->billInfoRs->getInvId() . "]");
-        $this->localOrderWrapper = $this->getOrderWrapperByOrderNumber($this->billInfoRs->getInvId());
-        if (empty($this->localOrderWrapper))
-            throw new Exception('Can not load order info for id[' . $this->billInfoRs->getInvId() . "]");
-        if ($this->billInfoRs->getFullName() != $this->localOrderWrapper->getFullName() || $this->billInfoRs->getAmount() != $this->localOrderWrapper->getAmount()) {
-            throw new Exception("Unmapped purchaseid: localFullname[" . $this->localOrderWrapper->getFullName()
-                . "], remoteFullname[" . $this->billInfoRs->getFullName()
-                . "], localAmount[" . $this->localOrderWrapper->getAmount()
-                . "], remoteAmount[" . $this->billInfoRs->getAmount() . "]");
-        }
-        if ($this->billInfoRs->isStatusPayed()) {
-            $this->onStatusPayed();
-        } elseif ($this->billInfoRs->isStatusCanceled()) {
-            $this->onStatusCanceled();
-        } elseif ($this->billInfoRs->isStatusPending()) {
-            $this->onStatusPending();
-        }
-        $this->logger->info($loggerMainString . "Controller ended");
     }
 
     /**
@@ -85,14 +88,14 @@ abstract class ControllerNotify extends Controller
      * @return OrderWrapper
      */
     public abstract function getOrderWrapperByOrderNumber($orderNumber);
-    
+
     public function updateStatus($status){
         if (isset($status) && $this->localOrderWrapper->getStatus() != $status) {
             $this->logger->info("Setting status[" . $status . "] for order[" . $this->billInfoRs->getInvId() . "]...");
             $this->localOrderWrapper->updateStatus($status);
         }
     }
-    
+
     public function onStatusPayed(){
         $this->updateStatus($this->configurationWrapper->getBillStatusPayed());
     }

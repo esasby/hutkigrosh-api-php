@@ -8,15 +8,13 @@
 
 namespace esas\hutkigrosh\wrappers;
 
-
-abstract class OrderWrapper
+abstract class OrderWrapper extends Wrapper
 {
     /**
      * Уникальный номер заказ в рамках CMS
      * @return string
      */
     public abstract function getOrderId();
-
     /**
      * Уникальный номер счета в рамках CMS отображаемый клиенту
      * и отправляемый на шлюз
