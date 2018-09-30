@@ -6,9 +6,13 @@
  * Time: 11:09
  */
 
-namespace esas\hutkigrosh;
+namespace esas\hutkigrosh\view;
 
-
+/**
+ * Перечисление полей, доступных на странице успешного выставления счета
+ * Class ViewFields
+ * @package esas\hutkigrosh\view
+ */
 class ViewFields
 {
     const ALFACLICK_LABEL = 'hutkigrosh_alfaclick_label';

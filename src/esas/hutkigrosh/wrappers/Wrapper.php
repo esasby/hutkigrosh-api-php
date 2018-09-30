@@ -32,4 +32,14 @@ abstract class Wrapper
         $this->logger = Logger::getLogger(get_class($this));
         $this->translator = $translator;
     }
+
+    /**
+     * @return Translator
+     */
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
+
+
 }

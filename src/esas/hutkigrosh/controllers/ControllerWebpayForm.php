@@ -11,7 +11,7 @@ namespace esas\hutkigrosh\controllers;
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\WebPayRq;
-use esas\hutkigrosh\ViewFields;
+use esas\hutkigrosh\view\ViewFields;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 use Throwable;

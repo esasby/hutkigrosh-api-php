@@ -8,6 +8,8 @@
 
 namespace esas\hutkigrosh\wrappers;
 
+use Throwable;
+
 abstract class OrderWrapper extends Wrapper
 {
     /**
@@ -86,6 +88,7 @@ abstract class OrderWrapper extends Wrapper
     /**
      * Обновляет статус заказа в БД
      * @param $newStatus
+     * @throws Throwable
      * @return mixed
      */
     public abstract function updateStatus($newStatus);

@@ -1,7 +1,7 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\ViewFields;
+use esas\hutkigrosh\view\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
