@@ -6,7 +6,7 @@
  * Time: 11:09
  */
 
-namespace esas\hutkigrosh\view;
+namespace esas\hutkigrosh\view\client;
 
 /**
  * Перечисление полей, доступных на странице успешного выставления счета

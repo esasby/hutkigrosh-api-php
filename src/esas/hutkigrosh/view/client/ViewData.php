@@ -6,7 +6,7 @@
  * Time: 14:40
  */
 
-namespace esas\hutkigrosh\view;
+namespace esas\hutkigrosh\view\client;
 
 use esas\hutkigrosh\view\ViewFields;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;

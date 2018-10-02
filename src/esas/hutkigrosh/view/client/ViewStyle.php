@@ -6,7 +6,7 @@
  * Time: 12:20
  */
 
-namespace esas\hutkigrosh\view;
+namespace esas\hutkigrosh\view\client;
 
 /**
  * Класс для группмровки css свойств элементов на странице успешного выставления счета
@@ -15,6 +15,10 @@ namespace esas\hutkigrosh\view;
  */
 class ViewStyle
 {
+    private $completionTextDivClass;
+    private $parentDivClass;
+    private $buttonsDivClass;
+    
     private $msgSuccessClass;
     private $msgUnsuccessClass;
 
@@ -107,6 +111,54 @@ class ViewStyle
     {
         $this->webpayButtonClass = $webpayButtonClass;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompletionTextDivClass()
+    {
+        return $this->completionTextDivClass;
+    }
+
+    /**
+     * @param mixed $completionTextDivClass
+     */
+    public function setCompletionTextDivClass($completionTextDivClass)
+    {
+        $this->completionTextDivClass = $completionTextDivClass;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParentDivClass()
+    {
+        return $this->parentDivClass;
+    }
+
+    /**
+     * @param mixed $parentDivClass
+     */
+    public function setParentDivClass($parentDivClass)
+    {
+        $this->parentDivClass = $parentDivClass;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getButtonsDivClass()
+    {
+        return $this->buttonsDivClass;
+    }
+
+    /**
+     * @param mixed $buttonsDivClass
+     */
+    public function setButtonsDivClass($buttonsDivClass)
+    {
+        $this->buttonsDivClass = $buttonsDivClass;
     }
     
     
