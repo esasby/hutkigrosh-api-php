@@ -6,8 +6,10 @@
  * Time: 10:29
  */
 
-namespace esas\hutkigrosh\view\admin;
+namespace esas\hutkigrosh\view\admin\fields;
 
+
+use esas\hutkigrosh\view\admin\validators\Validator;
 
 class ConfigFieldNumber extends ConfigField
 {
@@ -19,9 +21,9 @@ class ConfigFieldNumber extends ConfigField
      * @param $min
      * @param $max
      */
-    public function __construct($key, $name = null, $description = null, $required = false, $min = 0, $max = 0)
+    public function __construct($key, $name = null, $description = null, $required = false, Validator $validator = null, $min = 0, $max = 0)
     {
-        parent::__construct($key, $name, $description, $required);
+        parent::__construct($key, $name, $description, $required, $validator);
         $this->min = $min;
         $this->max = $max;
     }
@@ -58,7 +60,4 @@ class ConfigFieldNumber extends ConfigField
     {
         $this->max = $max;
     }
-    
-    
-
 }

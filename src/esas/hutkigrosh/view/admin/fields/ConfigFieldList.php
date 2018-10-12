@@ -6,7 +6,7 @@
  * Time: 10:29
  */
 
-namespace esas\hutkigrosh\view\admin;
+namespace esas\hutkigrosh\view\admin\fields;
 
 
 class ConfigFieldList extends ConfigField

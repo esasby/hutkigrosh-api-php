@@ -23,4 +23,8 @@ abstract class Translator
     public function getConfigFieldDefault($key, $locale = null) {
         return $this->translate($key . "_default", $locale);
     }
+
+    public function getValidationError($validatorClass, $locale = null) {
+        return $this->translate("error_validation_" . $validatorClass, $locale);
+    }
 }

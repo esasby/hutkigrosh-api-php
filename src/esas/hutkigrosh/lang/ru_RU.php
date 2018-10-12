@@ -1,10 +1,11 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\view\ViewFields;
+use esas\hutkigrosh\view\client\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
+const _ERROR_VALIDATION = 'error_validation_';
 
 return array(
     ConfigurationFields::SHOP_NAME => 'Название магазина',
@@ -84,4 +85,7 @@ return array(
     ViewFields::WEBPAY_LABEL => 'Оплатить картой',
     ViewFields::WEBPAY_MSG_SUCCESS => 'Счет успешно оплачен через сервис WebPay',
     ViewFields::WEBPAY_MSG_UNSUCCESS => 'Ошибка оплаты счета через сервис WebPay',
+
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Значение не может быть пустым',
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Значение должно быть число в диапазоне от %d до %d',
 );

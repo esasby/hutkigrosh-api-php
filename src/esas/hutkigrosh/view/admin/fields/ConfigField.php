@@ -6,10 +6,12 @@
  * Time: 15:07
  */
 
-namespace esas\hutkigrosh\view\admin;
+namespace esas\hutkigrosh\view\admin\fields;
 
 
 use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\view\admin\validators\Validator;
+use esas\hutkigrosh\view\admin\validators\ValidatorImpl;
 
 abstract class ConfigField
 {
@@ -29,6 +31,11 @@ abstract class ConfigField
      * @var boolean
      */
     private $required;
+
+    /**
+     * @var Validator
+     */
+    private $validator;
     
 
     /**
@@ -39,7 +46,7 @@ abstract class ConfigField
      * @param bool $required
      * @param string $type
      */
-    public function __construct($key, $name = null, $description = null, $required = false)
+    public function __construct($key, $name = null, $description = null, $required = false, Validator $validator = null)
     {
         $this->key = $key;
         if ($name != null)
@@ -51,6 +58,10 @@ abstract class ConfigField
         else
             $this->description= Registry::getRegistry()->getTranslator()->getConfigFieldDescription($key);
         $this->required = $required;
+        if ($validator != null)
+            $this->validator = $validator;
+        else
+            $this->validator = new ValidatorImpl("");
     }
 
 
@@ -119,20 +130,33 @@ abstract class ConfigField
     }
 
     /**
+     * Возвращает значения настройки из хранилища или текущее, значение указаное администратором перед сохранением 
+     * (чтобы в случае ошибки в каком-либо поле, администратору не пришлось повторно вводить все поля)
      * @return mixed
      */
     public function getValue()
     {
-        return $this->value;
+        //тут будет не null, если до этого для поля вызывался валидатор
+        if (!is_null($this->validator->getValidatedValue()))
+            return $this->validator->getValidatedValue();
+        else
+            return Registry::getRegistry()->getConfigurationWrapper()->get($this->key);
     }
 
     /**
-     * @param mixed $value
+     * @return Validator
      */
-    public function setValue($value)
+    public function getValidator()
     {
-        $this->value = $value;
+        return $this->validator;
     }
-    
+
+    /**
+     * @param Validator $validator
+     */
+    public function setValidator($validator)
+    {
+        $this->validator = $validator;
+    }
     
 }

@@ -6,7 +6,7 @@
  * Time: 13:35
  */
 
-namespace esas\hutkigrosh\view\admin;
+namespace esas\hutkigrosh\view\admin\fields;
 
 
 class ListOption

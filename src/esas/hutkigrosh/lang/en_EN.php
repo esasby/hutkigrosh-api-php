@@ -1,10 +1,12 @@
 <?php
 
 use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\view\ViewFields;
+use esas\hutkigrosh\view\client\ViewFields;
 
 const _DESC = '_desc';
 const _DEFAULT = '_default';
+const _ERROR_VALIDATION = 'error_validation_';
+
 
 return array(
     ConfigurationFields::SHOP_NAME => 'Shop name',
@@ -38,9 +40,7 @@ return array(
     ConfigurationFields::COMPLETION_TEXT . _DESC => 'Text displayed to the client after the successful invoice. Can contain html. ' .
         'In the text you can refer to variables @order_id, @order_number, @order_total, @order_currency, @order_fullname, @order_phone, @order_address',
     ConfigurationFields::COMPLETION_TEXT . _DEFAULT => '<p>Bill #<strong>@order_number</strong> was successfully placed in ERIP</p>
-<p>You can pay it in cash, a plastic card and electronic money, in any of the branches
-     banks, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking,
-     online acquiring</p>
+<p>You can pay it in cash, a plastic card and electronic money, in any of the branches banks, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>
 <p>To pay an bill in ERIP:</p>
 <ol>
     <li>Select the ERIP payment tree</li>
@@ -83,4 +83,7 @@ return array(
     ViewFields::WEBPAY_LABEL => 'Pay with card',
     ViewFields::WEBPAY_MSG_SUCCESS => 'Webpay: payment completed!',
     ViewFields::WEBPAY_MSG_UNSUCCESS => 'Webpay: payment failed!',
+
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Value can not be empty',
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Value had to be between %d and %d',
 );

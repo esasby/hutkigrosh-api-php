@@ -17,7 +17,10 @@ class TranslatorImpl extends Translator
         if (null == $this->lang[$locale]) {
             $file = __DIR__ . "/" . $locale . ".php";
             if (!file_exists($file)) {
-                $file = __DIR__ . "/ru_RU.php";
+                $code = substr($locale, 0, 2);
+                $file =  __DIR__ . "/" . $code . "_" . strtoupper($code) . ".php";
+                if (!file_exists($file))
+                    $file = __DIR__ . "/ru_RU.php";
             }
             $this->lang[$locale] = include $file;
         }
@@ -31,8 +34,10 @@ class TranslatorImpl extends Translator
         if (null == $locale)
             $locale = $this->getLocale();
         $this->loadLocale($locale);
-        $translation = $this->lang[$locale][$msg];
-        return !empty($translation) ? $translation : $msg;
+        if (array_key_exists($msg, $this->lang[$locale]))
+            return $this->lang[$locale][$msg];
+        else
+            return $msg;
     }
 
     /**
