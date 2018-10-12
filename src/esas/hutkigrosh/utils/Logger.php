@@ -42,7 +42,7 @@ class Logger
                     'layout' => array(
                         'class' => 'LoggerLayoutPattern',
                         'params' => array(
-                            'conversionPattern' => '%date{Y-m-d H:i:s,u} | %logger{0} | %-5level | %msg %n %ex',
+                            'conversionPattern' => '%date{Y-m-d H:i:s,u} | %logger{0} | %-5level | %msg %n',
                         )
                     ),
                     'params' => array(
@@ -61,45 +61,43 @@ class Logger
 
     public function error($message, $throwable = null)
     {
-        $this->logger->error($message, self::wrapp($throwable));
+        $this->logger->error($message . self::getStackTrace($throwable));
     }
 
     public function warn($message, $throwable = null)
     {
-        $this->logger->warn($message, self::wrapp($throwable));
+        $this->logger->warn($message . self::getStackTrace($throwable));
     }
 
     public function info($message, $throwable = null)
     {
-        $this->logger->info($message, self::wrapp($throwable));
+        $this->logger->info($message . self::getStackTrace($throwable));
     }
 
     public function debug($message, $throwable = null)
     {
-        $this->logger->debug($message, self::wrapp($throwable));
+        $this->logger->debug($message . self::getStackTrace($throwable));
     }
 
     public function fatal($message, $throwable = null)
     {
-        $this->logger->fatal($message, self::wrapp($throwable));
+        $this->logger->fatal($message . self::getStackTrace($throwable));
     }
 
     public function trace($message, $throwable = null)
     {
-        $this->logger->trace($message, self::wrapp($throwable));
+        $this->logger->trace($message . self::getStackTrace($throwable));
     }
 
     /**
      * В библиотеке log4php v 2.3.0 есть баг с вывводом trace, при работе с php 7
      */
-    private static function wrapp(Throwable $th = null)
+    private static function getStackTrace(Throwable $th = null)
     {
-        if ($th == null)
-            return null;
-        elseif ($th instanceof Exception)
-            return $th;
+        if ($th != null && $th instanceof Throwable)
+            return "\n#E " . $th->getFile() . "(" . $th->getLine() . "): " . $th->getMessage() . "\n" . $th->getTraceAsString();
         else
-            return new Exception($th->getMessage(), $th->getCode(), $th);
+            return "";
     }
 
     /**
