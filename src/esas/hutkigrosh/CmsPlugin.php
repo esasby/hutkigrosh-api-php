@@ -32,25 +32,18 @@ class CmsPlugin
     private $registry;
 
     /**
-     * @param string $composerVendorDir
-     * @return CmsPlugin
+     * CmsPlugin constructor.
+     * @param $composerVendorDir
+     * @param $cmsPluginDir
      */
-    public function setComposerVendorDir($composerVendorDir)
+    public function __construct($composerVendorDir, $cmsPluginDir)
     {
         if (substr($composerVendorDir, -1) == '/')
             $composerVendorDir = substr($composerVendorDir, 0,  -1);
         $this->composerVendorDir = $composerVendorDir;
-        return $this;
-    }
-
-    /**
-     * @param mixed $cmsPluginDir
-     * @return CmsPlugin
-     */
-    public function setCmsPluginDir($cmsPluginDir)
-    {
         $this->cmsPluginDir = $cmsPluginDir;
-        return $this;
+        require_once($this->composerVendorDir . '/autoload.php');
+        SimpleAutoloader::register($this->cmsPluginDir);
     }
 
     /**
@@ -64,10 +57,8 @@ class CmsPlugin
     }
     
     public function init() {
-        require_once($this->composerVendorDir . '/autoload.php');
         Logger::init();
         $this->registry->init();
-        SimpleAutoloader::register($this->cmsPluginDir);
     }
 
 }

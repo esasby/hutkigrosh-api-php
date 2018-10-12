@@ -32,7 +32,7 @@ class SimpleAutoloader
     public static function register($rootPath)
     {
         self::$rootPath = $rootPath;
-        spl_autoload_register('SimpleAutoloader::loader');
+        spl_autoload_register('\esas\hutkigrosh\utils\SimpleAutoloader::loader');
     }
 
 }
