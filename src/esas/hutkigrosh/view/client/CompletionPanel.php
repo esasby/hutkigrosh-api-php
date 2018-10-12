@@ -2,27 +2,31 @@
 /**
  * Created by PhpStorm.
  * User: nikit
- * Date: 29.09.2018
- * Time: 14:40
+ * Date: 10.10.2018
+ * Time: 11:27
  */
 
 namespace esas\hutkigrosh\view\client;
 
-use esas\hutkigrosh\view\ViewFields;
+
+use esas\hutkigrosh\lang\Translator;
+use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
+use Throwable;
 
-/**
- * Класс для группировки полей, доступных на странице успешного выставления счета
- * Class ViewData
- * @package esas\hutkigrosh\view
- */
-class ViewData
+class CompletionPanel
 {
     /**
      * @var ConfigurationWrapper
      */
     private $configurationWrapper;
+
+    /**
+     * @var Translator
+     */
+    private $translator;
 
     /**
      * @var OrderWrapper
@@ -40,14 +44,21 @@ class ViewData
     private $alfaclickUrl;
 
     /**
+     * @var ViewStyle
+     */
+    private $viewStyle;
+
+    /**
      * ViewData constructor.
      * @param ConfigurationWrapper $configurationWrapper
      * @param OrderWrapper $orderWrapper
      */
-    public function __construct(ConfigurationWrapper $configurationWrapper, OrderWrapper $orderWrapper)
+    public function __construct(OrderWrapper $orderWrapper)
     {
-        $this->configurationWrapper = $configurationWrapper;
+        $this->configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
+        $this->translator = Registry::getRegistry()->getTranslator();
         $this->orderWrapper = $orderWrapper;
+        $this->viewStyle = new ViewStyle();
     }
 
 
@@ -100,21 +111,21 @@ class ViewData
     }
 
     public function getWebpayMsgSuccess() {
-        return $this->configurationWrapper->getTranslator()->translate(ViewFields::WEBPAY_MSG_SUCCESS);
+        return $this->translator->translate(ViewFields::WEBPAY_MSG_SUCCESS);
     }
 
     public function getWebpayMsgUnsuccess() {
-        return $this->configurationWrapper->getTranslator()->translate(ViewFields::WEBPAY_MSG_UNSUCCESS);
+        return $this->translator->translate(ViewFields::WEBPAY_MSG_UNSUCCESS);
     }
 
-        /**
+    /**
      * @return bool
      */
     public function isAlfaclickButtonEnabled()
     {
         return $this->configurationWrapper->isAlfaclickButtonEnabled();
     }
-    
+
     /**
      * @return mixed
      */
@@ -152,14 +163,32 @@ class ViewData
      */
     public function getAlfaclickLabel()
     {
-        return $this->configurationWrapper->getTranslator()->translate(ViewFields::ALFACLICK_LABEL);
+        return $this->translator->translate(ViewFields::ALFACLICK_LABEL);
     }
 
     public function getAlfaclickMsgSuccess() {
-        return $this->configurationWrapper->getTranslator()->translate(ViewFields::ALFACLICK_MSG_SUCCESS);
+        return $this->translator->translate(ViewFields::ALFACLICK_MSG_SUCCESS);
     }
 
     public function getAlfaclickMsgUnsuccess() {
-        return $this->configurationWrapper->getTranslator()->translate(ViewFields::ALFACLICK_MSG_UNSUCCESS);
+        return $this->translator->translate(ViewFields::ALFACLICK_MSG_UNSUCCESS);
+    }
+
+    /**
+     * @return ViewStyle
+     */
+    public function getViewStyle()
+    {
+        return $this->viewStyle;
+    }
+
+    public function render() {
+        $viewData = $this;
+        $viewStyle = $this->viewStyle;
+        try {
+            include(dirname(__FILE__) . "/completion.php");
+        } catch (Throwable $e) {
+            Logger::getLogger("CompletionPanel")->error("Exception:", $e);
+        }
     }
 }

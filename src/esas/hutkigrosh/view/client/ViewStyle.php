@@ -123,10 +123,12 @@ class ViewStyle
 
     /**
      * @param mixed $completionTextDivClass
+     * @return ViewStyle
      */
     public function setCompletionTextDivClass($completionTextDivClass)
     {
         $this->completionTextDivClass = $completionTextDivClass;
+        return $this;
     }
 
     /**
@@ -139,10 +141,12 @@ class ViewStyle
 
     /**
      * @param mixed $parentDivClass
+     * @return ViewStyle
      */
     public function setParentDivClass($parentDivClass)
     {
         $this->parentDivClass = $parentDivClass;
+        return $this;
     }
 
     /**
@@ -155,10 +159,12 @@ class ViewStyle
 
     /**
      * @param mixed $buttonsDivClass
+     * @return ViewStyle
      */
     public function setButtonsDivClass($buttonsDivClass)
     {
         $this->buttonsDivClass = $buttonsDivClass;
+        return $this;
     }
     
     

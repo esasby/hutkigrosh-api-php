@@ -1,5 +1,6 @@
 <?php /** @var \esas\hutkigrosh\view\client\ViewData $viewData */?>
 <?php /** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */?>
+
 <div id="hutkigrosh" class="<?= $viewStyle->getParentDivClass() ?>">
 	<div id="hutkigrosh_completion_text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
 		<?php echo $viewData->getCompletionText() ?>
