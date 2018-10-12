@@ -2,10 +2,8 @@
 
 namespace esas\hutkigrosh\controllers;
 
-use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\AlfaclickRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use Exception;
 use Throwable;
 
@@ -17,11 +15,6 @@ use Throwable;
  */
 class ControllerAlfaclick extends Controller
 {
-    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator)
-    {
-        parent::__construct($configurationWrapper, $translator);
-    }
-
     public function process($billId, $phone)
     {
         try {

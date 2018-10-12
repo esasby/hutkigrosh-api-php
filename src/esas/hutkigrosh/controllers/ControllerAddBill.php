@@ -8,23 +8,16 @@
 
 namespace esas\hutkigrosh\controllers;
 
-use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\BillNewRq;
 use esas\hutkigrosh\protocol\BillNewRs;
 use esas\hutkigrosh\protocol\BillProduct;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 use Throwable;
 
 class ControllerAddBill extends Controller
 {
-    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator)
-    {
-        parent::__construct($configurationWrapper, $translator);
-    }
-
     /**
      * @param OrderWrapper $orderWrapper
      * @return BillNewRs

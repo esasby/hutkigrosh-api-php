@@ -9,7 +9,7 @@
 namespace esas\hutkigrosh\controllers;
 
 
-use esas\hutkigrosh\lang\Translator;
+use esas\hutkigrosh\Registry;
 use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 
@@ -21,11 +21,6 @@ abstract class Controller
     protected $configurationWrapper;
 
     /**
-     * @var TranslatorImpl
-     */
-    protected $translator;
-
-    /**
      * @var Logger
      */
     protected $logger;
@@ -33,11 +28,13 @@ abstract class Controller
     /**
      * Controller constructor.
      */
-    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator = null)
+    public function __construct(ConfigurationWrapper $configurationWrapper = null)
     {
         $this->logger = Logger::getLogger(get_class($this));
-        $this->configurationWrapper = $configurationWrapper;
-        $this->translator = $translator;
+        if ($configurationWrapper != null)
+            $this->configurationWrapper = $configurationWrapper;
+        else
+            $this->configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
     }
 
 }

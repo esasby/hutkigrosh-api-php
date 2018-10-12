@@ -28,7 +28,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getOrderId()
     {
         try {
-            $this->getOrderIdUnsafe();
+            return $this->getOrderIdUnsafe();
         } catch (Throwable $e) {
             $this->logger->fatal("Can not get order id!", $e);
             throw $e;
@@ -49,7 +49,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getFullName()
     {
         try {
-            $this->getFullNameUnsafe();
+            return $this->getFullNameUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get full name from order. Using empty!", $e);
             return "";
@@ -71,7 +71,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getMobilePhone()
     {
         try {
-            $this->getMobilePhoneUnsafe();
+            return $this->getMobilePhoneUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get mobile phone from order. Using empty!", $e);
             return "";
@@ -94,7 +94,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getEmail()
     {
         try {
-            $this->getEmailUnsafe();
+            return $this->getEmailUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get email from order. Using empty!", $e);
             return "";
@@ -116,7 +116,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getAddress()
     {
         try {
-            $this->getAddressUnsafe();
+            return $this->getAddressUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get address from order. Using empty!", $e);
             return "";
@@ -137,7 +137,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getAmount()
     {
         try {
-            $this->getAmountUnsafe();
+            return $this->getAmountUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get amount from order. Using 0!", $e);
             return "0";
@@ -158,7 +158,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getCurrency()
     {
         try {
-            $this->getCurrencyUnsafe();
+            return $this->getCurrencyUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get currency from order. Using BYN!", $e);
             return "BYN";
@@ -181,10 +181,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getProducts()
     {
         try {
-            if ($this->orderProducts != null)
-                return $this->orderProducts;
-            else
+            if ($this->orderProducts == null)
                 $this->orderProducts = $this->getProductsUnsafe();
+            return $this->orderProducts;
         } catch (Throwable $e) {
             $this->logger->error("Can not get products from order. Using empty list!", $e);
             return [];
@@ -205,7 +204,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getBillId()
     {
         try {
-            $this->getBillIdUnsafe();
+            return $this->getBillIdUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get billid from order. Using empty!", $e);
             return "";
@@ -227,7 +226,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getStatus()
     {
         try {
-            $this->getStatusUnsafe();
+            return $this->getStatusUnsafe();
         } catch (Throwable $e) {
             $this->logger->fatal("Can not get status from order!", $e);
             throw $e;

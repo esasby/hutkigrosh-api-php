@@ -26,7 +26,7 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
     public function getInvId()
     {
         try {
-            $this->getInvIdUnsafe();
+            return $this->getInvIdUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product invid. Using empty!", $e);
             return "";
@@ -47,7 +47,7 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
     public function getName()
     {
         try {
-            $this->getNameUnsafe();
+            return $this->getNameUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product name. Using empty!", $e);
             return "";
@@ -68,7 +68,7 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
     public function getCount()
     {
         try {
-            $this->getNameUnsafe();
+            return $this->getCountUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product caount. Using 0!", $e);
             return "0";
@@ -89,7 +89,7 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
     public function getUnitPrice()
     {
         try {
-            $this->getNameUnsafe();
+            return $this->getUnitPriceUnsafe();
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product price. Using 0!", $e);
             return "0";

@@ -8,21 +8,16 @@
 
 namespace esas\hutkigrosh\controllers;
 
-use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\WebPayRq;
-use esas\hutkigrosh\view\ViewFields;
+use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\view\client\ViewFields;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 use Throwable;
 
 abstract class ControllerWebpayForm extends Controller
 {
-    public function __construct($configurationWrapper, Translator $translator)
-    {
-        parent::__construct($configurationWrapper, $translator);
-    }
-
     /**
      * @param $billId
      * @return \esas\hutkigrosh\protocol\WebPayRs
@@ -43,7 +38,7 @@ abstract class ControllerWebpayForm extends Controller
             $webPayRq->setBillId($orderWrapper->getBillId());
             $webPayRq->setReturnUrl($this->generateSuccessReturnUrl($orderWrapper));
             $webPayRq->setCancelReturnUrl($this->generateUnsuccessReturnUrl($orderWrapper));
-            $webPayRq->setButtonLabel($this->translator->translate(ViewFields::WEBPAY_LABEL));
+            $webPayRq->setButtonLabel(Registry::getRegistry()->getTranslator()->translate(ViewFields::WEBPAY_LABEL));
             $webPayRs = $hg->apiWebPay($webPayRq);
             $hg->apiLogOut();
             $this->logger->info($loggerMainString . "Controller ended");

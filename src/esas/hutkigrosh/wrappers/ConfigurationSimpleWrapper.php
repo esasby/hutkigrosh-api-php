@@ -122,14 +122,18 @@ abstract class ConfigurationSimpleWrapper extends ConfigurationWrapper
     }
 
     /**
-     * Итоговый текст, отображаемый клменту после успешного выставления счета
+     * Итоговый текст, отображаемый клиенту после успешного выставления счета
      * Чаще всего содержит подробную инструкцию по оплате счета в ЕРИП.
+     * В случае, если итогового текста нет в хранилище настроек, используется дефолтный
      * При необходимости может быть переопрделен
      * @return string
      */
     public function getCompletionText()
     {
-        return $this->getConfig(ConfigurationFields::COMPLETION_TEXT);
+        $text = $this->getConfig(ConfigurationFields::COMPLETION_TEXT);
+        if ($text == "")
+            $text = $this->translator->getConfigFieldDefault(ConfigurationFields::COMPLETION_TEXT);
+        return $text;
     }
 
     /***
@@ -204,7 +208,11 @@ abstract class ConfigurationSimpleWrapper extends ConfigurationWrapper
     {
         $value = false;
         try {
-            $value = $this->convertToBoolean($this->getCmsConfig($key));
+            $value = $this->getCmsConfig($key);
+            if (is_bool($value))
+                return $value; //уже boolean
+            else
+                return ("" == $value || "0" == $value) ? false : $this->convertToBoolean($value);
         } catch (Throwable $e) {
             $this->logger->error("Can not load config field[" . $key . "]");
         }

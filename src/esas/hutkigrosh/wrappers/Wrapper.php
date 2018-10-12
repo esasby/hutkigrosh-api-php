@@ -10,6 +10,7 @@ namespace esas\hutkigrosh\wrappers;
 
 
 use esas\hutkigrosh\lang\Translator;
+use esas\hutkigrosh\Registry;
 use esas\hutkigrosh\utils\Logger;
 
 abstract class Wrapper
@@ -27,19 +28,9 @@ abstract class Wrapper
     /**
      * Wrapper constructor.
      */
-    public function __construct(Translator $translator)
+    public function __construct()
     {
         $this->logger = Logger::getLogger(get_class($this));
-        $this->translator = $translator;
+        $this->translator = Registry::getRegistry()->getTranslator();
     }
-
-    /**
-     * @return Translator
-     */
-    public function getTranslator()
-    {
-        return $this->translator;
-    }
-
-
 }

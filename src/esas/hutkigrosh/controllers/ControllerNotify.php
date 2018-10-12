@@ -2,11 +2,9 @@
 
 namespace esas\hutkigrosh\controllers;
 
-use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\protocol\BillInfoRq;
 use esas\hutkigrosh\protocol\BillInfoRs;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
-use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
 use Throwable;
@@ -28,11 +26,6 @@ abstract class ControllerNotify extends Controller
      * @var BillInfoRs
      */
     protected $billInfoRs;
-
-    public function __construct(ConfigurationWrapper $configurationWrapper, Translator $translator)
-    {
-        parent::__construct($configurationWrapper, $translator);
-    }
 
     /**
      * @param $billId
