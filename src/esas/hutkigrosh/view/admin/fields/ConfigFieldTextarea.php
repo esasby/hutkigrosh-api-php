@@ -38,10 +38,12 @@ class ConfigFieldTextarea extends ConfigFieldText
 
     /**
      * @param int $cols
+     * @return ConfigFieldTextarea
      */
     public function setCols($cols)
     {
         $this->cols = $cols;
+        return $this;
     }
 
     /**
@@ -54,10 +56,12 @@ class ConfigFieldTextarea extends ConfigFieldText
 
     /**
      * @param int $rows
+     * @return ConfigFieldTextarea
      */
     public function setRows($rows)
     {
         $this->rows = $rows;
+        return $this;
     }
     
     

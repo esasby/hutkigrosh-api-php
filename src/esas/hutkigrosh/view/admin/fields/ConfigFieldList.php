@@ -40,10 +40,12 @@ class ConfigFieldList extends ConfigField
 
     /**
      * @param ListOption[] $options
+     * @return ConfigFieldList
      */
     public function setOptions($options)
     {
         $this->options = $options;
+        return $this;
     }
     
     

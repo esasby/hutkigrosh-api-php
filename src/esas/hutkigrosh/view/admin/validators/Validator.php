@@ -19,8 +19,6 @@ use Throwable;
  */
 abstract class Validator
 {
-    protected $validatedValue;
-    protected $isValid;
     protected $errorText;
     /**
      * @var Translator
@@ -36,42 +34,26 @@ abstract class Validator
         $this->errorText = Registry::getRegistry()->getTranslator()->getValidationError(get_class($this));
         if ($vsprintfArgs != null)
             $this->errorText = vsprintf($this->errorText, $vsprintfArgs);
-        $this->isValid = true;
     }
 
 
     /**
-     * @return mixed
+     * @param $value
+     * @return ValidationResult
      */
-    public function getValidatedValue()
-    {
-        return $this->validatedValue;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getErrorText()
-    {
-        if (!$this->isValid)
-            return $this->errorText;
-        return "";
-    }
-
-    public function isValid()
-    {
-        return $this->isValid;
-    }
-
     public function validate($value)
     {
-        $this->validatedValue = $value;
+        $ret = new ValidationResult();
+        $ret->setValidatedValue($value);
         try {
-            $this->isValid = $this->validateValue($value);
+            $ret->setValid($this->validateValue($value));
         } catch (Throwable $e) {
-            $this->isValid = false;
+            $ret->setValid(false);
         }
-        return $this->isValid;
+        if (!$ret->isValid()) {
+            $ret->setErrorTextSimple($this->errorText);
+        }
+        return $ret;
     }
 
     /**

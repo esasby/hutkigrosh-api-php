@@ -21,7 +21,9 @@ abstract class Translator
     }
 
     public function getConfigFieldDefault($key, $locale = null) {
-        return $this->translate($key . "_default", $locale);
+        $default = $this->translate($key . "_default", $locale);
+        // если для поля не задано значение по умолчанию, то транслятор должен вернуть пустую сторку, на значение ключа
+        return $default == $key . "_default" ? "" : $default;
     }
 
     public function getValidationError($validatorClass, $locale = null) {

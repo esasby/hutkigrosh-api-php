@@ -39,10 +39,12 @@ class ConfigFieldNumber extends ConfigField
 
     /**
      * @param mixed $min
+     * @return ConfigFieldNumber
      */
     public function setMin($min)
     {
         $this->min = $min;
+        return $this;
     }
 
     /**
@@ -55,9 +57,11 @@ class ConfigFieldNumber extends ConfigField
 
     /**
      * @param mixed $max
+     * @return ConfigFieldNumber
      */
     public function setMax($max)
     {
         $this->max = $max;
+        return $this;
     }
 }

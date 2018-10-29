@@ -12,6 +12,7 @@ namespace esas\hutkigrosh;
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
+use esas\hutkigrosh\wrappers\OrderWrapper;
 
 /**
  * Реализация шаблона registry для удобства доступа к $configurationWrapper и $translator.
@@ -66,4 +67,11 @@ abstract class Registry
         }
         return $esasRegistry;
     }
+
+    /**
+     * По локальному номеру счета (номеру заказа) возвращает wrapper
+     * @param $orderId
+     * @return OrderWrapper
+     */
+    public abstract function getOrderWrapper($orderNumber);
 }
