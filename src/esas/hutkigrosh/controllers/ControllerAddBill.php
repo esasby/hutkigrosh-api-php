@@ -8,6 +8,7 @@
 
 namespace esas\hutkigrosh\controllers;
 
+use esas\hutkigrosh\protocol\Amount;
 use esas\hutkigrosh\protocol\BillNewRq;
 use esas\hutkigrosh\protocol\BillNewRs;
 use esas\hutkigrosh\protocol\BillProduct;
@@ -44,8 +45,7 @@ class ControllerAddBill extends Controller
             $billNewRq->setMobilePhone($orderWrapper->getMobilePhone());
             $billNewRq->setEmail($orderWrapper->getEmail());
             $billNewRq->setFullAddress($orderWrapper->getAddress());
-            $billNewRq->setAmount($orderWrapper->getAmount());
-            $billNewRq->setCurrency($orderWrapper->getCurrency());
+            $billNewRq->setAmount(new Amount($orderWrapper->getAmount(), $orderWrapper->getCurrency()));
             $billNewRq->setNotifyByEMail($this->configurationWrapper->isEmailNotification());
             $billNewRq->setNotifyByMobilePhone($this->configurationWrapper->isSmsNotification());
             $billNewRq->setDueInterval($this->configurationWrapper->getDueInterval());

@@ -49,7 +49,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getFullName()
     {
         try {
-            return $this->getFullNameUnsafe();
+            return trim($this->getFullNameUnsafe());
         } catch (Throwable $e) {
             $this->logger->error("Can not get full name from order. Using empty!", $e);
             return "";
@@ -71,7 +71,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getMobilePhone()
     {
         try {
-            return $this->getMobilePhoneUnsafe();
+            return trim($this->getMobilePhoneUnsafe());
         } catch (Throwable $e) {
             $this->logger->error("Can not get mobile phone from order. Using empty!", $e);
             return "";
@@ -94,7 +94,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getEmail()
     {
         try {
-            return $this->getEmailUnsafe();
+            return trim($this->getEmailUnsafe());
         } catch (Throwable $e) {
             $this->logger->error("Can not get email from order. Using empty!", $e);
             return "";
@@ -116,7 +116,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public function getAddress()
     {
         try {
-            return $this->getAddressUnsafe();
+            return trim($this->getAddressUnsafe());
         } catch (Throwable $e) {
             $this->logger->error("Can not get address from order. Using empty!", $e);
             return "";

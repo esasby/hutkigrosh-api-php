@@ -17,14 +17,14 @@ class BillNewRq extends HutkigroshRq
     private $mobilePhone;
     private $email;
     private $fullAddress;
+    /**
+     * @var Amount
+     */
     private $amount;
-    private $currency;
     private $products;
     private $notifyByEMail = false;
     private $notifyByMobilePhone = false;
     private $dueInterval;
-
-    const validCurrencies = array('BYN', 'USD', 'EUR', 'RUB');
 
     /**
      * @return string
@@ -123,7 +123,7 @@ class BillNewRq extends HutkigroshRq
     }
 
     /**
-     * @return mixed
+     * @return Amount
      */
     public function getAmount()
     {
@@ -133,31 +133,11 @@ class BillNewRq extends HutkigroshRq
     /**
      * @param mixed $amount
      */
-    public function setAmount($amount)
+    public function setAmount(Amount $amount)
     {
-        if ($amount <= 0)
-            $this->logger->warn('Incorrect bill amount[' . $amount . "]");
+        if ($amount == null || $amount->getValue() <= 0)
+            $this->logger->warn('Incorrect bill amount[' . $amount->getValue() . "]");
         $this->amount = $amount;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param string $currency
-     */
-    public function setCurrency($currency)
-    {
-        $currency = trim($currency);
-        if (!in_array($currency, self::validCurrencies)) {
-            $currency = 'BYN';
-        }
-        $this->currency = $currency;
     }
 
     /**

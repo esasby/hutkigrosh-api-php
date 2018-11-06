@@ -17,8 +17,10 @@ class BillInfoRs extends HutkigroshRs
     private $mobilePhone;
     private $email;
     private $fullAddress;
+    /**
+     * @var Amount
+     */
     private $amount;
-    private $currency;
     private $products;
     private $status;
 
@@ -119,7 +121,7 @@ class BillInfoRs extends HutkigroshRs
     }
 
     /**
-     * @return mixed
+     * @return Amount
      */
     public function getAmount()
     {
@@ -127,28 +129,13 @@ class BillInfoRs extends HutkigroshRs
     }
 
     /**
-     * @param mixed $amount
+     * @param Amount $amount
      */
-    public function setAmount($amount)
+    public function setAmount(Amount $amount)
     {
-        $this->amount = trim($amount);
+        $this->amount = $amount;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param mixed $currency
-     */
-    public function setCurrency($currency)
-    {
-        $this->currency = trim($currency);
-    }
 
     /**
      * @return mixed

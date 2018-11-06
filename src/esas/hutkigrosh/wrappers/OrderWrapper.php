@@ -8,6 +8,7 @@
 
 namespace esas\hutkigrosh\wrappers;
 
+use esas\hutkigrosh\protocol\Amount;
 use Throwable;
 
 abstract class OrderWrapper extends Wrapper
@@ -55,6 +56,9 @@ abstract class OrderWrapper extends Wrapper
      */
     public abstract function getAddress();
 
+    public function getAmountObj() {
+        return new Amount($this->getAmount(), $this->getCurrency());
+    }
     /**
      * Общая сумма товаров в заказе
      * @return string

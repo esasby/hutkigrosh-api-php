@@ -5,6 +5,7 @@ namespace esas\hutkigrosh\controllers;
 use esas\hutkigrosh\protocol\BillInfoRq;
 use esas\hutkigrosh\protocol\BillInfoRs;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
+use esas\hutkigrosh\utils\StringUtils;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use esas\hutkigrosh\Registry;
 use Exception;
@@ -54,7 +55,8 @@ class ControllerNotify extends Controller
             $this->localOrderWrapper = Registry::getRegistry()->getOrderWrapper($this->billInfoRs->getInvId());
             if (empty($this->localOrderWrapper))
                 throw new Exception('Can not load order info for id[' . $this->billInfoRs->getInvId() . "]");
-            if ($this->billInfoRs->getFullName() != $this->localOrderWrapper->getFullName() || $this->billInfoRs->getAmount() != $this->localOrderWrapper->getAmount()) {
+            if (!StringUtils::compare($this->billInfoRs->getFullName(), $this->localOrderWrapper->getFullName())
+                || !$this->billInfoRs->getAmount()->isEqual($this->localOrderWrapper->getAmountObj())) {
                 throw new Exception("Unmapped purchaseid: localFullname[" . $this->localOrderWrapper->getFullName()
                     . "], remoteFullname[" . $this->billInfoRs->getFullName()
                     . "], localAmount[" . $this->localOrderWrapper->getAmount()

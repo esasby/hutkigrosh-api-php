@@ -147,8 +147,8 @@ class HutkigroshProtocol
             if (!empty($billNewRq->getFullAddress())) {
                 $Bill->addChild('fullAddress', $billNewRq->getFullAddress()); // опционально
             }
-            $Bill->addChild('amt', (float)$billNewRq->getAmount());
-            $Bill->addChild('curr', $billNewRq->getCurrency());
+            $Bill->addChild('amt', (float)$billNewRq->getAmount()->getValue());
+            $Bill->addChild('curr', $billNewRq->getAmount()->getCurrency());
             $Bill->addChild('statusEnum', 'NotSet');
             // Список товаров/услуг
             if (!empty($billNewRq->getProducts())) {
@@ -182,39 +182,6 @@ class HutkigroshProtocol
         }
         return $resp;
     }
-
-    /**
-     * Добавляет новый счет в систему БелГазПромБанк
-     *
-     * @param array $data
-     * @deprecated не работает
-     * @return bool|string
-     */
-    public function apiBgpbPay($data)
-    {
-//        // формируем xml
-//        $Bill = new \SimpleXMLElement("<BgpbPayParam></BgpbPayParam>");
-//        $Bill->addAttribute('xmlns', 'http://www.hutkigrosh.by/API/PaymentSystems');
-//        $Bill->addChild('billId', $data['billId']);
-////        $products = $Bill->addChild('orderData');
-////        $products->addChild('eripId',$data['eripId']);
-////        $products->addChild('spClaimId',$data['spClaimId']);
-////        $products->addChild('amount', $data['amount']);
-////        $products->addChild('currency', '933');
-////        $products->addChild('clientFio', $data['clientFio']);
-////        $products->addChild('clientAddress', $data['clientAddress']);
-////        $products->addChild('trxId');
-//        $Bill->addChild('returnUrl', htmlspecialchars($data['returnUrl']));
-//        $Bill->addChild('cancelReturnUrl', htmlspecialchars($data['cancelReturnUrl']));
-//        $Bill->addChild('submitValue', 'Оплатить картой на i24.by(БГПБ)');
-//
-//        $xml = $Bill->asXML();
-//        // запрос
-//        $this->requestPost('Pay/BgpbPay', $xml);
-//        $responseXML = simplexml_load_string($this->response);
-//        return $responseXML->form->__toString();
-    }
-
 
     /**
      * Добавляет новый счет в систему AllfaClick
@@ -310,8 +277,7 @@ class HutkigroshProtocol
             $resp->setEripId($resArray["bill"]["eripId"]);
             $resp->setFullName($resArray["bill"]["fullName"]);
             $resp->setFullAddress($resArray["bill"]["fullAddress"]);
-            $resp->setAmount($resArray["bill"]["amt"]);
-            $resp->setCurrency($resArray["bill"]["curr"]);
+            $resp->setAmount(new Amount($resArray["bill"]["amt"], $resArray["bill"]["curr"]));
             $resp->setEmail($resArray["bill"]["email"]);
             $resp->setMobilePhone($resArray["bill"]["mobilePhone"]);
             $resp->setStatus($resArray["bill"]["statusEnum"]);
