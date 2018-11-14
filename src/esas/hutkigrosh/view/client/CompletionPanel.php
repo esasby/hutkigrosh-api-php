@@ -95,7 +95,7 @@ class CompletionPanel
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getWebpayStatus()
     {
@@ -110,12 +110,47 @@ class CompletionPanel
         $this->webpayStatus = $webpayStatus;
     }
 
+    /**
+     * @return string
+     */
+    public function getWebpayTabLabel() {
+        return $this->translator->translate(ViewFields::WEBPAY_TAB_LABEL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebpayButtonLabel() {
+        return $this->translator->translate(ViewFields::WEBPAY_BUTTON_LABEL);
+    }
+
+    
+    /**
+     * @return string
+     */
+    public function getWebpayDetails() {
+        return $this->translator->translate(ViewFields::WEBPAY_DETAILS);
+    }
+    
+    /**
+     * @return string
+     */
     public function getWebpayMsgSuccess() {
         return $this->translator->translate(ViewFields::WEBPAY_MSG_SUCCESS);
     }
 
+    /**
+     * @return string
+     */
     public function getWebpayMsgUnsuccess() {
         return $this->translator->translate(ViewFields::WEBPAY_MSG_UNSUCCESS);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebpayMsgUnavailable() {
+        return $this->translator->translate(ViewFields::WEBPAY_MSG_UNAVAILABLE);
     }
 
     /**
@@ -159,17 +194,39 @@ class CompletionPanel
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAlfaclickLabel()
+    public function getAlfaclickTabLabel()
     {
-        return $this->translator->translate(ViewFields::ALFACLICK_LABEL);
+        return $this->translator->translate(ViewFields::ALFACLICK_TAB_LABEL);
     }
 
+    /**
+     * @return string
+     */
+    public function getAlfaclickButtonLabel()
+    {
+        return $this->translator->translate(ViewFields::ALFACLICK_BUTTON_LABEL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAlfaclickDetails()
+    {
+        return $this->translator->translate(ViewFields::ALFACLICK_DETAILS);
+    }
+
+    /**
+     * @return string
+     */
     public function getAlfaclickMsgSuccess() {
         return $this->translator->translate(ViewFields::ALFACLICK_MSG_SUCCESS);
     }
 
+    /**
+     * @return string
+     */
     public function getAlfaclickMsgUnsuccess() {
         return $this->translator->translate(ViewFields::ALFACLICK_MSG_UNSUCCESS);
     }
@@ -186,7 +243,7 @@ class CompletionPanel
         $viewData = $this;
         $viewStyle = $this->viewStyle;
         try {
-            include(dirname(__FILE__) . "/completion.php");
+            include(dirname(__FILE__) . "/completionAccordion.php");
         } catch (Throwable $e) {
             Logger::getLogger("CompletionPanel")->error("Exception:", $e);
         }

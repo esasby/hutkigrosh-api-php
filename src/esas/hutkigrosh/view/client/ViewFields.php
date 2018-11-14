@@ -15,10 +15,15 @@ namespace esas\hutkigrosh\view\client;
  */
 class ViewFields
 {
-    const ALFACLICK_LABEL = 'hutkigrosh_alfaclick_label';
+    const ALFACLICK_TAB_LABEL = 'hutkigrosh_alfaclick_tab_label';
+    const ALFACLICK_DETAILS = 'hutkigrosh_alfaclick_details';
+    const ALFACLICK_BUTTON_LABEL = 'hutkigrosh_alfaclick_button_label';
     const ALFACLICK_MSG_SUCCESS = 'hutkigrosh_alfaclick_msg_success';
     const ALFACLICK_MSG_UNSUCCESS = 'hutkigrosh_alfaclick_msg_unsuccess';
-    const WEBPAY_LABEL = 'hutkigrosh_webpay_label';
+    const WEBPAY_TAB_LABEL = 'hutkigrosh_webpay_tab_label';
+    const WEBPAY_DETAILS = 'hutkigrosh_webpay_details';
+    const WEBPAY_BUTTON_LABEL = 'hutkigrosh_webpay_button_label';
     const WEBPAY_MSG_SUCCESS = 'hutkigrosh_webpay_msg_success';
     const WEBPAY_MSG_UNSUCCESS = 'hutkigrosh_webpay_msg_unsuccess';
+    const WEBPAY_MSG_UNAVAILABLE = 'hutkigrosh_webpay_msg_unavailable';
 }

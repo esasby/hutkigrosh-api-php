@@ -38,7 +38,7 @@ abstract class ControllerWebpayForm extends Controller
             $webPayRq->setBillId($orderWrapper->getBillId());
             $webPayRq->setReturnUrl($this->generateSuccessReturnUrl($orderWrapper));
             $webPayRq->setCancelReturnUrl($this->generateUnsuccessReturnUrl($orderWrapper));
-            $webPayRq->setButtonLabel(Registry::getRegistry()->getTranslator()->translate(ViewFields::WEBPAY_LABEL));
+            $webPayRq->setButtonLabel(Registry::getRegistry()->getTranslator()->translate(ViewFields::WEBPAY_BUTTON_LABEL));
             $webPayRs = $hg->apiWebPay($webPayRq);
             $hg->apiLogOut();
             $this->logger->info($loggerMainString . "Controller ended");

@@ -60,6 +60,8 @@ abstract class ConfigForm
      */
     protected $validationErrorText;
 
+    protected $sortOrderCounter = 0;
+
     /**
      * ConfigurationRender constructor.
      */
@@ -134,6 +136,7 @@ abstract class ConfigForm
      */
     private function registerField(ConfigField $configField)
     {
+        $configField->setSortOrder(++$this->sortOrderCounter);
         $this->allFields[$configField->getKey()] = $configField;
     }
 

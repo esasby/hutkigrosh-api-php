@@ -76,13 +76,18 @@ return array(
     ConfigurationFields::ERIP_PATH => 'ERIP PATH',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
-    ViewFields::ALFACLICK_LABEL => 'Add bill ti Alfaclick',
-    ViewFields::ALFACLICK_MSG_SUCCESS => 'Bill was added to Alfaclick',
-    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Can not add bill to Alfaclick',
+    ViewFields::ALFACLICK_TAB_LABEL => 'Add bill to «Alfa-click»',
+    ViewFields::ALFACLICK_DETAILS => 'You can add bill to «Alfa-click» system (e-Invoicing)',
+    ViewFields::ALFACLICK_BUTTON_LABEL => 'Add bill',
+    ViewFields::ALFACLICK_MSG_SUCCESS => 'Bill was added to «Alfa-click»',
+    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Can not add bill to «Alfa-click»',
 
-    ViewFields::WEBPAY_LABEL => 'Pay with card',
+    ViewFields::WEBPAY_TAB_LABEL => 'Pay with card',
+    ViewFields::WEBPAY_DETAILS => 'You can pay bill with Visa, Mastercard or Belcard',
+    ViewFields::WEBPAY_BUTTON_LABEL => 'Continue',
     ViewFields::WEBPAY_MSG_SUCCESS => 'Webpay: payment completed!',
     ViewFields::WEBPAY_MSG_UNSUCCESS => 'Webpay: payment failed!',
+    ViewFields::WEBPAY_MSG_UNAVAILABLE => 'Sorry, operation currently not available',
 
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Value can not be empty',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Value had to be between %d and %d',

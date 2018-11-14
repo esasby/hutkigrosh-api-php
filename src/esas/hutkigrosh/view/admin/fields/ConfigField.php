@@ -53,6 +53,11 @@ abstract class ConfigField
      */
     private $validationResult;
 
+    /**
+     * @var int
+     */
+    private $sortOrder;
+
 
     /**
      * ConfigField constructor.
@@ -236,7 +241,6 @@ abstract class ConfigField
         return $this;
     }
 
-
     /**
      * @return bool
      */
@@ -244,4 +248,23 @@ abstract class ConfigField
     {
         return $this->default != null;
     }
+
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int $sortOrder
+     * @return ConfigField
+     */
+    public function setSortOrder(int $sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
+    }
+
 }

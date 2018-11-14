@@ -214,6 +214,7 @@ abstract class ConfigurationWrapper extends Wrapper
     /**
      * Получение свойства из харнилища настроек конкретной CMS
      * @param string $key
+     * @return mixed
      * @throws Exception
      */
     public abstract function getCmsConfig($key);

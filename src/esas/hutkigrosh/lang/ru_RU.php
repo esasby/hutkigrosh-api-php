@@ -44,9 +44,9 @@ return array(
     интернет-эквайринг</p>
 <p>Для оплаты счета в ЕРИП необходимо:</p>
 <ol>
-    <li>Выберите дерево платежей ЕРИП</li>
-    <li>Выберите услугу: <strong>@erip_path</strong></li>
-    <li>Введите номер счета <strong>@order_number</strong></li>
+    <li>Выбрать дерево платежей ЕРИП</li>
+    <li>Выбрать услугу: <strong>@erip_path</strong></li>
+    <li>Ввести номер счета: <strong>@order_number</strong></li>
     <li>Проверить корректность информации</li>
     <li>Совершить платеж.</li>
 </ol>',
@@ -78,13 +78,18 @@ return array(
     ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
-    ViewFields::ALFACLICK_LABEL => 'Выставить счет в Alfaclick',
-    ViewFields::ALFACLICK_MSG_SUCCESS => 'Счет успешно выставлен в систему Alfaclick',
-    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Ошибка выставления счета в систему Alfaclick',
+    ViewFields::ALFACLICK_TAB_LABEL => 'Выставить счет в «Альфа-Клик»',
+    ViewFields::ALFACLICK_DETAILS => 'Вы можете выставить счет в систему «Альфа-Клик». После этого он будет отражен в интернет-банке в пункте меню «Оплата счетов». Укажите свой номер телефона для выставления счета. ',
+    ViewFields::ALFACLICK_BUTTON_LABEL => 'Выставить счет',
+    ViewFields::ALFACLICK_MSG_SUCCESS => 'Счет успешно выставлен в систему «Альфа-Клик»',
+    ViewFields::ALFACLICK_MSG_UNSUCCESS => 'Ошибка выставления счета в систему «Альфа-Клик»',
 
-    ViewFields::WEBPAY_LABEL => 'Оплатить картой',
+    ViewFields::WEBPAY_TAB_LABEL => 'Оплатить картой',
+    ViewFields::WEBPAY_DETAILS => 'Вы можете оплатить счет с помощью карты Visa, Mastercard или Белкарт через систему электронных платежей WEBPAY',
+    ViewFields::WEBPAY_BUTTON_LABEL => 'Перейти к оплате',
     ViewFields::WEBPAY_MSG_SUCCESS => 'Счет успешно оплачен через сервис WebPay',
     ViewFields::WEBPAY_MSG_UNSUCCESS => 'Ошибка оплаты счета через сервис WebPay',
+    ViewFields::WEBPAY_MSG_UNAVAILABLE => 'Извините, операция временно недоступна',
 
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Значение не может быть пустым',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Значение должно быть число в диапазоне от %d до %d',
