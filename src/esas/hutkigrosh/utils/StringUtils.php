@@ -15,4 +15,13 @@ class StringUtils
         return strcmp(trim($string1), trim($string2)) == 0;
     }
 
+    static function substrBetween($string, $from, $to) {
+        $startIndex = min($from, $to);
+        $length = abs($from - $to);
+        return substr($string, $startIndex, $length);
+    }
+
+    static function substrBefore($string, $to) {
+        return self::substrBetween($string, 0, $to);
+    }
 }

@@ -233,7 +233,7 @@ abstract class ConfigForm
         return $this->generateTextField($configField);
     }
 
-    public function renderListField(ConfigFieldList $configField)
+    public function generateListField(ConfigFieldList $configField)
     {
         return $this->generateTextField($configField);
     }

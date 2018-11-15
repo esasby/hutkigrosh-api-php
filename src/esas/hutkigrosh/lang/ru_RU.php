@@ -21,7 +21,7 @@ return array(
     ConfigurationFields::ERIP_ID . _DESC => 'Уникальный идентификатор ЕРИП',
 
     ConfigurationFields::SANDBOX => 'Sandbox',
-    ConfigurationFields::SANDBOX . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hutkigrosh.by',
+    ConfigurationFields::SANDBOX . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hgrosh.by',
 
     ConfigurationFields::ALFACLICK_BUTTON => 'Кнопка Alfaclick',
     ConfigurationFields::ALFACLICK_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',

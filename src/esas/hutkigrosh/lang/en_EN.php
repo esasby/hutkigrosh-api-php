@@ -22,7 +22,7 @@ return array(
     ConfigurationFields::ERIP_ID . _DESC => 'Your shop ERIP unique id',
 
     ConfigurationFields::SANDBOX => 'Sandbox',
-    ConfigurationFields::SANDBOX . _DESC => 'Sandbox mode. If *true* then all requests will be sent to trial host',
+    ConfigurationFields::SANDBOX . _DESC => 'Sandbox mode. If *true* then all requests will be sent to trial host trial.hgrosh.by',
 
     ConfigurationFields::ALFACLICK_BUTTON => 'Button Alfaclick',
     ConfigurationFields::ALFACLICK_BUTTON . _DESC => 'If *true* then customer will get *Add to Alfaclick* button on success page',

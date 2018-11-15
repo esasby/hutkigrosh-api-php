@@ -4,7 +4,9 @@
     /** Определяем какой tab раскрыть */
     if ('' != $viewData->getWebpayStatus()) {
         $webpayTabChecked = 'checked="checked"';
+        $instractionTabChecked = "";
     } else {
+        $webpayTabChecked = ""; // заполняем пустым, чтобы в opencart не отображался notice
         $instractionTabChecked = 'checked="checked"';
     }
 ?>
@@ -28,7 +30,7 @@
                 <div id="webpay_details">
                     <?= $viewData->getWebpayDetails() ?>
                     <br/><br/>
-                    <img src="<?= \esas\hutkigrosh\utils\UrlUtils::getDirUrl(__FILE__) ?>/ps_icons.png" alt="">
+                    <img src="<?= \esas\hutkigrosh\utils\ResourceUtils::getImageUrl('ps_icons.png') ?>" alt="">
                 </div>
                 <?php if ('payed' == $viewData->getWebpayStatus()) { ?>
                     <div class="<?= $viewStyle->getMsgSuccessClass() ?>"
