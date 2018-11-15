@@ -29,6 +29,8 @@ class ValidatorInteger extends Validator
      */
     public function validateValue($value)
     {
+        if (!is_numeric($value))
+            return false;
         $intValue = intval($value);
         return $intValue >= $this->min && $intValue <= $this->max;
     }

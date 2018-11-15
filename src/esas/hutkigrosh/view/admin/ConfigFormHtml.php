@@ -66,7 +66,7 @@ abstract class ConfigFormHtml extends ConfigForm
                 continue;
             }
             elseif ($configField instanceof ConfigFieldList) {
-                $ret .= $this->renderListField($configField);
+                $ret .= $this->generateListField($configField);
                 continue;
             }
             else

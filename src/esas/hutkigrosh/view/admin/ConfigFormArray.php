@@ -65,7 +65,7 @@ abstract class ConfigFormArray extends ConfigForm
                 continue;
             }
             elseif ($configField instanceof ConfigFieldList) {
-                $ret[$configField->getKey()] = $this->renderListField($configField);
+                $ret[$configField->getKey()] = $this->generateListField($configField);
                 continue;
             }
             else
