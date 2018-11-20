@@ -261,7 +261,7 @@ abstract class ConfigField
      * @param int $sortOrder
      * @return ConfigField
      */
-    public function setSortOrder(int $sortOrder)
+    public function setSortOrder($sortOrder)
     {
         $this->sortOrder = $sortOrder;
         return $this;
