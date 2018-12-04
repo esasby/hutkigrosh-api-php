@@ -95,6 +95,24 @@ abstract class ConfigurationWrapper extends Wrapper
     }
 
     /**
+     * Номер услуги в дереве ЕРИП
+     * @return string
+     */
+    public function getEripTreeId()
+    {
+        return $this->getConfig(ConfigurationFields::ERIP_TREE_ID);
+    }
+
+    /**
+     * Необходимо ли добавлять секцию с QR-code
+     * @return boolean
+     */
+    public function isQRCodeButtonEnabled()
+    {
+        return $this->checkOn(ConfigurationFields::QRCODE_BUTTON);
+    }
+
+    /**
      * Включена ля оповещение клиента по Email
      * @return boolean
      */

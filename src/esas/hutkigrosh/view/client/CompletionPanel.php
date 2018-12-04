@@ -12,6 +12,7 @@ namespace esas\hutkigrosh\view\client;
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\Registry;
 use esas\hutkigrosh\utils\Logger;
+use esas\hutkigrosh\utils\QRUtils;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Throwable;
@@ -76,6 +77,30 @@ class CompletionPanel
     public function isWebpayButtonEnabled()
     {
         return $this->configurationWrapper->isWebpayButtonEnabled();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isQRCodeButtonEnabled()
+    {
+        return $this->configurationWrapper->isQRCodeButtonEnabled();
+    }
+
+    /**
+     * @return string
+     */
+    public function getQRCodeTabLabel() {
+        return $this->translator->translate(ViewFields::QRCODE_TAB_LABEL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getQRCodeDetails() {
+        return strtr($this->translator->translate(ViewFields::QRCODE_DETAILS), array(
+            "@qr_code" => QRUtils::getEripBillQR($this->orderWrapper->getOrderNumber())
+        ));
     }
 
     /**

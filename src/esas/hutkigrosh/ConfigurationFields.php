@@ -15,8 +15,10 @@ class ConfigurationFields
     const LOGIN = 'hutkigrosh_hg_login';
     const PASSWORD = 'hutkigrosh_hg_password';
     const ERIP_ID = 'hutkigrosh_erip_id';
+    const ERIP_TREE_ID = 'hutkigrosh_erip_tree_id';
     const SANDBOX = 'hutkigrosh_sandbox';
     const ALFACLICK_BUTTON = 'hutkigrosh_alfaclick_button';
+    const QRCODE_BUTTON = 'hutkigrosh_qrcode_button';
     const WEBPAY_BUTTON = 'hutkigrosh_webpay_button';
     const EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
     const SMS_NOTIFICATION = 'hutkigrosh_notification_sms';

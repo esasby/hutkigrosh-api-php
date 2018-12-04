@@ -21,8 +21,14 @@ return array(
     ConfigurationFields::ERIP_ID => 'ERIP ID',
     ConfigurationFields::ERIP_ID . _DESC => 'Your shop ERIP unique id',
 
+    ConfigurationFields::ERIP_TREE_ID=> 'ERIP Tree code',
+    ConfigurationFields::ERIP_TREE_ID . _DESC => 'ERIP Tree code',
+
     ConfigurationFields::SANDBOX => 'Sandbox',
     ConfigurationFields::SANDBOX . _DESC => 'Sandbox mode. If *true* then all requests will be sent to trial host trial.hgrosh.by',
+
+    ConfigurationFields::QRCODE_BUTTON => 'Button QR-code',
+    ConfigurationFields::QRCODE_BUTTON . _DESC => 'If *true* then customer will be able to pay bill with QR-code',
 
     ConfigurationFields::ALFACLICK_BUTTON => 'Button Alfaclick',
     ConfigurationFields::ALFACLICK_BUTTON . _DESC => 'If *true* then customer will get *Add to Alfaclick* button on success page',
@@ -40,7 +46,7 @@ return array(
     ConfigurationFields::COMPLETION_TEXT . _DESC => 'Text displayed to the client after the successful invoice. Can contain html. ' .
         'In the text you can refer to variables @order_id, @order_number, @order_total, @order_currency, @order_fullname, @order_phone, @order_address',
     ConfigurationFields::COMPLETION_TEXT . _DEFAULT => '<p>Bill #<strong>@order_number</strong> was successfully placed in ERIP</p>
-<p>You can pay it in cash, a plastic card and electronic money, in any of the branches banks, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>
+<p>You can pay it in cash, a plastic card and electronic money, in any bank, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>
 <p>To pay an bill in ERIP:</p>
 <ol>
     <li>Select the ERIP payment tree</li>
@@ -75,6 +81,12 @@ return array(
 
     ConfigurationFields::ERIP_PATH => 'ERIP PATH',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
+
+    ViewFields::QRCODE_TAB_LABEL => 'Pay with QR-code',
+    ViewFields::QRCODE_DETAILS => '<p>You can pay this bill by QR-code:</p>
+<div align="center">@qr_code</div>
+<p>To get information about mobile apps with QR-code payment support please visit <a href="http://pay.raschet.by/" target="_blank"style="color: #8c2003;"><span>this link</span></a></p>',
+
 
     ViewFields::ALFACLICK_TAB_LABEL => 'Add bill to «Alfa-click»',
     ViewFields::ALFACLICK_DETAILS => 'You can add bill to «Alfa-click» system (e-Invoicing)',

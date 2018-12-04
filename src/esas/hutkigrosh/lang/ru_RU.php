@@ -20,8 +20,14 @@ return array(
     ConfigurationFields::ERIP_ID => 'ЕРИП ID',
     ConfigurationFields::ERIP_ID . _DESC => 'Уникальный идентификатор ЕРИП',
 
+    ConfigurationFields::ERIP_TREE_ID=> 'Код услуги',
+    ConfigurationFields::ERIP_TREE_ID . _DESC => 'Код услуги в деревер ЕРИП',
+
     ConfigurationFields::SANDBOX => 'Sandbox',
     ConfigurationFields::SANDBOX . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hgrosh.by',
+
+    ConfigurationFields::QRCODE_BUTTON => 'Кнопка QR-код',
+    ConfigurationFields::QRCODE_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна оплата счета по QR-коду',
 
     ConfigurationFields::ALFACLICK_BUTTON => 'Кнопка Alfaclick',
     ConfigurationFields::ALFACLICK_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',
@@ -77,6 +83,10 @@ return array(
 
     ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
     ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
+
+    ViewFields::QRCODE_TAB_LABEL => 'Оплата по QR-коду',
+    ViewFields::QRCODE_DETAILS => '<p>Оплатить счет через банковское мобильное приложение по QR-коду:</p><div align="center">@qr_code</div><p>Информация о мобильных приложениях, поддерживающих сервис оплаты по QR-коду (платёжной ссылке), <a href="http://pay.raschet.by/" target="_blank"
+style="color: #8c2003;"><span>здесь</span></a></p>',
 
     ViewFields::ALFACLICK_TAB_LABEL => 'Выставить счет в «Альфа-Клик»',
     ViewFields::ALFACLICK_DETAILS => 'Вы можете выставить счет в систему «Альфа-Клик». После этого он будет отражен в интернет-банке в пункте меню «Оплата счетов». Укажите свой номер телефона для выставления счета. ',

@@ -22,6 +22,17 @@
             </div>
         </div>
     </div>
+    <?php if ($viewData->isQRCodeButtonEnabled()) { ?>
+        <div id="tab-qrcode" class="tab">
+            <input id="input-qrcode" type="checkbox" name="tabs2">
+            <label for="input-qrcode"><?= $viewData->getQRCodeTabLabel() ?></label>
+            <div class="tab-content">
+                <div id="qrcode_details">
+                    <?= $viewData->getQRCodeDetails() ?>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
     <?php if ($viewData->isWebpayButtonEnabled()) { ?>
         <div id="tab-webpay" class="tab">
             <input id="input-webpay" type="checkbox" name="tabs2" <?= $webpayTabChecked ?>>
@@ -120,6 +131,13 @@
              /*color: #fff;*/
          }
         #tab-instructions .tab-content {
+            /*background: #96b385;*/
+        }
+        #tab-qrcode > label {
+            background: #9fb399;
+            /*color: #fff;*/
+        }
+        #tab-qrcode .tab-content {
             /*background: #96b385;*/
         }
         #tab-webpay label {

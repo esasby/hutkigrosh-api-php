@@ -81,10 +81,16 @@ abstract class ConfigForm
                 ->setValidator(new ValidatorNotEmpty())
                 ->setRequired(false));
         $this->registerField(
-            (new ConfigFieldNumber(ConfigurationFields::ERIP_ID))
-                ->setMin(10000000)
+        (new ConfigFieldNumber(ConfigurationFields::ERIP_ID))
+            ->setMin(10000000)
+            ->setMax(99999999)
+            ->setValidator(new ValidatorInteger(10000000, 99999999))
+            ->setRequired(true));
+        $this->registerField(
+            (new ConfigFieldNumber(ConfigurationFields::ERIP_TREE_ID))
+                ->setMin(1000)
                 ->setMax(99999999)
-                ->setValidator(new ValidatorInteger(10000000, 99999999))
+                ->setValidator(new ValidatorInteger(1000, 99999999))
                 ->setRequired(true));
         $this->registerField(
             (new ConfigFieldCheckbox(ConfigurationFields::SANDBOX))
@@ -110,6 +116,9 @@ abstract class ConfigForm
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_PAYED));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_FAILED));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_CANCELED));
+        $this->registerField(
+            (new ConfigFieldCheckbox(ConfigurationFields::QRCODE_BUTTON))
+                ->setDefault(false));
         $this->registerField(
             (new ConfigFieldCheckbox(ConfigurationFields::ALFACLICK_BUTTON))
                 ->setDefault(false));

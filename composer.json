@@ -18,7 +18,8 @@
     "php": ">= 5.6.0",
     "ext-curl": "*",
     "ext-json": "*",
-    "apache/log4php": "2.3.0"
+    "apache/log4php": "2.3.0",
+    "tecnickcom/tc-lib-barcode": "1.15.12"
   },
   "autoload": {
     "psr-4": {
