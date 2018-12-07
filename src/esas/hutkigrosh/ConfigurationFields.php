@@ -11,24 +11,119 @@ namespace esas\hutkigrosh;
 
 class ConfigurationFields
 {
-    const SHOP_NAME = 'hutkigrosh_shop_name';
-    const LOGIN = 'hutkigrosh_hg_login';
-    const PASSWORD = 'hutkigrosh_hg_password';
-    const ERIP_ID = 'hutkigrosh_erip_id';
-    const ERIP_TREE_ID = 'hutkigrosh_erip_tree_id';
-    const SANDBOX = 'hutkigrosh_sandbox';
-    const ALFACLICK_BUTTON = 'hutkigrosh_alfaclick_button';
-    const QRCODE_BUTTON = 'hutkigrosh_qrcode_button';
-    const WEBPAY_BUTTON = 'hutkigrosh_webpay_button';
-    const EMAIL_NOTIFICATION = 'hutkigrosh_notification_email';
-    const SMS_NOTIFICATION = 'hutkigrosh_notification_sms';
-    const COMPLETION_TEXT = 'hutkigrosh_completion_text';
-    const ERIP_PATH = 'hutkigrosh_erip_path';
-    const PAYMENT_METHOD_NAME = 'hutkigrosh_payment_method_name';
-    const PAYMENT_METHOD_DETAILS = 'hutkigrosh_payment_method_details';
-    const BILL_STATUS_PENDING = 'hutkigrosh_bill_status_pending';
-    const BILL_STATUS_PAYED = 'hutkigrosh_bill_status_payed';
-    const BILL_STATUS_FAILED = 'hutkigrosh_bill_status_failed';
-    const BILL_STATUS_CANCELED = 'hutkigrosh_bill_status_canceled';
-    const DUE_INTERVAL = 'hutkigrosh_due_interval';
+    private static $cmsKeys;
+
+    /**
+     * В некоторых CMS используются определенные соглашения по именования настроек модулей (чаще всего префиксы).
+     * Данный метод позволяет использовать в core cms-зависимые ключи (например на client view, при формировании html и т.д.)
+     * @param $localkey
+     * @return mixed
+     */
+    private static function getCmsRelatedKey($localkey)
+    {
+        if (self::$cmsKeys == null || !in_array($localkey, self::$cmsKeys)) {
+            self::$cmsKeys[$localkey] = Registry::getRegistry()->getConfigurationWrapper()->createCmsRelatedKey($localkey);
+        }
+        return self::$cmsKeys[$localkey];
+    }
+
+    public static function shopName()
+    {
+        return self::getCmsRelatedKey("shop_name");
+    }
+
+    public static function login()
+    {
+        return self::getCmsRelatedKey("hg_login");
+    }
+
+    public static function password()
+    {
+        return self::getCmsRelatedKey("hg_password");
+    }
+
+    public static function eripId()
+    {
+        return self::getCmsRelatedKey("erip_id");
+    }
+
+    public static function eripTreeId()
+    {
+        return self::getCmsRelatedKey("erip_tree_id");
+    }
+
+    public static function sandbox()
+    {
+        return self::getCmsRelatedKey("sandbox");
+    }
+
+    public static function qrcodeButton()
+    {
+        return self::getCmsRelatedKey("qrcode_button");
+    }
+
+    public static function webpayButton()
+    {
+        return self::getCmsRelatedKey("webpay_button");
+    }
+
+    public static function alfaclickButton()
+    {
+        return self::getCmsRelatedKey("alfaclick_button");
+    }
+
+    public static function notificationEmail()
+    {
+        return self::getCmsRelatedKey("notification_email");
+    }
+
+    public static function notificationSms()
+    {
+        return self::getCmsRelatedKey("notification_sms");
+    }
+
+    public static function completionText()
+    {
+        return self::getCmsRelatedKey("completion_text");
+    }
+
+    public static function eripPath()
+    {
+        return self::getCmsRelatedKey("erip_path");
+    }
+
+    public static function paymentMethodName()
+    {
+        return self::getCmsRelatedKey("payment_method_name");
+    }
+
+    public static function paymentMethodDetails()
+    {
+        return self::getCmsRelatedKey("payment_method_details");
+    }
+
+    public static function billStatusPending()
+    {
+        return self::getCmsRelatedKey("bill_status_pending");
+    }
+
+    public static function billStatusPayed()
+    {
+        return self::getCmsRelatedKey("bill_status_payed");
+    }
+
+    public static function billStatusFailed()
+    {
+        return self::getCmsRelatedKey("bill_status_failed");
+    }
+
+    public static function billStatusCanceled()
+    {
+        return self::getCmsRelatedKey("bill_status_canceled");
+    }
+
+    public static function dueInterval()
+    {
+        return self::getCmsRelatedKey("due_interval");
+    }
 }

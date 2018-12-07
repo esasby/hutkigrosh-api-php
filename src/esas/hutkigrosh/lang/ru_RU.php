@@ -8,43 +8,43 @@ const _DEFAULT = '_default';
 const _ERROR_VALIDATION = 'error_validation_';
 
 return array(
-    ConfigurationFields::SHOP_NAME => 'Название магазина',
-    ConfigurationFields::SHOP_NAME . _DESC => 'Произвольное название Вашего магазина',
+    ConfigurationFields::shopName() => 'Название магазина',
+    ConfigurationFields::shopName() . _DESC => 'Произвольное название Вашего магазина',
 
-    ConfigurationFields::LOGIN => 'Логин',
-    ConfigurationFields::LOGIN . _DESC => 'Ваш логин для доступа к ХуткiГрош',
+    ConfigurationFields::login() => 'Логин',
+    ConfigurationFields::login() . _DESC => 'Ваш логин для доступа к ХуткiГрош',
 
-    ConfigurationFields::PASSWORD => 'Пароль',
-    ConfigurationFields::PASSWORD . _DESC => 'Ваш пароль для доступа к ХуткiГрош',
+    ConfigurationFields::password() => 'Пароль',
+    ConfigurationFields::password() . _DESC => 'Ваш пароль для доступа к ХуткiГрош',
 
-    ConfigurationFields::ERIP_ID => 'ЕРИП ID',
-    ConfigurationFields::ERIP_ID . _DESC => 'Уникальный идентификатор ЕРИП',
+    ConfigurationFields::eripId() => 'ЕРИП ID',
+    ConfigurationFields::eripId() . _DESC => 'Уникальный идентификатор ЕРИП',
 
-    ConfigurationFields::ERIP_TREE_ID=> 'Код услуги',
-    ConfigurationFields::ERIP_TREE_ID . _DESC => 'Код услуги в деревер ЕРИП',
+    ConfigurationFields::eripTreeId()=> 'Код услуги',
+    ConfigurationFields::eripTreeId() . _DESC => 'Код услуги в деревер ЕРИП. Используется при генерации QR-кода',
 
-    ConfigurationFields::SANDBOX => 'Sandbox',
-    ConfigurationFields::SANDBOX . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hgrosh.by',
+    ConfigurationFields::sandbox() => 'Sandbox',
+    ConfigurationFields::sandbox() . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hgrosh.by',
 
-    ConfigurationFields::QRCODE_BUTTON => 'Кнопка QR-код',
-    ConfigurationFields::QRCODE_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна оплата счета по QR-коду',
+    ConfigurationFields::qrcodeButton() => 'Кнопка QR-код',
+    ConfigurationFields::qrcodeButton() . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна оплата счета по QR-коду',
 
-    ConfigurationFields::ALFACLICK_BUTTON => 'Кнопка Alfaclick',
-    ConfigurationFields::ALFACLICK_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',
+    ConfigurationFields::alfaclickButton() => 'Кнопка Alfaclick',
+    ConfigurationFields::alfaclickButton() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',
 
-    ConfigurationFields::WEBPAY_BUTTON => 'Кнопка Webpay',
-    ConfigurationFields::WEBPAY_BUTTON . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для оплаты счета картой (переход на Webpay)',
+    ConfigurationFields::webpayButton() => 'Кнопка Webpay',
+    ConfigurationFields::webpayButton() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для оплаты счета картой (переход на Webpay)',
 
-    ConfigurationFields::EMAIL_NOTIFICATION => 'Email оповещение',
-    ConfigurationFields::EMAIL_NOTIFICATION . _DESC => 'Если включено, то шлюз ХуткiГрош будет отправлять email оповещение клиенту о выставлении счета',
+    ConfigurationFields::notificationEmail() => 'Email оповещение',
+    ConfigurationFields::notificationEmail() . _DESC => 'Если включено, то шлюз ХуткiГрош будет отправлять email оповещение клиенту о выставлении счета',
 
-    ConfigurationFields::SMS_NOTIFICATION => 'Sms оповещение',
-    ConfigurationFields::SMS_NOTIFICATION . _DESC => 'Если включено, то шлюз ХуткiГрош будет отправлять sms оповещение клиенту о выставлении счета',
+    ConfigurationFields::notificationSms() => 'Sms оповещение',
+    ConfigurationFields::notificationSms() . _DESC => 'Если включено, то шлюз ХуткiГрош будет отправлять sms оповещение клиенту о выставлении счета',
 
-    ConfigurationFields::COMPLETION_TEXT => 'Текст успешного выставления счета',
-    ConfigurationFields::COMPLETION_TEXT . _DESC => 'Текст, отображаемый кленту после успешного выставления счета. Может содержать html. ' .
+    ConfigurationFields::completionText() => 'Текст успешного выставления счета',
+    ConfigurationFields::completionText() . _DESC => 'Текст, отображаемый кленту после успешного выставления счета. Может содержать html. ' .
         'В тексте допустимо ссылаться на переменные @order_id, @order_number, @order_total, @order_currency, @order_fullname, @order_phone, @order_address',
-    ConfigurationFields::COMPLETION_TEXT . _DEFAULT => '<p>Счет №<strong>@order_number</strong> успешно выставлен в ЕРИП</p>
+    ConfigurationFields::completionText() . _DEFAULT => '<p>Счет №<strong>@order_number</strong> успешно выставлен в ЕРИП</p>
 <p>Вы можете оплатить его наличными деньгами, пластиковой карточкой и электронными деньгами, в любом из отделений
     банков, кассах, банкоматах, платежных терминалах, в системе электронных денег, через Интернет-банкинг, М-банкинг,
     интернет-эквайринг</p>
@@ -57,32 +57,32 @@ return array(
     <li>Совершить платеж.</li>
 </ol>',
 
-    ConfigurationFields::PAYMENT_METHOD_NAME => 'Название способы оплаты',
-    ConfigurationFields::PAYMENT_METHOD_NAME . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',
-    ConfigurationFields::PAYMENT_METHOD_NAME . _DEFAULT => 'Через систему *Расчет* (ЕРИП)',
+    ConfigurationFields::paymentMethodName() => 'Название способы оплаты',
+    ConfigurationFields::paymentMethodName() . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',
+    ConfigurationFields::paymentMethodName() . _DEFAULT => 'Через систему *Расчет* (ЕРИП)',
 
-    ConfigurationFields::PAYMENT_METHOD_DETAILS => 'Описание способа оплаты',
-    ConfigurationFields::PAYMENT_METHOD_DETAILS . _DESC => 'Описание, отображаемое клиенту, при выборе способа оплаты',
-    ConfigurationFields::PAYMENT_METHOD_DETAILS . _DEFAULT => '«Хуткi Грош»™ — платежный сервис по выставлению счетов в АИС *Расчет* (ЕРИП). ' .
+    ConfigurationFields::paymentMethodDetails() => 'Описание способа оплаты',
+    ConfigurationFields::paymentMethodDetails() . _DESC => 'Описание, отображаемое клиенту, при выборе способа оплаты',
+    ConfigurationFields::paymentMethodDetails() . _DEFAULT => '«Хуткi Грош»™ — платежный сервис по выставлению счетов в АИС *Расчет* (ЕРИП). ' .
         'После выставления счета Вам будет доступна его оплата пластиковой карточкой и электронными деньгами, в любом из отделений банков, кассах, банкоматах, платежных терминалах, в системе электронных денег, через Интернет-банкинг, М-банкинг, интернет-эквайринг',
 
-    ConfigurationFields::BILL_STATUS_PENDING => 'Статус при выставлении счета',
-    ConfigurationFields::BILL_STATUS_PENDING . _DESC => 'Какой статус выставить заказу при успешном выставлении счета в ЕРИП (идентификатор существующего статуса)',
+    ConfigurationFields::billStatusPending() => 'Статус при выставлении счета',
+    ConfigurationFields::billStatusPending() . _DESC => 'Какой статус выставить заказу при успешном выставлении счета в ЕРИП (идентификатор существующего статуса)',
 
-    ConfigurationFields::BILL_STATUS_PAYED => 'Статус при успешной оплате счета',
-    ConfigurationFields::BILL_STATUS_PAYED . _DESC => 'Какой статус выставить заказу при успешной оплате выставленного счета (идентификатор существующего статуса)',
+    ConfigurationFields::billStatusPayed() => 'Статус при успешной оплате счета',
+    ConfigurationFields::billStatusPayed() . _DESC => 'Какой статус выставить заказу при успешной оплате выставленного счета (идентификатор существующего статуса)',
 
-    ConfigurationFields::BILL_STATUS_FAILED => 'Статус при ошибке оплаты счета',
-    ConfigurationFields::BILL_STATUS_FAILED . _DESC => 'Какой статус выставить заказу при ошибке выставленния счета (идентификатор существующего статуса)',
+    ConfigurationFields::billStatusFailed() => 'Статус при ошибке оплаты счета',
+    ConfigurationFields::billStatusFailed() . _DESC => 'Какой статус выставить заказу при ошибке выставленния счета (идентификатор существующего статуса)',
 
-    ConfigurationFields::BILL_STATUS_CANCELED => 'Статус при отмене оплаты счета',
-    ConfigurationFields::BILL_STATUS_CANCELED . _DESC => 'Какой статус выставить заказу при отмене оплаты счета (идентификатор существующего статуса)',
+    ConfigurationFields::billStatusCanceled() => 'Статус при отмене оплаты счета',
+    ConfigurationFields::billStatusCanceled() . _DESC => 'Какой статус выставить заказу при отмене оплаты счета (идентификатор существующего статуса)',
 
-    ConfigurationFields::DUE_INTERVAL => 'Срок действия счета (дней)',
-    ConfigurationFields::DUE_INTERVAL . _DESC => 'Как долго счет, будет доступен в ЕРИП для оплаты',
+    ConfigurationFields::dueInterval() => 'Срок действия счета (дней)',
+    ConfigurationFields::dueInterval() . _DESC => 'Как долго счет, будет доступен в ЕРИП для оплаты',
 
-    ConfigurationFields::ERIP_PATH => 'Путь в дереве ЕРИП',
-    ConfigurationFields::ERIP_PATH . _DESC => 'По какому пути клиент должен искать выставленный счет',
+    ConfigurationFields::eripPath() => 'Путь в дереве ЕРИП',
+    ConfigurationFields::eripPath() . _DESC => 'По какому пути клиент должен искать выставленный счет',
 
     ViewFields::QRCODE_TAB_LABEL => 'Оплата по QR-коду',
     ViewFields::QRCODE_DETAILS => '<p>Оплатить счет через банковское мобильное приложение по QR-коду:</p><div align="center">@qr_code</div><p>Информация о мобильных приложениях, поддерживающих сервис оплаты по QR-коду (платёжной ссылке), <a href="http://pay.raschet.by/" target="_blank"
@@ -103,4 +103,5 @@ style="color: #8c2003;"><span>здесь</span></a></p>',
 
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Значение не может быть пустым',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Значение должно быть число в диапазоне от %d до %d',
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorEmail::class => 'Неверный формат email',
 );

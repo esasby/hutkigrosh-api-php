@@ -20,6 +20,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
 use esas\hutkigrosh\view\admin\validators\ValidationResult;
+use esas\hutkigrosh\view\admin\validators\ValidatorEmail;
 use esas\hutkigrosh\view\admin\validators\ValidatorInteger;
 use esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty;
 
@@ -69,71 +70,71 @@ abstract class ConfigForm
     {
         $this->logger = Logger::getLogger(get_class($this));
         $this->registerField(
-            (new ConfigFieldText(ConfigurationFields::SHOP_NAME))
+            (new ConfigFieldText(ConfigurationFields::shopName()))
                 ->setValidator(new ValidatorNotEmpty())
                 ->setRequired(false));
         $this->registerField(
-            (new ConfigFieldText(ConfigurationFields::LOGIN))
+            (new ConfigFieldText(ConfigurationFields::login()))
+                ->setValidator(new ValidatorEmail())
+                ->setRequired(false));
+        $this->registerField(
+            (new ConfigFieldPassword(ConfigurationFields::password()))
                 ->setValidator(new ValidatorNotEmpty())
                 ->setRequired(false));
         $this->registerField(
-            (new ConfigFieldPassword(ConfigurationFields::PASSWORD))
-                ->setValidator(new ValidatorNotEmpty())
-                ->setRequired(false));
-        $this->registerField(
-        (new ConfigFieldNumber(ConfigurationFields::ERIP_ID))
+        (new ConfigFieldNumber(ConfigurationFields::eripId()))
             ->setMin(10000000)
             ->setMax(99999999)
             ->setValidator(new ValidatorInteger(10000000, 99999999))
             ->setRequired(true));
         $this->registerField(
-            (new ConfigFieldNumber(ConfigurationFields::ERIP_TREE_ID))
+            (new ConfigFieldNumber(ConfigurationFields::eripTreeId()))
                 ->setMin(1000)
                 ->setMax(99999999)
                 ->setValidator(new ValidatorInteger(1000, 99999999))
                 ->setRequired(true));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::SANDBOX))
+            (new ConfigFieldCheckbox(ConfigurationFields::sandbox()))
                 ->setDefault(true));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::EMAIL_NOTIFICATION))
+            (new ConfigFieldCheckbox(ConfigurationFields::notificationEmail()))
                 ->setDefault(true));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::SMS_NOTIFICATION))
+            (new ConfigFieldCheckbox(ConfigurationFields::notificationSms()))
                 ->setDefault(false));
         $this->registerField(
-            (new ConfigFieldText(ConfigurationFields::ERIP_PATH))
+            (new ConfigFieldText(ConfigurationFields::eripPath()))
                 ->setRequired(true)
                 ->setValidator(new ValidatorNotEmpty()));
         $this->registerField(
-            (new ConfigFieldNumber(ConfigurationFields::DUE_INTERVAL))
+            (new ConfigFieldNumber(ConfigurationFields::dueInterval()))
                 ->setMin(1)
                 ->setMax(10)
                 ->setValidator(new ValidatorInteger(1, 10))
                 ->setDefault(2)
                 ->setRequired(true));
-        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_PENDING));
-        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_PAYED));
-        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_FAILED));
-        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::BILL_STATUS_CANCELED));
+        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusPending()));
+        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusPayed()));
+        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusFailed()));
+        $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusCanceled()));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::QRCODE_BUTTON))
+            (new ConfigFieldCheckbox(ConfigurationFields::qrcodeButton()))
                 ->setDefault(false));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::ALFACLICK_BUTTON))
+            (new ConfigFieldCheckbox(ConfigurationFields::alfaclickButton()))
                 ->setDefault(false));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::WEBPAY_BUTTON))
+            (new ConfigFieldCheckbox(ConfigurationFields::webpayButton()))
                 ->setDefault(false));
         $this->registerField(
-            (new ConfigFieldTextarea(ConfigurationFields::COMPLETION_TEXT))
+            (new ConfigFieldTextarea(ConfigurationFields::completionText()))
                 ->setRequired(true));
         $this->registerField(
-            (new ConfigFieldText(ConfigurationFields::PAYMENT_METHOD_NAME))
+            (new ConfigFieldText(ConfigurationFields::paymentMethodName()))
                 ->setRequired(true)
                 ->setValidator(new ValidatorNotEmpty()));
         $this->registerField(
-            (new ConfigFieldTextarea(ConfigurationFields::PAYMENT_METHOD_DETAILS))
+            (new ConfigFieldTextarea(ConfigurationFields::paymentMethodDetails()))
                 ->setRequired(true)
                 ->setValidator(new ValidatorNotEmpty()));
 
@@ -156,10 +157,10 @@ abstract class ConfigForm
     public function addRequired()
     {
         $this->addAllExcept([
-            ConfigurationFields::SHOP_NAME,
-            ConfigurationFields::COMPLETION_TEXT,
-            ConfigurationFields::PAYMENT_METHOD_NAME,
-            ConfigurationFields::PAYMENT_METHOD_DETAILS]);
+            ConfigurationFields::shopName(),
+            ConfigurationFields::completionText(),
+            ConfigurationFields::paymentMethodName(),
+            ConfigurationFields::paymentMethodDetails()]);
     }
 
     /**

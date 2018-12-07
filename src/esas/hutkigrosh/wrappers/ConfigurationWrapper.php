@@ -19,7 +19,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getShopName()
     {
-        return $this->getConfig(ConfigurationFields::SHOP_NAME);
+        return $this->getConfig(ConfigurationFields::shopName());
     }
 
     /**
@@ -28,7 +28,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getHutkigroshLogin()
     {
-        return $this->getConfig(ConfigurationFields::LOGIN);
+        return $this->getConfig(ConfigurationFields::login());
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getHutkigroshPassword()
     {
-        return $this->getConfig(ConfigurationFields::PASSWORD);
+        return $this->getConfig(ConfigurationFields::password());
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getPaymentMethodName()
     {
-        return $this->getConfig(ConfigurationFields::PAYMENT_METHOD_NAME);
+        return $this->getConfig(ConfigurationFields::paymentMethodName());
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getPaymentMethodDetails()
     {
-        return $this->getConfig(ConfigurationFields::PAYMENT_METHOD_DETAILS);
+        return $this->getConfig(ConfigurationFields::paymentMethodDetails());
     }
 
     /**
@@ -64,7 +64,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isSandbox()
     {
-        return $this->checkOn(ConfigurationFields::SANDBOX);
+        return $this->checkOn(ConfigurationFields::sandbox());
     }
 
     /**
@@ -73,7 +73,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isAlfaclickButtonEnabled()
     {
-        return $this->checkOn(ConfigurationFields::ALFACLICK_BUTTON);
+        return $this->checkOn(ConfigurationFields::alfaclickButton());
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isWebpayButtonEnabled()
     {
-        return $this->checkOn(ConfigurationFields::WEBPAY_BUTTON);
+        return $this->checkOn(ConfigurationFields::webpayButton());
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getEripId()
     {
-        return $this->getConfig(ConfigurationFields::ERIP_ID);
+        return $this->getConfig(ConfigurationFields::eripId());
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getEripTreeId()
     {
-        return $this->getConfig(ConfigurationFields::ERIP_TREE_ID);
+        return $this->getConfig(ConfigurationFields::eripTreeId());
     }
 
     /**
@@ -109,7 +109,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isQRCodeButtonEnabled()
     {
-        return $this->checkOn(ConfigurationFields::QRCODE_BUTTON);
+        return $this->checkOn(ConfigurationFields::qrcodeButton());
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isEmailNotification()
     {
-        return $this->checkOn(ConfigurationFields::EMAIL_NOTIFICATION);
+        return $this->checkOn(ConfigurationFields::notificationEmail());
     }
 
     /**
@@ -127,7 +127,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isSmsNotification()
     {
-        return $this->checkOn(ConfigurationFields::SMS_NOTIFICATION);
+        return $this->checkOn(ConfigurationFields::notificationSms());
     }
 
     /**
@@ -139,9 +139,9 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getCompletionText()
     {
-        $text = $this->getConfig(ConfigurationFields::COMPLETION_TEXT);
+        $text = $this->getConfig(ConfigurationFields::completionText());
         if ($text == "")
-            $text = $this->translator->getConfigFieldDefault(ConfigurationFields::COMPLETION_TEXT);
+            $text = $this->translator->getConfigFieldDefault(ConfigurationFields::completionText());
         return $text;
     }
 
@@ -152,7 +152,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getEripPath()
     {
-        return $this->getConfig(ConfigurationFields::ERIP_PATH);
+        return $this->getConfig(ConfigurationFields::eripPath());
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getBillStatusPending()
     {
-        return $this->getConfig(ConfigurationFields::BILL_STATUS_PENDING);
+        return $this->getConfig(ConfigurationFields::billStatusPending());
     }
 
     /**
@@ -170,7 +170,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getBillStatusPayed()
     {
-        return $this->getConfig(ConfigurationFields::BILL_STATUS_PAYED);
+        return $this->getConfig(ConfigurationFields::billStatusPayed());
     }
 
     /**
@@ -179,7 +179,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getBillStatusFailed()
     {
-        return $this->getConfig(ConfigurationFields::BILL_STATUS_FAILED);
+        return $this->getConfig(ConfigurationFields::billStatusFailed());
     }
 
     /**
@@ -188,7 +188,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getBillStatusCanceled()
     {
-        return $this->getConfig(ConfigurationFields::BILL_STATUS_CANCELED);
+        return $this->getConfig(ConfigurationFields::billStatusCanceled());
     }
 
     /**
@@ -197,7 +197,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function getDueInterval()
     {
-        return $this->getConfig(ConfigurationFields::DUE_INTERVAL);
+        return $this->getConfig(ConfigurationFields::dueInterval());
     }
 
     public function getConfig($key, $warn = false)
@@ -253,41 +253,46 @@ abstract class ConfigurationWrapper extends Wrapper
     public function get($config_key)
     {
         switch ($config_key) {
-            case ConfigurationFields::SHOP_NAME:
+            // сперва пробегаем по соответствующим методам, на случай если они были переопределены в дочернем классе
+            case ConfigurationFields::shopName():
                 return $this->getShopName();
-            case ConfigurationFields::LOGIN:
+            case ConfigurationFields::login():
                 return $this->getHutkigroshLogin();
-            case ConfigurationFields::PASSWORD:
+            case ConfigurationFields::password():
                 return $this->getHutkigroshPassword();
-            case ConfigurationFields::ERIP_ID:
+            case ConfigurationFields::eripId():
                 return $this->getEripId();
-            case ConfigurationFields::SANDBOX:
+            case ConfigurationFields::eripTreeId():
+                return $this->getEripTreeId();
+            case ConfigurationFields::sandbox():
                 return $this->isSandbox();
-            case ConfigurationFields::ALFACLICK_BUTTON:
+            case ConfigurationFields::qrcodeButton():
+                return $this->isQRCodeButtonEnabled();
+            case ConfigurationFields::alfaclickButton():
                 return $this->isAlfaclickButtonEnabled();
-            case ConfigurationFields::WEBPAY_BUTTON:
+            case ConfigurationFields::webpayButton():
                 return $this->isWebpayButtonEnabled();
-            case ConfigurationFields::EMAIL_NOTIFICATION:
+            case ConfigurationFields::notificationEmail():
                 return $this->isEmailNotification();
-            case ConfigurationFields::SMS_NOTIFICATION:
+            case ConfigurationFields::notificationSms():
                 return $this->isSmsNotification();
-            case ConfigurationFields::COMPLETION_TEXT:
+            case ConfigurationFields::completionText():
                 return $this->getCompletionText();
-            case ConfigurationFields::PAYMENT_METHOD_NAME:
+            case ConfigurationFields::paymentMethodName():
                 return $this->getPaymentMethodName();
-            case ConfigurationFields::PAYMENT_METHOD_DETAILS:
+            case ConfigurationFields::paymentMethodDetails():
                 return $this->getPaymentMethodDetails();
-            case ConfigurationFields::BILL_STATUS_PENDING:
+            case ConfigurationFields::billStatusPending():
                 return $this->getBillStatusPending();
-            case ConfigurationFields::BILL_STATUS_PAYED:
+            case ConfigurationFields::billStatusPayed():
                 return $this->getBillStatusPayed();
-            case ConfigurationFields::BILL_STATUS_FAILED:
+            case ConfigurationFields::billStatusFailed():
                 return $this->getBillStatusFailed();
-            case ConfigurationFields::BILL_STATUS_CANCELED:
+            case ConfigurationFields::billStatusCanceled():
                 return $this->getBillStatusCanceled();
-            case ConfigurationFields::DUE_INTERVAL:
+            case ConfigurationFields::dueInterval():
                 return $this->getDueInterval();
-            case ConfigurationFields::ERIP_PATH:
+            case ConfigurationFields::eripPath():
                 return $this->getEripPath();
             default:
                 return $this->getConfig($config_key);
@@ -319,6 +324,16 @@ abstract class ConfigurationWrapper extends Wrapper
             $this->logger->warn("Configuration field[" . $name . "] is empty.");
         }
         return $string;
+    }
+
+    /**
+     * При необходимости соблюдения определенных правил в именовании ключей настроек (зависящих от конкретной CMS)
+     * Данный метод должен быть переопределен
+     * @param $key
+     * @return string
+     */
+    public function createCmsRelatedKey($key) {
+        return "hutkigrosh_" . $key;
     }
 
 }

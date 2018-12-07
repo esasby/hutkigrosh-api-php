@@ -69,7 +69,7 @@ abstract class ConfigField
      */
     public function __construct($key, $name = null, $description = null, $required = false, Validator $validator = null)
     {
-        $this->key = $key;
+        $this->setKey($key);
         if ($name != null)
             $this->name = $name;
         else
