@@ -23,6 +23,7 @@ use esas\hutkigrosh\view\admin\validators\ValidationResult;
 use esas\hutkigrosh\view\admin\validators\ValidatorEmail;
 use esas\hutkigrosh\view\admin\validators\ValidatorInteger;
 use esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty;
+use esas\hutkigrosh\view\admin\validators\ValidatorNumeric;
 
 /**
  * Class ConfigForm обеспечивает генерация формы с настройками плагина (может быть как генерация конечного html,
@@ -83,15 +84,11 @@ abstract class ConfigForm
                 ->setRequired(false));
         $this->registerField(
         (new ConfigFieldNumber(ConfigurationFields::eripId()))
-            ->setMin(10000000)
-            ->setMax(99999999)
-            ->setValidator(new ValidatorInteger(10000000, 99999999))
+            ->setValidator(new ValidatorNumeric())
             ->setRequired(true));
         $this->registerField(
             (new ConfigFieldNumber(ConfigurationFields::eripTreeId()))
-                ->setMin(1000)
-                ->setMax(99999999)
-                ->setValidator(new ValidatorInteger(1000, 99999999))
+                ->setValidator(new ValidatorNumeric())
                 ->setRequired(true));
         $this->registerField(
             (new ConfigFieldCheckbox(ConfigurationFields::sandbox()))

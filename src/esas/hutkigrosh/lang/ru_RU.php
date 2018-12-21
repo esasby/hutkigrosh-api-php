@@ -109,5 +109,6 @@ style="color: #8c2003;"><span>здесь</span></a></p>',
 
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Значение не может быть пустым',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Значение должно быть число в диапазоне от %d до %d',
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNumeric::class => 'Значение должно быть целым числом',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorEmail::class => 'Неверный формат email',
 );

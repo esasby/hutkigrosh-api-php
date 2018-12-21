@@ -108,5 +108,6 @@ return array(
 
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty::class => 'Value can not be empty',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorInteger::class => 'Value had to be between %d and %d',
+    _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorNumeric::class => 'Value had to be numeric',
     _ERROR_VALIDATION . esas\hutkigrosh\view\admin\validators\ValidatorEmail::class => 'Wrong email format',
 );
