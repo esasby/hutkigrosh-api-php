@@ -27,14 +27,17 @@ return array(
     ConfigurationFields::sandbox() => 'Sandbox',
     ConfigurationFields::sandbox() . _DESC => 'Sandbox mode. If *true* then all requests will be sent to trial host trial.hgrosh.by',
 
-    ConfigurationFields::qrcodeButton() => 'Button QR-code',
-    ConfigurationFields::qrcodeButton() . _DESC => 'If *true* then customer will be able to pay bill with QR-code',
+    ConfigurationFields::instructionsSection() => 'Section Instructions',
+    ConfigurationFields::instructionsSection() . _DESC => 'If *true* then customer will see step-by-step instructions to pay bill with ERIP',
 
-    ConfigurationFields::alfaclickButton() => 'Button Alfaclick',
-    ConfigurationFields::alfaclickButton() . _DESC => 'If *true* then customer will get *Add to Alfaclick* button on success page',
+    ConfigurationFields::qrcodeSection() => 'Section QR-code',
+    ConfigurationFields::qrcodeSection() . _DESC => 'If *true* then customer will be able to pay bill with QR-code',
 
-    ConfigurationFields::webpayButton() => 'Button Webpay',
-    ConfigurationFields::webpayButton() . _DESC => 'If *true* then customer will get *Pay with car* button on success page',
+    ConfigurationFields::alfaclickSection() => 'Section Alfaclick',
+    ConfigurationFields::alfaclickSection() . _DESC => 'If *true* then customer will get *Add to Alfaclick* button on success page',
+
+    ConfigurationFields::webpaySection() => 'Section Webpay',
+    ConfigurationFields::webpaySection() . _DESC => 'If *true* then customer will get *Pay with car* button on success page',
 
     ConfigurationFields::notificationEmail() => 'Email notification',
     ConfigurationFields::notificationEmail() . _DESC => 'If *true* then Hutkigrosh gateway will sent email notification to customer',
@@ -46,15 +49,7 @@ return array(
     ConfigurationFields::completionText() . _DESC => 'Text displayed to the client after the successful invoice. Can contain html. ' .
         'In the text you can refer to variables @order_id, @order_number, @order_total, @order_currency, @order_fullname, @order_phone, @order_address',
     ConfigurationFields::completionText() . _DEFAULT => '<p>Bill #<strong>@order_number</strong> was successfully placed in ERIP</p>
-<p>You can pay it in cash, a plastic card and electronic money, in any bank, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>
-<p>To pay an bill in ERIP:</p>
-<ol>
-    <li>Select the ERIP payment tree</li>
-    <li>Select a service: <strong>@erip_path</strong></li>
-    <li>Enter bill number <strong>@order_number</strong></li>
-    <li>Verify information is correct</li>
-    <li>Make a payment</li>
-</ol>',
+<p>You can pay it in cash, a plastic card and electronic money, in any bank, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>',
 
     ConfigurationFields::paymentMethodName() => 'Payment method name',
     ConfigurationFields::paymentMethodName() . _DESC => 'Name displayed to the customer when choosing a payment method',
@@ -81,6 +76,16 @@ return array(
 
     ConfigurationFields::eripPath() => 'ERIP PATH',
     ConfigurationFields::eripPath() . _DESC => 'По какому пути клиент должен искать выставленный счет',
+
+    ViewFields::INSTRUCTIONS_TAB_LABEL => 'Payment instructions',
+    ViewFields::INSTRUCTIONS => '<p>To pay an bill in ERIP:</p>
+<ol>
+    <li>Select the ERIP payment tree</li>
+    <li>Select a service: <strong>@erip_path</strong></li>
+    <li>Enter bill number <strong>@order_number</strong></li>
+    <li>Verify information is correct</li>
+    <li>Make a payment</li>
+</ol>',
 
     ViewFields::QRCODE_TAB_LABEL => 'Pay with QR-code',
     ViewFields::QRCODE_DETAILS => '<p>You can pay this bill by QR-code:</p>

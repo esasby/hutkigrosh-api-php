@@ -15,6 +15,8 @@ namespace esas\hutkigrosh\view\client;
  */
 class ViewFields
 {
+    const INSTRUCTIONS_TAB_LABEL = 'hutkigrosh_instructions_tab_label';
+    const INSTRUCTIONS = 'hutkigrosh_instructions_text';
     const QRCODE_TAB_LABEL = 'hutkigrosh_qrcode_tab_label';
     const QRCODE_DETAILS = 'hutkigrosh_qrcode_details';
     const ALFACLICK_TAB_LABEL = 'hutkigrosh_alfaclick_tab_label';

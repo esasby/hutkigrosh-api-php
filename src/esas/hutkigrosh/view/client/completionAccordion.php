@@ -13,16 +13,21 @@
 
 
 <div id="hutkigrosh" class="wrapper <?= $viewStyle->getParentDivClass() ?>"">
-    <div id="tab-instructions" class="tab">
-        <input id="input-instructions" type="checkbox" name="tabs2" <?= $instractionTabChecked ?>>
-        <label for="input-instructions">Инструкция по оплате счета в ЕРИП</label>
-        <div class="tab-content">
-            <div id="hutkigrosh_completion_text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
-                <?php echo $viewData->getCompletionText() ?>
+    <div id="completion-text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
+        <?php echo $viewData->getCompletionText() ?>
+    </div>
+    <?php if ($viewData->isInstructionsSectionEnabled()) { ?>
+        <div id="tab-instructions" class="tab">
+            <input id="input-instructions" type="checkbox" name="tabs2" <?= $instractionTabChecked ?>>
+            <label for="input-instructions"><?= $viewData->getInstructionsTabLabel() ?></label>
+            <div class="tab-content">
+                <div id="hutkigrosh_instructions_text">
+                    <?php echo $viewData->getInstructionsText() ?>
+                </div>
             </div>
         </div>
-    </div>
-    <?php if ($viewData->isQRCodeButtonEnabled()) { ?>
+    <?php } ?>
+    <?php if ($viewData->isQRCodeSectionEnabled()) { ?>
         <div id="tab-qrcode" class="tab">
             <input id="input-qrcode" type="checkbox" name="tabs2">
             <label for="input-qrcode"><?= $viewData->getQRCodeTabLabel() ?></label>
@@ -33,7 +38,7 @@
             </div>
         </div>
     <?php } ?>
-    <?php if ($viewData->isWebpayButtonEnabled()) { ?>
+    <?php if ($viewData->isWebpaySectionEnabled()) { ?>
         <div id="tab-webpay" class="tab">
             <input id="input-webpay" type="checkbox" name="tabs2" <?= $webpayTabChecked ?>>
             <label for="input-webpay"><?= $viewData->getWebpayTabLabel() ?></label>
@@ -68,7 +73,7 @@
         </div>
     <?php } ?>
 
-    <?php if ($viewData->isAlfaclickButtonEnabled()) { ?>
+    <?php if ($viewData->isAlfaclickSectionEnabled()) { ?>
         <div id="tab-alfaclick" class="tab">
             <input id="input-alfaclick" type="checkbox" name="tabs2">
             <label for="input-alfaclick"><?= $viewData->getAlfaclickTabLabel() ?></label>

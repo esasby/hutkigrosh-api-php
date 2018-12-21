@@ -118,14 +118,17 @@ abstract class ConfigForm
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusFailed()));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusCanceled()));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::qrcodeButton()))
+            (new ConfigFieldCheckbox(ConfigurationFields::instructionsSection()))
+                ->setDefault(true));
+        $this->registerField(
+            (new ConfigFieldCheckbox(ConfigurationFields::qrcodeSection()))
+                ->setDefault(true));
+        $this->registerField(
+            (new ConfigFieldCheckbox(ConfigurationFields::alfaclickSection()))
                 ->setDefault(false));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::alfaclickButton()))
-                ->setDefault(false));
-        $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::webpayButton()))
-                ->setDefault(false));
+            (new ConfigFieldCheckbox(ConfigurationFields::webpaySection()))
+                ->setDefault(true));
         $this->registerField(
             (new ConfigFieldTextarea(ConfigurationFields::completionText()))
                 ->setRequired(true));
@@ -158,7 +161,6 @@ abstract class ConfigForm
     {
         $this->addAllExcept([
             ConfigurationFields::shopName(),
-            ConfigurationFields::completionText(),
             ConfigurationFields::paymentMethodName(),
             ConfigurationFields::paymentMethodDetails()]);
     }

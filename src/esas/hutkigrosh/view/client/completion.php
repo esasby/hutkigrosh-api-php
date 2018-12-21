@@ -1,12 +1,12 @@
-<?php /** @var \esas\hutkigrosh\view\client\ViewData $viewData */?>
+<?php /** @var \esas\hutkigrosh\view\client\CompletionPanel $viewData */?>
 <?php /** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */?>
-
+<!--DEPRECATED-->
 <div id="hutkigrosh" class="<?= $viewStyle->getParentDivClass() ?>">
 	<div id="hutkigrosh_completion_text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
 		<?php echo $viewData->getCompletionText() ?>
 	</div>
     <div id="hutkigrosh_buttons" class="<?= $viewStyle->getButtonsDivClass() ?>">
-        <?php if ($viewData->isWebpayButtonEnabled()) { ?>
+        <?php if ($viewData->isWebpaySectionEnabled()) { ?>
             <?php if ('payed' == $viewData->getWebpayStatus()) { ?>
             <div class="<?= $viewStyle->getMsgSuccessClass() ?>"
                  id="hutkigrosh_message"><?= $viewData->getWebpayMsgSuccess() ?></div>
@@ -23,7 +23,7 @@
                 webpay_form_button.addClass('<?= $viewStyle->getWebpayButtonClass() ?>');
             </script>
         <?php } ?>
-        <?php if ($viewData->isAlfaclickButtonEnabled()) { ?>
+        <?php if ($viewData->isAlfaclickSectionEnabled()) { ?>
             <div id="alfaclick">
                 <input type="hidden" value="<?= $viewData->getAlfaclickBillID() ?>" id="billID"/>
                 <input type="tel" maxlength="20" value="<?= $viewData->getAlfaclickPhone() ?>" id="phone"/>

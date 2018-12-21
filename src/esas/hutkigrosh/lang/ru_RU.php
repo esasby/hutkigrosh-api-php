@@ -26,14 +26,17 @@ return array(
     ConfigurationFields::sandbox() => 'Sandbox',
     ConfigurationFields::sandbox() . _DESC => 'Режим *песочницы*. Если включен, то все счета буду выставляться в тестовой системе trial.hgrosh.by',
 
-    ConfigurationFields::qrcodeButton() => 'Кнопка QR-код',
-    ConfigurationFields::qrcodeButton() . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна оплата счета по QR-коду',
+    ConfigurationFields::instructionsSection() => 'Секция "Инструкция"',
+    ConfigurationFields::instructionsSection() . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна пошаговая инструкция по оплате счета в ЕРИП',
 
-    ConfigurationFields::alfaclickButton() => 'Кнопка Alfaclick',
-    ConfigurationFields::alfaclickButton() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',
+    ConfigurationFields::qrcodeSection() => 'Секция QR-код',
+    ConfigurationFields::qrcodeSection() . _DESC => 'Если включена, то на итоговом экране клиенту будет доступна оплата счета по QR-коду',
 
-    ConfigurationFields::webpayButton() => 'Кнопка Webpay',
-    ConfigurationFields::webpayButton() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для оплаты счета картой (переход на Webpay)',
+    ConfigurationFields::alfaclickSection() => 'Секция Alfaclick',
+    ConfigurationFields::alfaclickSection() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для выставления счета в Alfaclick',
+
+    ConfigurationFields::webpaySection() => 'Секция Webpay',
+    ConfigurationFields::webpaySection() . _DESC => 'Если включена, то на итоговом экране клиенту отобразится кнопка для оплаты счета картой (переход на Webpay)',
 
     ConfigurationFields::notificationEmail() => 'Email оповещение',
     ConfigurationFields::notificationEmail() . _DESC => 'Если включено, то шлюз ХуткiГрош будет отправлять email оповещение клиенту о выставлении счета',
@@ -47,15 +50,7 @@ return array(
     ConfigurationFields::completionText() . _DEFAULT => '<p>Счет №<strong>@order_number</strong> успешно выставлен в ЕРИП</p>
 <p>Вы можете оплатить его наличными деньгами, пластиковой карточкой и электронными деньгами, в любом из отделений
     банков, кассах, банкоматах, платежных терминалах, в системе электронных денег, через Интернет-банкинг, М-банкинг,
-    интернет-эквайринг</p>
-<p>Для оплаты счета в ЕРИП необходимо:</p>
-<ol>
-    <li>Выбрать дерево платежей ЕРИП</li>
-    <li>Выбрать услугу: <strong>@erip_path</strong></li>
-    <li>Ввести номер счета: <strong>@order_number</strong></li>
-    <li>Проверить корректность информации</li>
-    <li>Совершить платеж.</li>
-</ol>',
+    интернет-эквайринг</p>',
 
     ConfigurationFields::paymentMethodName() => 'Название способы оплаты',
     ConfigurationFields::paymentMethodName() . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',
@@ -83,6 +78,17 @@ return array(
 
     ConfigurationFields::eripPath() => 'Путь в дереве ЕРИП',
     ConfigurationFields::eripPath() . _DESC => 'По какому пути клиент должен искать выставленный счет',
+
+    ViewFields::INSTRUCTIONS_TAB_LABEL => 'Инструкция по оплате счета в ЕРИП',
+    ViewFields::INSTRUCTIONS => '<p>Для оплаты счета в ЕРИП необходимо:</p>
+<ol>
+    <li>Выбрать дерево платежей ЕРИП</li>
+    <li>Выбрать услугу: <strong>@erip_path</strong></li>
+    <li>Ввести номер счета: <strong>@order_number</strong></li>
+    <li>Проверить корректность информации</li>
+    <li>Совершить платеж.</li>
+</ol>',
+
 
     ViewFields::QRCODE_TAB_LABEL => 'Оплата по QR-коду',
     ViewFields::QRCODE_DETAILS => '<p>Оплатить счет через банковское мобильное приложение по QR-коду:</p><div align="center">@qr_code</div><p>Информация о мобильных приложениях, поддерживающих сервис оплаты по QR-коду (платёжной ссылке), <a href="http://pay.raschet.by/" target="_blank"

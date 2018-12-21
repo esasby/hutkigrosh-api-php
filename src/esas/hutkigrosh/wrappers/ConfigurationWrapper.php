@@ -68,21 +68,30 @@ abstract class ConfigurationWrapper extends Wrapper
     }
 
     /**
+     * Необходимо ли добавлять кнопку "Инструкиция по оплате в ЕРИП"
+     * @return boolean
+     */
+    public function isInstructionsSectionEnabled()
+    {
+        return $this->checkOn(ConfigurationFields::instructionsSection());
+    }
+
+    /**
      * Необходимо ли добавлять кнопку "выставить в Alfaclick"
      * @return boolean
      */
-    public function isAlfaclickButtonEnabled()
+    public function isAlfaclickSectionEnabled()
     {
-        return $this->checkOn(ConfigurationFields::alfaclickButton());
+        return $this->checkOn(ConfigurationFields::alfaclickSection());
     }
 
     /**
      * Необходимо ли добавлять кнопку "оплатить картой"
      * @return boolean
      */
-    public function isWebpayButtonEnabled()
+    public function isWebpaySectionEnabled()
     {
-        return $this->checkOn(ConfigurationFields::webpayButton());
+        return $this->checkOn(ConfigurationFields::webpaySection());
     }
 
     /**
@@ -109,7 +118,7 @@ abstract class ConfigurationWrapper extends Wrapper
      */
     public function isQRCodeButtonEnabled()
     {
-        return $this->checkOn(ConfigurationFields::qrcodeButton());
+        return $this->checkOn(ConfigurationFields::qrcodeSection());
     }
 
     /**
@@ -132,9 +141,6 @@ abstract class ConfigurationWrapper extends Wrapper
 
     /**
      * Итоговый текст, отображаемый клиенту после успешного выставления счета
-     * Чаще всего содержит подробную инструкцию по оплате счета в ЕРИП.
-     * В случае, если итогового текста нет в хранилище настроек, используется дефолтный
-     * При необходимости может быть переопрделен
      * @return string
      */
     public function getCompletionText()
@@ -266,12 +272,14 @@ abstract class ConfigurationWrapper extends Wrapper
                 return $this->getEripTreeId();
             case ConfigurationFields::sandbox():
                 return $this->isSandbox();
-            case ConfigurationFields::qrcodeButton():
+            case ConfigurationFields::instructionsSection():
+                return $this->isInstructionsSectionEnabled();
+            case ConfigurationFields::qrcodeSection():
                 return $this->isQRCodeButtonEnabled();
-            case ConfigurationFields::alfaclickButton():
-                return $this->isAlfaclickButtonEnabled();
-            case ConfigurationFields::webpayButton():
-                return $this->isWebpayButtonEnabled();
+            case ConfigurationFields::alfaclickSection():
+                return $this->isAlfaclickSectionEnabled();
+            case ConfigurationFields::webpaySection():
+                return $this->isWebpaySectionEnabled();
             case ConfigurationFields::notificationEmail():
                 return $this->isEmailNotification();
             case ConfigurationFields::notificationSms():
@@ -304,9 +312,9 @@ abstract class ConfigurationWrapper extends Wrapper
      * @param OrderWrapper $orderWrapper
      * @return string
      */
-    public function cookCompletionText(OrderWrapper $orderWrapper)
+    public function cookText($text, OrderWrapper $orderWrapper)
     {
-        return strtr($this->getCompletionText(), array(
+        return strtr($text, array(
             "@order_id" => $orderWrapper->getOrderId(),
             "@order_number" => $orderWrapper->getOrderNumber(),
             "@order_total" => $orderWrapper->getAmount(),

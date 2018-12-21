@@ -62,27 +62,49 @@ class CompletionPanel
         $this->viewStyle = new ViewStyle();
     }
 
+    /**
+     * @return string
+     */
+    public function getInstructionsTabLabel() {
+        return $this->translator->translate(ViewFields::INSTRUCTIONS_TAB_LABEL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstructionsText() {
+        return $this->configurationWrapper->cookText($this->translator->translate(ViewFields::INSTRUCTIONS), $this->orderWrapper);
+    }
+
 
     /**
      * @return mixed
      */
     public function getCompletionText()
     {
-        return $this->configurationWrapper->cookCompletionText($this->orderWrapper);
+        return $this->configurationWrapper->cookText($this->configurationWrapper->getCompletionText(), $this->orderWrapper);
     }
 
     /**
      * @return bool
      */
-    public function isWebpayButtonEnabled()
+    public function isInstructionsSectionEnabled()
     {
-        return $this->configurationWrapper->isWebpayButtonEnabled();
+        return $this->configurationWrapper->isInstructionsSectionEnabled();
     }
 
     /**
      * @return bool
      */
-    public function isQRCodeButtonEnabled()
+    public function isWebpaySectionEnabled()
+    {
+        return $this->configurationWrapper->isWebpaySectionEnabled();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isQRCodeSectionEnabled()
     {
         return $this->configurationWrapper->isQRCodeButtonEnabled();
     }
@@ -181,9 +203,9 @@ class CompletionPanel
     /**
      * @return bool
      */
-    public function isAlfaclickButtonEnabled()
+    public function isAlfaclickSectionEnabled()
     {
-        return $this->configurationWrapper->isAlfaclickButtonEnabled();
+        return $this->configurationWrapper->isAlfaclickSectionEnabled();
     }
 
     /**

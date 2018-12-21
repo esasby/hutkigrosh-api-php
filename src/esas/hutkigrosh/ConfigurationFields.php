@@ -57,19 +57,24 @@ class ConfigurationFields
         return self::getCmsRelatedKey("sandbox");
     }
 
-    public static function qrcodeButton()
+    public static function instructionsSection()
     {
-        return self::getCmsRelatedKey("qrcode_button");
+        return self::getCmsRelatedKey("instructions_section");
     }
 
-    public static function webpayButton()
+    public static function qrcodeSection()
     {
-        return self::getCmsRelatedKey("webpay_button");
+        return self::getCmsRelatedKey("qrcode_section");
     }
 
-    public static function alfaclickButton()
+    public static function webpaySection()
     {
-        return self::getCmsRelatedKey("alfaclick_button");
+        return self::getCmsRelatedKey("webpay_section");
+    }
+
+    public static function alfaclickSection()
+    {
+        return self::getCmsRelatedKey("alfaclick_section");
     }
 
     public static function notificationEmail()
