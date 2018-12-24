@@ -59,7 +59,7 @@ class ControllerNotify extends Controller
                 || !$this->billInfoRs->getAmount()->isEqual($this->localOrderWrapper->getAmountObj())) {
                 throw new Exception("Unmapped purchaseid: localFullname[" . $this->localOrderWrapper->getFullName()
                     . "], remoteFullname[" . $this->billInfoRs->getFullName()
-                    . "], localAmount[" . $this->localOrderWrapper->getAmount()
+                    . "], localAmount[" . $this->localOrderWrapper->getAmountObj()
                     . "], remoteAmount[" . $this->billInfoRs->getAmount() . "]");
             }
             if ($this->billInfoRs->isStatusPayed()) {

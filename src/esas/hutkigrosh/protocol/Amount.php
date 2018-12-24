@@ -72,4 +72,8 @@ class Amount
         else
             return $this->getValue() == $compTo->getValue();
     }
+
+    public function __toString() {
+        return $this->getValue() . " " . $this->getCurrency();
+    }
 }
