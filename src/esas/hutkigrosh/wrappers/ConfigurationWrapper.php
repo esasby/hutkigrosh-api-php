@@ -116,7 +116,7 @@ abstract class ConfigurationWrapper extends Wrapper
      * Необходимо ли добавлять секцию с QR-code
      * @return boolean
      */
-    public function isQRCodeButtonEnabled()
+    public function isQRCodeSectionEnabled()
     {
         return $this->checkOn(ConfigurationFields::qrcodeSection());
     }
@@ -275,7 +275,7 @@ abstract class ConfigurationWrapper extends Wrapper
             case ConfigurationFields::instructionsSection():
                 return $this->isInstructionsSectionEnabled();
             case ConfigurationFields::qrcodeSection():
-                return $this->isQRCodeButtonEnabled();
+                return $this->isQRCodeSectionEnabled();
             case ConfigurationFields::alfaclickSection():
                 return $this->isAlfaclickSectionEnabled();
             case ConfigurationFields::webpaySection():

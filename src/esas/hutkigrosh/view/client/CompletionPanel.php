@@ -106,7 +106,7 @@ class CompletionPanel
      */
     public function isQRCodeSectionEnabled()
     {
-        return $this->configurationWrapper->isQRCodeButtonEnabled();
+        return $this->configurationWrapper->isQRCodeSectionEnabled();
     }
 
     /**
