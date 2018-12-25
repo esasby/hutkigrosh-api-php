@@ -148,7 +148,7 @@ abstract class ConfigurationWrapper extends Wrapper
         $text = $this->getConfig(ConfigurationFields::completionText());
         if ($text == "")
             $text = $this->translator->getConfigFieldDefault(ConfigurationFields::completionText());
-        return $text;
+        return htmlspecialchars_decode($text); // в некотрых CMS при сохранении в БД html-символы кодируются, и поэтому надо их декодировать обратно
     }
 
     /***
