@@ -13,7 +13,8 @@ class ResourceUtils
 {
     private static $imageDirUrl;
 
-    public static function getImageUrl($imageFileName) {
+    public static function getImageUrl($imageFileName)
+    {
         if (self::$imageDirUrl == "") {
             self::$imageDirUrl = self::getResourceUrl(dirname(dirname(__FILE__)) . "/image/");
         }
@@ -59,7 +60,8 @@ class ResourceUtils
         }
     }
 
-    private static function getVirtualPath($path) {
+    private static function getVirtualPath($path)
+    {
         if (self::$real_part == "" || self::$virtual_part == "")
             self::findSymlink();
         return str_replace(self::$real_part, self::$virtual_part, $path);

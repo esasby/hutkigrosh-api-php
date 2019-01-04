@@ -11,6 +11,7 @@ namespace esas\hutkigrosh;
 
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\utils\Logger;
+use esas\hutkigrosh\view\admin\ConfigForm;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 
@@ -24,11 +25,12 @@ abstract class Registry
 {
     private $configurationWrapper;
     private $translator;
+    private $configForm;
 
     public function init() {
         global $esasRegistry;
         if ($esasRegistry == null) {
-            Logger::getLogger(get_class($this))->info("init");
+            Logger::getLogger(get_class($this))->debug("init");
             $esasRegistry = $this;
         }
     }
@@ -74,4 +76,17 @@ abstract class Registry
      * @return OrderWrapper
      */
     public abstract function getOrderWrapper($orderNumber);
+
+    /**
+     * Получение формы с настройками сделано через Registry, т.к. в некоторых CMS создание формы и ее валидация разнесены в разные хуки
+     * @return ConfigForm
+     */
+    public function getConfigForm()
+    {
+        if ($this->configForm == null)
+            $this->configForm = $this->createConfigForm();
+        return $this->configForm;
+    }
+
+    public abstract function createConfigForm();
 }

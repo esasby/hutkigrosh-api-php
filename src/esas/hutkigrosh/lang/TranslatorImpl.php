@@ -33,6 +33,7 @@ class TranslatorImpl extends Translator
     {
         if (null == $locale)
             $locale = $this->getLocale();
+        $locale = $this->formatLocaleName($locale);
         $this->loadLocale($locale);
         if (array_key_exists($msg, $this->lang[$locale]))
             return $this->lang[$locale][$msg];
@@ -47,6 +48,15 @@ class TranslatorImpl extends Translator
     public function getLocale()
     {
         return Locale::ru_RU;
+    }
+
+    /**
+     * Перобразует имя локали из формата CMS, во внутренний формат (ru_RU, en_EN ...)
+     * @param $locale
+     * @return string
+     */
+    public function formatLocaleName($locale) {
+        return $locale;
     }
 
 }

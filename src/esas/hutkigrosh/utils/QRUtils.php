@@ -15,9 +15,9 @@ use esas\hutkigrosh\Registry;
 class QRUtils
 {
 
-    public static function getEripBillQR($orderId) {
+    public static function getEripBillQR($orderNumber) {
         $configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
-        $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderId);
+        $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderNumber);
         $qrCodeString =
             self::tlv(0, "01") . 
             self::tlv(1, "11") .
