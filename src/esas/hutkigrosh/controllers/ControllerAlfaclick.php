@@ -4,6 +4,7 @@ namespace esas\hutkigrosh\controllers;
 
 use esas\hutkigrosh\protocol\AlfaclickRq;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
+use esas\hutkigrosh\utils\RequestParams;
 use Exception;
 use Throwable;
 
@@ -15,9 +16,13 @@ use Throwable;
  */
 class ControllerAlfaclick extends Controller
 {
-    public function process($billId, $phone)
+    public function process($billId = null, $phone = null)
     {
         try {
+            if ($billId == null)
+                $billId = $_REQUEST[RequestParams::BILL_ID];
+            if ($phone == null)
+                $phone = $_REQUEST[RequestParams::PHONE];
             $loggerMainString = "Bill[" . $billId . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
             if (empty($billId) || empty($phone))

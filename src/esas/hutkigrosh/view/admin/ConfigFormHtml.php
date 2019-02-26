@@ -9,18 +9,12 @@
 namespace esas\hutkigrosh\view\admin;
 
 
-use esas\hutkigrosh\ConfigurationFields;
-use esas\hutkigrosh\utils\Logger;
-use esas\hutkigrosh\view\admin\fields\ConfigField;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldText;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
-use esas\hutkigrosh\view\admin\validators\ValidatorInteger;
-use esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
 
 /**
  * Class ConfigurationRender обеспечивает render (в html) полей для редактирования настроек плагина

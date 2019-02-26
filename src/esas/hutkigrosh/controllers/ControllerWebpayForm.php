@@ -11,6 +11,7 @@ namespace esas\hutkigrosh\controllers;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
 use esas\hutkigrosh\protocol\WebPayRq;
 use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\utils\RequestParams;
 use esas\hutkigrosh\view\client\ViewFields;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 use Exception;
@@ -55,12 +56,12 @@ abstract class ControllerWebpayForm extends Controller
      */
     public function generateSuccessReturnUrl(OrderWrapper $orderWrapper)
     {
-        return $this->getReturnUrl($orderWrapper) . '&webpay_status=payed';
+        return $this->getReturnUrl($orderWrapper) . '&' . RequestParams::WEBPAY_STATUS . '=payed';
     }
 
     public function generateUnsuccessReturnUrl(OrderWrapper $orderWrapper)
     {
-        return $this->getReturnUrl($orderWrapper) . '&webpay_status=failed';
+        return $this->getReturnUrl($orderWrapper) . '&' . RequestParams::WEBPAY_STATUS . '=failed';
     }
 
 

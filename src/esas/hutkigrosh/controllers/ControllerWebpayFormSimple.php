@@ -13,6 +13,7 @@ use CMain;
 use COption;
 use esas\hutkigrosh\lang\TranslatorBitrix;
 use esas\hutkigrosh\lang\TranslatorOpencart;
+use esas\hutkigrosh\utils\RequestParams;
 use esas\hutkigrosh\wrappers\ConfigurationWrapperBitrix;
 use esas\hutkigrosh\wrappers\ConfigurationWrapperOpencart;
 use esas\hutkigrosh\wrappers\OrderWrapper;
@@ -38,6 +39,8 @@ class ControllerWebpayFormSimple extends ControllerWebpayForm
      */
     public function getReturnUrl(OrderWrapper $orderWrapper)
     {
-        return $this->returnUrl . "&" . "purchaseid=" . $orderWrapper->getOrderId();
+        return $this->returnUrl
+            . "&" . RequestParams::ORDER_NUMBER . "=" . $orderWrapper->getOrderId()
+            . "&" . RequestParams::BILL_ID . "=" . $orderWrapper->getBillId();
     }
 }

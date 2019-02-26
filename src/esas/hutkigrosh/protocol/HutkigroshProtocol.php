@@ -2,9 +2,9 @@
 
 namespace esas\hutkigrosh\protocol;
 
+use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use Exception;
-use esas\hutkigrosh\utils\Logger;
 use Throwable;
 
 /**

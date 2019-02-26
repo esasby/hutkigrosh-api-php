@@ -12,13 +12,14 @@ namespace esas\hutkigrosh\view\admin;
 use esas\hutkigrosh\ConfigurationFields;
 use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\view\admin\fields\ConfigField;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldText;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
-use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldText;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
+use esas\hutkigrosh\view\admin\fields\ListOption;
 use esas\hutkigrosh\view\admin\validators\ValidationResult;
 use esas\hutkigrosh\view\admin\validators\ValidatorEmail;
 use esas\hutkigrosh\view\admin\validators\ValidatorInteger;
@@ -239,13 +240,19 @@ abstract class ConfigForm
 
     public function generateStatusListField(ConfigFieldStatusList $configField)
     {
-        return $this->generateTextField($configField);
+        $configField->setOptions($this->createStatusListOptions());
+        return $this->generateListField($configField);
     }
 
     public function generateListField(ConfigFieldList $configField)
     {
         return $this->generateTextField($configField);
     }
+
+    /**
+     * @return ListOption[]
+     */
+    public abstract function createStatusListOptions();
 
     /**
      * Проверка корректности введенного значения. По кллючу поля $configKey получает соответсвующий ему валидатор

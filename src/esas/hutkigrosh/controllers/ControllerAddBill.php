@@ -30,6 +30,9 @@ class ControllerAddBill extends Controller
             if (empty($orderWrapper)) {
                 throw new Exception("Incorrect method call! orderWrapper is null");
             }
+            if (!empty($orderWrapper->getBillId())) {
+                throw new Exception("Order is already processed");
+            }
             $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
             $hg = new HutkigroshProtocol($this->configurationWrapper);

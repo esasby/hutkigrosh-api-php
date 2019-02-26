@@ -12,7 +12,7 @@
 ?>
 
 
-<div id="hutkigrosh" class="wrapper <?= $viewStyle->getParentDivClass() ?>"">
+<div id="hutkigrosh" class="wrapper <?= $viewStyle->getParentDivClass() ?>">
     <div id="completion-text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
         <?php echo $viewData->getCompletionText() ?>
     </div>

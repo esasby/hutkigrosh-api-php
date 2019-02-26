@@ -5,9 +5,10 @@ namespace esas\hutkigrosh\controllers;
 use esas\hutkigrosh\protocol\BillInfoRq;
 use esas\hutkigrosh\protocol\BillInfoRs;
 use esas\hutkigrosh\protocol\HutkigroshProtocol;
+use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\utils\RequestParams;
 use esas\hutkigrosh\utils\StringUtils;
 use esas\hutkigrosh\wrappers\OrderWrapper;
-use esas\hutkigrosh\Registry;
 use Exception;
 use Throwable;
 
@@ -33,9 +34,11 @@ class ControllerNotify extends Controller
      * @param $billId
      * @throws Exception
      */
-    public function process($billId)
+    public function process($billId = null)
     {
         try {
+            if ($billId == null)
+                $billId = $_REQUEST[RequestParams::PURCHASE_ID];
             $loggerMainString = "Bill[" . $billId . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
             if (empty($billId))
@@ -78,6 +81,10 @@ class ControllerNotify extends Controller
         }
     }
 
+    /**
+     * @param $status
+     * @throws Throwable
+     */
     public function updateStatus($status){
         if (isset($status) && $this->localOrderWrapper->getStatus() != $status) {
             $this->logger->info("Setting status[" . $status . "] for order[" . $this->billInfoRs->getInvId() . "]...");
