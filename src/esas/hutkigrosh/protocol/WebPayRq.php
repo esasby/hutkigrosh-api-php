@@ -81,6 +81,4 @@ class WebPayRq extends HutkigroshRq
     }
 
 
-
-
 }

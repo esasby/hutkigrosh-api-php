@@ -23,7 +23,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
  * Пример использования для opencart:
  * $configFieldsRender = new ConfigurationRenderOpencart();
  * $configFieldsRender->addAll();
- * $configFieldsRender->addField(new ConfigFieldNumber <> ); // добавление какого-то особоного поля для CMS 
+ * $configFieldsRender->addField(new ConfigFieldNumber <> ); // добавление какого-то особоного поля для CMS
  * $configFieldsRender->render(); // формирует html
  * @package esas\hutkigrosh\view\admin
  */
@@ -41,28 +41,22 @@ abstract class ConfigFormArray extends ConfigForm
             if ($configField instanceof ConfigFieldPassword) {
                 $ret[$configField->getKey()] = $this->generatePasswordField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldTextarea) {
+            } elseif ($configField instanceof ConfigFieldTextarea) {
                 $ret[$configField->getKey()] = $this->generateTextAreaField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldNumber) {
+            } elseif ($configField instanceof ConfigFieldNumber) {
                 $ret[$configField->getKey()] = $this->generateNumberField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldCheckbox) {
+            } elseif ($configField instanceof ConfigFieldCheckbox) {
                 $ret[$configField->getKey()] = $this->generateCheckboxField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldStatusList) {
+            } elseif ($configField instanceof ConfigFieldStatusList) {
                 $ret[$configField->getKey()] = $this->generateStatusListField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldList) {
+            } elseif ($configField instanceof ConfigFieldList) {
                 $ret[$configField->getKey()] = $this->generateListField($configField);
                 continue;
-            }
-            else
+            } else
                 $ret[$configField->getKey()] = $this->generateTextField($configField);
         }
         return $ret;

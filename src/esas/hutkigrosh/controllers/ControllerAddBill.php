@@ -85,12 +85,14 @@ class ControllerAddBill extends Controller
      * @param OrderWrapper $orderWrapper
      * @param BillNewRs $resp
      */
-    public function onSuccess(OrderWrapper $orderWrapper, BillNewRs $resp) {
+    public function onSuccess(OrderWrapper $orderWrapper, BillNewRs $resp)
+    {
         $orderWrapper->saveBillId($resp->getBillId());
         $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusPending());
     }
 
-    public function onFailed(OrderWrapper $orderWrapper, BillNewRs $resp) {
+    public function onFailed(OrderWrapper $orderWrapper, BillNewRs $resp)
+    {
         $orderWrapper->updateStatus($this->configurationWrapper->getBillStatusFailed());
     }
 }

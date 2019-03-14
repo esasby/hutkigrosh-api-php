@@ -66,14 +66,16 @@ class Amount
         $this->currency = $currency;
     }
 
-    public function isEqual(Amount $compTo) {
+    public function isEqual(Amount $compTo)
+    {
         if (!StringUtils::compare($this->getCurrency(), $compTo->getCurrency()))
             return false;
         else
             return $this->getValue() == $compTo->getValue();
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getValue() . " " . $this->getCurrency();
     }
 }

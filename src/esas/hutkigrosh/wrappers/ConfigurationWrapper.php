@@ -340,7 +340,8 @@ abstract class ConfigurationWrapper extends Wrapper
      * @param $key
      * @return string
      */
-    public function createCmsRelatedKey($key) {
+    public function createCmsRelatedKey($key)
+    {
         return "hutkigrosh_" . $key;
     }
 

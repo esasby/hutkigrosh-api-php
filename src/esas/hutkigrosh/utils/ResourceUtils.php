@@ -32,11 +32,13 @@ class ResourceUtils
         $doc_root = $_SERVER['DOCUMENT_ROOT'];
         // base url
         $fileUrl = preg_replace("!^${doc_root}!", '', $resourceVirtualPath);
+        // на всякий случай удаляем первый слэш
+        $fileUrl = preg_replace("!^/!", '', $fileUrl);
         // server port
         $port = $_SERVER['SERVER_PORT'];
         $disp_port = ($protocol == 'http' && $port == 80 || $protocol == 'https' && $port == 443) ? '' : ":$port";
         // put em all together to get the complete base URL
-        $url = "${protocol}://${domain}${disp_port}${fileUrl}";
+        $url = "${protocol}://${domain}${disp_port}/${fileUrl}";
         return $url; // = http://example.com/path/directory
     }
 

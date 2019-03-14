@@ -65,14 +65,16 @@ class CompletionPanel
     /**
      * @return string
      */
-    public function getInstructionsTabLabel() {
+    public function getInstructionsTabLabel()
+    {
         return $this->translator->translate(ViewFields::INSTRUCTIONS_TAB_LABEL);
     }
 
     /**
      * @return string
      */
-    public function getInstructionsText() {
+    public function getInstructionsText()
+    {
         return $this->configurationWrapper->cookText($this->translator->translate(ViewFields::INSTRUCTIONS), $this->orderWrapper);
     }
 
@@ -112,14 +114,16 @@ class CompletionPanel
     /**
      * @return string
      */
-    public function getQRCodeTabLabel() {
+    public function getQRCodeTabLabel()
+    {
         return $this->translator->translate(ViewFields::QRCODE_TAB_LABEL);
     }
 
     /**
      * @return string
      */
-    public function getQRCodeDetails() {
+    public function getQRCodeDetails()
+    {
         return strtr($this->translator->translate(ViewFields::QRCODE_DETAILS), array(
             "@qr_code" => QRUtils::getEripBillQR($this->orderWrapper->getOrderNumber())
         ));
@@ -160,43 +164,49 @@ class CompletionPanel
     /**
      * @return string
      */
-    public function getWebpayTabLabel() {
+    public function getWebpayTabLabel()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_TAB_LABEL);
     }
 
     /**
      * @return string
      */
-    public function getWebpayButtonLabel() {
+    public function getWebpayButtonLabel()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_BUTTON_LABEL);
     }
 
-    
+
     /**
      * @return string
      */
-    public function getWebpayDetails() {
+    public function getWebpayDetails()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_DETAILS);
     }
-    
+
     /**
      * @return string
      */
-    public function getWebpayMsgSuccess() {
+    public function getWebpayMsgSuccess()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_MSG_SUCCESS);
     }
 
     /**
      * @return string
      */
-    public function getWebpayMsgUnsuccess() {
+    public function getWebpayMsgUnsuccess()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_MSG_UNSUCCESS);
     }
 
     /**
      * @return string
      */
-    public function getWebpayMsgUnavailable() {
+    public function getWebpayMsgUnavailable()
+    {
         return $this->translator->translate(ViewFields::WEBPAY_MSG_UNAVAILABLE);
     }
 
@@ -267,14 +277,16 @@ class CompletionPanel
     /**
      * @return string
      */
-    public function getAlfaclickMsgSuccess() {
+    public function getAlfaclickMsgSuccess()
+    {
         return $this->translator->translate(ViewFields::ALFACLICK_MSG_SUCCESS);
     }
 
     /**
      * @return string
      */
-    public function getAlfaclickMsgUnsuccess() {
+    public function getAlfaclickMsgUnsuccess()
+    {
         return $this->translator->translate(ViewFields::ALFACLICK_MSG_UNSUCCESS);
     }
 
@@ -286,7 +298,8 @@ class CompletionPanel
         return $this->viewStyle;
     }
 
-    public function render() {
+    public function render()
+    {
         $viewData = $this;
         $viewStyle = $this->viewStyle;
         try {

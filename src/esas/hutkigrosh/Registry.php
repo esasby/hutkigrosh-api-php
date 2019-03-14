@@ -27,7 +27,8 @@ abstract class Registry
     private $translator;
     private $configForm;
 
-    public function init() {
+    public function init()
+    {
         global $esasRegistry;
         if ($esasRegistry == null) {
             Logger::getLogger(get_class($this))->debug("init");
@@ -44,7 +45,7 @@ abstract class Registry
             $this->configurationWrapper = $this->createConfigurationWrapper();
         return $this->configurationWrapper;
     }
-    
+
     public abstract function createConfigurationWrapper();
 
     /**
@@ -59,7 +60,8 @@ abstract class Registry
 
     public abstract function createTranslator();
 
-    public static function getRegistry() {
+    public static function getRegistry()
+    {
         /**
          * @var \esas\hutkigrosh\Registry $esasRegistry
          */

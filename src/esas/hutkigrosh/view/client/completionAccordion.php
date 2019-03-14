@@ -1,15 +1,16 @@
 <?php
-    /** @var \esas\hutkigrosh\view\client\CompletionPanel $viewData */
-    /** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */
-    /** Определяем какой tab раскрыть */
-    if ('' != $viewData->getWebpayStatus()) {
-        $webpayTabChecked = 'checked="checked"';
-        $instractionTabChecked = "";
-    } else {
-        $webpayTabChecked = ""; // заполняем пустым, чтобы в opencart не отображался notice
-        $instractionTabChecked = 'checked="checked"';
-    }
-?>
+/** @var \esas\hutkigrosh\view\client\CompletionPanel $viewData */
+/** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */
+/** Определяем какой tab раскрыть */
+if ('' != $viewData->getWebpayStatus()) {
+    $webpayTabChecked = 'checked="checked"';
+    $instractionTabChecked = "";
+} else {
+    $webpayTabChecked = ""; // заполняем пустым, чтобы в opencart не отображался notice
+    $instractionTabChecked = 'checked="checked"';
+}
+
+use esas\hutkigrosh\utils\RequestParams; ?>
 
 
 <div id="hutkigrosh" class="wrapper <?= $viewStyle->getParentDivClass() ?>">
@@ -59,11 +60,12 @@
                     <div id="webpay">
                         <?php echo $viewData->getWebpayForm(); ?>
                     </div>
-                <?php } else {?>
+                <?php } else { ?>
                     <div id="webpay_message_unavailable"><?= $viewData->getWebpayMsgUnavailable() ?></div>
                 <?php } ?>
 
-                <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
+                <script type="text/javascript"
+                        src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
                 <script>
                     var webpay_form_button = $('#webpay input[type="submit"]');
                     webpay_form_button.attr('id', 'webpay_button');
@@ -85,16 +87,20 @@
                     <a class="<?= $viewStyle->getAlfaclickButtonClass() ?>"
                        id="alfaclick_button"><?= $viewData->getAlfaclickButtonLabel() ?></a>
                 </div>
-                <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
+                <script type="text/javascript"
+                        src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
                 <script>
                     jQuery(document).ready(function ($) {
                         $('#alfaclick_button').click(function () {
                             jQuery.post('<?= $viewData->getAlfaclickUrl() ?>',
                                 {
-                                    phone: $('#phone').val(),
-                                    billid: $('#billID').val()
-                                }
-                            ).done(function (result) {
+                            <?= RequestParams::PHONE ?>:
+                            $('#phone').val(),
+                            <?= RequestParams::BILL_ID ?>:
+                            $('#billID').val()
+                        }
+                        ).
+                            done(function (result) {
                                 if (result.trim() == 'ok') {
                                     $('#alfaclick_message').remove();
                                     $('#alfaclick_details').after('<div class="<?= $viewStyle->getMsgSuccessClass() ?>" id="alfaclick_message"><?= $viewData->getAlfaclickMsgSuccess() ?></div>');
@@ -118,11 +124,13 @@
             /*color: #fff;*/
             overflow: hidden;
         }
+
         .tab > input {
             position: absolute;
             opacity: 0;
             z-index: -1;
         }
+
         .tab > label {
             position: relative;
             display: block;
@@ -131,38 +139,48 @@
             line-height: 3;
             cursor: pointer;
         }
+
         #tab-instructions > label {
-             background: #9fb399;
-             /*color: #fff;*/
-         }
+            background: #9fb399;
+            /*color: #fff;*/
+        }
+
         #tab-instructions .tab-content {
             /*background: #96b385;*/
         }
+
         #tab-qrcode > label {
             background: #9fb399;
             /*color: #fff;*/
         }
+
         #tab-qrcode .tab-content {
             /*background: #96b385;*/
         }
+
         #tab-webpay label {
             background: #9fb399;
             /*color: #fff;*/
         }
+
         #tab-webpay .tab-content {
             /*background: #96b385;*/
         }
+
         #webpay_button {
             background: #9fb399;
         }
+
         #alfaclick_button {
             background: #b94a4b;
             color: #fff;
         }
+
         #tab-alfaclick label {
             background: #b94a4b;
             color: #fff;
         }
+
         #alfaclick_button {
             background: #b94a4b;
             color: #fff;
@@ -179,16 +197,20 @@
             -o-transition: max-height .35s;
             transition: max-height .35s;
         }
+
         .tab-content p {
             margin: 1em;
         }
+
         .tab-content div {
             margin: 1em;
         }
+
         /* :checked */
         .tab > input:checked ~ .tab-content {
             max-height: 100vh;
         }
+
         /* Icon */
         .tab > label::after {
             position: absolute;
@@ -203,15 +225,19 @@
             -o-transition: all .35s;
             transition: all .35s;
         }
+
         .tab > input[type=checkbox] + label::after {
             content: "+";
         }
+
         .tab > input[type=radio] + label::after {
             content: "\25BC";
         }
+
         .tab > input[type=checkbox]:checked + label::after {
             transform: rotate(315deg);
         }
+
         .tab > input[type=radio]:checked + label::after {
             transform: rotateX(180deg);
         }

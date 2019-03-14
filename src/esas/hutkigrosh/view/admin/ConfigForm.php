@@ -78,15 +78,15 @@ abstract class ConfigForm
         $this->registerField(
             (new ConfigFieldText(ConfigurationFields::login()))
                 ->setValidator(new ValidatorEmail())
-                ->setRequired(false));
+                ->setRequired(true));
         $this->registerField(
             (new ConfigFieldPassword(ConfigurationFields::password()))
                 ->setValidator(new ValidatorNotEmpty())
-                ->setRequired(false));
+                ->setRequired(true));
         $this->registerField(
-        (new ConfigFieldNumber(ConfigurationFields::eripId()))
-            ->setValidator(new ValidatorNumeric())
-            ->setRequired(true));
+            (new ConfigFieldNumber(ConfigurationFields::eripId()))
+                ->setValidator(new ValidatorNumeric())
+                ->setRequired(true));
         $this->registerField(
             (new ConfigFieldNumber(ConfigurationFields::eripTreeId()))
                 ->setValidator(new ValidatorNumeric())

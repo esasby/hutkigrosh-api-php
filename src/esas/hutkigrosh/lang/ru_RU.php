@@ -20,7 +20,7 @@ return array(
     ConfigurationFields::eripId() => 'ЕРИП ID',
     ConfigurationFields::eripId() . _DESC => 'Уникальный идентификатор ЕРИП',
 
-    ConfigurationFields::eripTreeId()=> 'Код услуги',
+    ConfigurationFields::eripTreeId() => 'Код услуги',
     ConfigurationFields::eripTreeId() . _DESC => 'Код услуги в деревер ЕРИП. Используется при генерации QR-кода',
 
     ConfigurationFields::sandbox() => 'Sandbox',

@@ -1,10 +1,10 @@
-<?php /** @var \esas\hutkigrosh\view\client\CompletionPanel $viewData */?>
-<?php /** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */?>
+<?php /** @var \esas\hutkigrosh\view\client\CompletionPanel $viewData */ ?>
+<?php /** @var \esas\hutkigrosh\view\client\ViewStyle $viewStyle */ ?>
 <!--DEPRECATED-->
 <div id="hutkigrosh" class="<?= $viewStyle->getParentDivClass() ?>">
-	<div id="hutkigrosh_completion_text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
-		<?php echo $viewData->getCompletionText() ?>
-	</div>
+    <div id="hutkigrosh_completion_text" class="<?= $viewStyle->getCompletionTextDivClass() ?>">
+        <?php echo $viewData->getCompletionText() ?>
+    </div>
     <div id="hutkigrosh_buttons" class="<?= $viewStyle->getButtonsDivClass() ?>">
         <?php if ($viewData->isWebpaySectionEnabled()) { ?>
             <?php if ('payed' == $viewData->getWebpayStatus()) { ?>

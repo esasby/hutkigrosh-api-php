@@ -18,7 +18,7 @@ class ViewStyle
     private $completionTextDivClass;
     private $parentDivClass;
     private $buttonsDivClass;
-    
+
     private $msgSuccessClass;
     private $msgUnsuccessClass;
 
@@ -166,6 +166,6 @@ class ViewStyle
         $this->buttonsDivClass = $buttonsDivClass;
         return $this;
     }
-    
-    
+
+
 }

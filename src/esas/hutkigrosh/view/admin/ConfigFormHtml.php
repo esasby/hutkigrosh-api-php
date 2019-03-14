@@ -9,6 +9,8 @@
 namespace esas\hutkigrosh\view\admin;
 
 
+use esas\hutkigrosh\utils\htmlbuilder\Attributes as attribute;
+use esas\hutkigrosh\utils\htmlbuilder\Elements as element;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
@@ -23,7 +25,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
  * Пример использования для opencart:
  * $configFieldsRender = new ConfigurationRenderOpencart();
  * $configFieldsRender->addAll();
- * $configFieldsRender->addField(new ConfigFieldNumber <> ); // добавление какого-то особоного поля для CMS 
+ * $configFieldsRender->addField(new ConfigFieldNumber <> ); // добавление какого-то особоного поля для CMS
  * $configFieldsRender->render(); // формирует html
  * @package esas\hutkigrosh\view\admin
  */
@@ -42,29 +44,36 @@ abstract class ConfigFormHtml extends ConfigForm
             if ($configField instanceof ConfigFieldPassword) {
                 $ret .= $this->generatePasswordField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldTextarea) {
+            } elseif ($configField instanceof ConfigFieldTextarea) {
                 $ret .= $this->generateTextAreaField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldNumber) {
+            } elseif ($configField instanceof ConfigFieldNumber) {
                 $ret .= $this->generateNumberField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldCheckbox) {
+            } elseif ($configField instanceof ConfigFieldCheckbox) {
                 $ret .= $this->generateCheckboxField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldStatusList) {
+            } elseif ($configField instanceof ConfigFieldStatusList) {
                 $ret .= $this->generateStatusListField($configField);
                 continue;
-            }
-            elseif ($configField instanceof ConfigFieldList) {
+            } elseif ($configField instanceof ConfigFieldList) {
                 $ret .= $this->generateListField($configField);
                 continue;
-            }
-            else
+            } else
                 $ret .= $this->generateTextField($configField);
+        }
+        return $ret;
+    }
+
+    protected static function elementOptions(ConfigFieldList $configField)
+    {
+        $ret = array();
+        foreach ($configField->getOptions() as $option) {
+            $ret[] = element::option(
+                attribute::value($option->getValue()),
+                attribute::selected($option->getValue() == $configField->getValue()),
+                element::value($option->getName())
+            );
         }
         return $ret;
     }

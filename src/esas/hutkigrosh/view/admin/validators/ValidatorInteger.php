@@ -13,6 +13,7 @@ class ValidatorInteger extends Validator
 {
     private $min;
     private $max;
+
     /**
      * ValidatorNumber constructor.
      */

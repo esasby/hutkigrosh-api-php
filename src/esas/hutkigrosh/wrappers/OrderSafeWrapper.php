@@ -12,7 +12,7 @@ namespace esas\hutkigrosh\wrappers;
 use Throwable;
 
 /**
- * Класс-обертка над OrderWrapper обеспечивает безопасную загрузку свойств 
+ * Класс-обертка над OrderWrapper обеспечивает безопасную загрузку свойств
  * (отлавливаются и логируются исключения, подставляются значения по умолчанию)
  * Class OrderSafeWrapper
  * @package esas\hutkigrosh\wrappers
@@ -85,7 +85,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
      * @return string
      */
     public abstract function getMobilePhoneUnsafe();
-    
+
     /**
      * Email покупателя для email-оповещения
      * (если включено администратором)
@@ -129,7 +129,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
      * @return string
      */
     public abstract function getAddressUnsafe();
-    
+
     /**
      * Общая сумма товаров в заказе
      * @return string
@@ -173,7 +173,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
     public abstract function getCurrencyUnsafe();
 
     private $orderProducts;
-    
+
     /**
      * Массив товаров в заказе
      * @return OrderProductWrapper[]
@@ -196,7 +196,7 @@ abstract class OrderSafeWrapper extends OrderWrapper
      * @return OrderProductWrapper[]
      */
     public abstract function getProductsUnsafe();
-    
+
     /**
      * BillId (идентификатор хуткигрош) успешно выставленного счета
      * @return mixed

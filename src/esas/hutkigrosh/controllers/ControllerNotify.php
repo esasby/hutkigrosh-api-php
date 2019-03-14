@@ -85,22 +85,26 @@ class ControllerNotify extends Controller
      * @param $status
      * @throws Throwable
      */
-    public function updateStatus($status){
+    public function updateStatus($status)
+    {
         if (isset($status) && $this->localOrderWrapper->getStatus() != $status) {
             $this->logger->info("Setting status[" . $status . "] for order[" . $this->billInfoRs->getInvId() . "]...");
             $this->localOrderWrapper->updateStatus($status);
         }
     }
 
-    public function onStatusPayed(){
+    public function onStatusPayed()
+    {
         $this->updateStatus($this->configurationWrapper->getBillStatusPayed());
     }
 
-    public function onStatusCanceled(){
+    public function onStatusCanceled()
+    {
         $this->updateStatus($this->configurationWrapper->getBillStatusCanceled());
     }
 
-    public function onStatusPending(){
+    public function onStatusPending()
+    {
         $this->updateStatus($this->configurationWrapper->getBillStatusPending());
     }
 }

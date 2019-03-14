@@ -12,7 +12,7 @@ namespace esas\hutkigrosh\view\admin\fields;
 class ListOption
 {
     private $value;
-    
+
     private $name;
 
     /**
@@ -58,7 +58,6 @@ class ListOption
     {
         $this->name = $name;
     }
-    
-    
+
 
 }

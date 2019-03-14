@@ -18,6 +18,7 @@ abstract class OrderWrapper extends Wrapper
      * @return string
      */
     public abstract function getOrderId();
+
     /**
      * Уникальный номер счета в рамках CMS отображаемый клиенту
      * и отправляемый на шлюз
@@ -56,9 +57,11 @@ abstract class OrderWrapper extends Wrapper
      */
     public abstract function getAddress();
 
-    public function getAmountObj() {
+    public function getAmountObj()
+    {
         return new Amount($this->getAmount(), $this->getCurrency());
     }
+
     /**
      * Общая сумма товаров в заказе
      * @return string

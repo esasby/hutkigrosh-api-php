@@ -15,20 +15,21 @@ use esas\hutkigrosh\Registry;
 class QRUtils
 {
 
-    public static function getEripBillQR($orderNumber) {
+    public static function getEripBillQR($orderNumber)
+    {
         $configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
         $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderNumber);
         $qrCodeString =
-            self::tlv(0, "01") . 
+            self::tlv(0, "01") .
             self::tlv(1, "11") .
             self::tlv(32,
                 self::tlv(0, "by.raschet") .
                 self::tlv(1, $configurationWrapper->getEripTreeId()) .
                 self::tlv(10, $orderWrapper->getOrderNumber()) .
                 self::tlv(12, "12")) .
-            self::tlv(53, "933") . 
+            self::tlv(53, "933") .
             self::tlv(54, $orderWrapper->getAmount()) .
-            self::tlv(58, "BY") . 
+            self::tlv(58, "BY") .
             ($configurationWrapper->getShopName() != "" ? self::tlv(59, $configurationWrapper->getShopName()) : "") .
             self::tlv(60, "Belarus") .
             self::tlv(62, self::tlv(1, $orderWrapper->getOrderNumber()));
@@ -48,7 +49,8 @@ class QRUtils
         return $bobj->getSvgCode();
     }
 
-    private static function tlv($tag, $value) {
+    private static function tlv($tag, $value)
+    {
         return $value == "" ? "" : sprintf("%02d%02d%s", $tag, strlen($value), $value);
     }
 }

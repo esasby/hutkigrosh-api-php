@@ -39,7 +39,7 @@ class CmsPlugin
     public function __construct($composerVendorDir, $cmsPluginDir)
     {
         if (substr($composerVendorDir, -1) == '/')
-            $composerVendorDir = substr($composerVendorDir, 0,  -1);
+            $composerVendorDir = substr($composerVendorDir, 0, -1);
         $this->composerVendorDir = $composerVendorDir;
         $this->cmsPluginDir = $cmsPluginDir;
         require_once($this->composerVendorDir . '/autoload.php');
@@ -55,8 +55,9 @@ class CmsPlugin
         $this->registry = $registry;
         return $this;
     }
-    
-    public function init() {
+
+    public function init()
+    {
         Logger::init();
         $this->registry->init();
     }

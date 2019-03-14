@@ -18,7 +18,7 @@ class TranslatorImpl extends Translator
             $file = __DIR__ . "/" . $locale . ".php";
             if (!file_exists($file)) {
                 $code = substr($locale, 0, 2);
-                $file =  __DIR__ . "/" . $code . "_" . strtoupper($code) . ".php";
+                $file = __DIR__ . "/" . $code . "_" . strtoupper($code) . ".php";
                 if (!file_exists($file))
                     $file = __DIR__ . "/ru_RU.php";
             }
@@ -55,7 +55,8 @@ class TranslatorImpl extends Translator
      * @param $locale
      * @return string
      */
-    public function formatLocaleName($locale) {
+    public function formatLocaleName($locale)
+    {
         return $locale;
     }
 

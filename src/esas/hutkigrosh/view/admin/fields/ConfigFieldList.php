@@ -33,8 +33,9 @@ class ConfigFieldList extends ConfigField
     {
         return $this->options;
     }
-    
-    public function addOption($key, $name) {
+
+    public function addOption($key, $name)
+    {
         $this->options[] = new ListOption($key, $name);
     }
 
@@ -47,7 +48,6 @@ class ConfigFieldList extends ConfigField
         $this->options = $options;
         return $this;
     }
-    
-    
+
 
 }
