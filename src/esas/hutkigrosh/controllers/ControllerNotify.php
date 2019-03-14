@@ -58,8 +58,9 @@ class ControllerNotify extends Controller
             $this->localOrderWrapper = Registry::getRegistry()->getOrderWrapper($this->billInfoRs->getInvId());
             if (empty($this->localOrderWrapper))
                 throw new Exception('Can not load order info for id[' . $this->billInfoRs->getInvId() . "]");
-            if (!StringUtils::compare($this->billInfoRs->getFullName(), $this->localOrderWrapper->getFullName())
-                || !$this->billInfoRs->getAmount()->isEqual($this->localOrderWrapper->getAmountObj())) {
+            if (!$this->configurationWrapper->isSandbox() // на тестовой системе это пока не работает
+                && (!StringUtils::compare($this->billInfoRs->getFullName(), $this->localOrderWrapper->getFullName())
+                    || !$this->billInfoRs->getAmount()->isEqual($this->localOrderWrapper->getAmountObj()))) {
                 throw new Exception("Unmapped purchaseid: localFullname[" . $this->localOrderWrapper->getFullName()
                     . "], remoteFullname[" . $this->billInfoRs->getFullName()
                     . "], localAmount[" . $this->localOrderWrapper->getAmountObj()
