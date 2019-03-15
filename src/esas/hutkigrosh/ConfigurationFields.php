@@ -92,6 +92,11 @@ class ConfigurationFields
         return self::getCmsRelatedKey("completion_text");
     }
 
+    public static function completionCssFile()
+    {
+        return self::getCmsRelatedKey("completion_css_file");
+    }
+
     public static function eripPath()
     {
         return self::getCmsRelatedKey("erip_path");

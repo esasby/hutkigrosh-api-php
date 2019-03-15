@@ -1,0 +1,50 @@
+#tab-instructions > label {
+    background: #9fb399;
+    /*color: #fff;*/
+}
+
+#tab-instructions .tab-content {
+    /*background: #96b385;*/
+}
+
+#tab-qrcode > label {
+    background: #9fb399;
+    /*color: #fff;*/
+}
+
+#tab-qrcode .tab-content {
+    /*background: #96b385;*/
+}
+
+#tab-webpay label {
+    background: #9fb399;
+    /*color: #fff;*/
+}
+
+#tab-webpay .tab-content {
+    /*background: #96b385;*/
+}
+
+#webpay_button {
+    background: #9fb399;
+}
+
+#alfaclick_button {
+    background: #b94a4b;
+    color: #fff;
+}
+
+#tab-alfaclick label {
+    background: #b94a4b;
+    color: #fff;
+}
+
+#alfaclick_button {
+    background: #b94a4b;
+    color: #fff;
+}
+
+#webpay_message_unavailable {
+    color: #b94a4b;
+}
+

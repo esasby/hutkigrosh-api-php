@@ -52,6 +52,9 @@ return array(
     банков, кассах, банкоматах, платежных терминалах, в системе электронных денег, через Интернет-банкинг, М-банкинг,
     интернет-эквайринг</p>',
 
+    ConfigurationFields::completionCssFile() => 'CSS файл для итогового экрана',
+    ConfigurationFields::completionCssFile() . _DESC => 'Позволяет задать путь к CSS файлк для экрана успешного выставления счета',
+
     ConfigurationFields::paymentMethodName() => 'Название способы оплаты',
     ConfigurationFields::paymentMethodName() . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',
     ConfigurationFields::paymentMethodName() . _DEFAULT => 'Через систему *Расчет* (ЕРИП)',

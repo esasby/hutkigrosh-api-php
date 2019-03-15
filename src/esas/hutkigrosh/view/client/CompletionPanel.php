@@ -60,6 +60,9 @@ class CompletionPanel
         $this->translator = Registry::getRegistry()->getTranslator();
         $this->orderWrapper = $orderWrapper;
         $this->viewStyle = new ViewStyle();
+        $file = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
+        if (file_exists($file))
+            $this->viewStyle->setAdditionalCss(file_get_contents($file));
     }
 
     /**

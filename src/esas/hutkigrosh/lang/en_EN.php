@@ -51,6 +51,9 @@ return array(
     ConfigurationFields::completionText() . _DEFAULT => '<p>Bill #<strong>@order_number</strong> was successfully placed in ERIP</p>
 <p>You can pay it in cash, a plastic card and electronic money, in any bank, cash departments, ATMs, payment terminals, in the system of electronic money, through Internet banking, M-banking, online acquiring</p>',
 
+    ConfigurationFields::completionCssFile() => 'Completion page CSS file',
+    ConfigurationFields::completionCssFile() . _DESC => 'Optional CSS file path for completion page',
+
     ConfigurationFields::paymentMethodName() => 'Payment method name',
     ConfigurationFields::paymentMethodName() . _DESC => 'Name displayed to the customer when choosing a payment method',
     ConfigurationFields::paymentMethodName() . _DEFAULT => 'AIS *Raschet* (ERIP)',

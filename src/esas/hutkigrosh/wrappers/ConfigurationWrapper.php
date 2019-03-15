@@ -153,6 +153,15 @@ abstract class ConfigurationWrapper extends Wrapper
     }
 
     /***
+     * CSS для итогового экрана. Необходим для урощение возможности кастомизации под тему магазина
+     * @return string
+     */
+    public function getCompletionCssFile()
+    {
+        return $this->getConfig(ConfigurationFields::completionCssFile());
+    }
+
+    /***
      * В некоторых CMS не получается в настройках хранить html, поэтому использует текст итогового экрана по умолчанию,
      * в который проставлятся значение ERIPPATh
      * @return string
@@ -292,6 +301,8 @@ abstract class ConfigurationWrapper extends Wrapper
                 return $this->getCompletionText();
             case ConfigurationFields::paymentMethodName():
                 return $this->getPaymentMethodName();
+            case ConfigurationFields::completionCssFile():
+                return $this->getCompletionCssFile();
             case ConfigurationFields::paymentMethodDetails():
                 return $this->getPaymentMethodDetails();
             case ConfigurationFields::billStatusPending():

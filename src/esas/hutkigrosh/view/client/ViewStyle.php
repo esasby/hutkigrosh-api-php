@@ -25,6 +25,11 @@ class ViewStyle
     private $alfaclickButtonClass;
     private $webpayButtonClass;
 
+    private $tabLabelClass;
+    private $tabContentClass;
+
+    private $additionalCss;
+
     /**
      * ViewStyle constructor.
      * @param $msgSuccessClass
@@ -167,5 +172,57 @@ class ViewStyle
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTabLabelClass()
+    {
+        return $this->tabLabelClass;
+    }
 
+    /**
+     * @param mixed $tabLabelClass
+     * @return ViewStyle
+     */
+    public function setTabLabelClass($tabLabelClass)
+    {
+        $this->tabLabelClass = $tabLabelClass;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTabContentClass()
+    {
+        return $this->tabContentClass;
+    }
+
+    /**
+     * @param mixed $tabContentClass
+     * @return ViewStyle
+     */
+    public function setTabContentClass($tabContentClass)
+    {
+        $this->tabContentClass = $tabContentClass;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdditionalCss()
+    {
+        return $this->additionalCss;
+    }
+
+    /**
+     * @param mixed $additionalCss
+     * @return ViewStyle
+     */
+    public function setAdditionalCss($additionalCss)
+    {
+        $this->additionalCss = $additionalCss;
+        return $this;
+    }
 }

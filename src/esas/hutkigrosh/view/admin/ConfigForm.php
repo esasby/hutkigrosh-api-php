@@ -23,6 +23,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
 use esas\hutkigrosh\view\admin\fields\ListOption;
 use esas\hutkigrosh\view\admin\validators\ValidationResult;
 use esas\hutkigrosh\view\admin\validators\ValidatorEmail;
+use esas\hutkigrosh\view\admin\validators\ValidatorImpl;
 use esas\hutkigrosh\view\admin\validators\ValidatorInteger;
 use esas\hutkigrosh\view\admin\validators\ValidatorNotEmpty;
 use esas\hutkigrosh\view\admin\validators\ValidatorNumeric;
@@ -123,6 +124,10 @@ abstract class ConfigForm
         $this->registerField(
             (new ConfigFieldRichtext(ConfigurationFields::completionText()))
                 ->setRequired(true));
+        $this->registerField(
+            (new ConfigFieldText(ConfigurationFields::completionCssFile()))
+                ->setRequired(false)
+                ->setValidator(new ValidatorImpl()));
         $this->registerField(
             (new ConfigFieldText(ConfigurationFields::paymentMethodName()))
                 ->setRequired(true)
@@ -295,3 +300,6 @@ abstract class ConfigForm
         return $this->validationErrorText;
     }
 }
+
+
+

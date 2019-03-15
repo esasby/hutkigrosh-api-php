@@ -20,8 +20,10 @@ use esas\hutkigrosh\utils\RequestParams; ?>
     <?php if ($viewData->isInstructionsSectionEnabled()) { ?>
         <div id="tab-instructions" class="tab">
             <input id="input-instructions" type="checkbox" name="tabs2" <?= $instractionTabChecked ?>>
-            <label for="input-instructions"><?= $viewData->getInstructionsTabLabel() ?></label>
-            <div class="tab-content">
+            <label for="input-instructions" class="<?= $viewStyle->getTabLabelClass() ?>">
+                <?= $viewData->getInstructionsTabLabel() ?>
+            </label>
+            <div class="tab-content <?= $viewStyle->getTabContentClass() ?>">
                 <div id="hutkigrosh_instructions_text">
                     <?php echo $viewData->getInstructionsText() ?>
                 </div>
@@ -31,8 +33,10 @@ use esas\hutkigrosh\utils\RequestParams; ?>
     <?php if ($viewData->isQRCodeSectionEnabled()) { ?>
         <div id="tab-qrcode" class="tab">
             <input id="input-qrcode" type="checkbox" name="tabs2">
-            <label for="input-qrcode"><?= $viewData->getQRCodeTabLabel() ?></label>
-            <div class="tab-content">
+            <label for="input-qrcode" class="<?= $viewStyle->getTabLabelClass() ?>">
+                <?= $viewData->getQRCodeTabLabel() ?>
+            </label>
+            <div class="tab-content <?= $viewStyle->getTabContentClass() ?>">
                 <div id="qrcode_details">
                     <?= $viewData->getQRCodeDetails() ?>
                 </div>
@@ -42,8 +46,10 @@ use esas\hutkigrosh\utils\RequestParams; ?>
     <?php if ($viewData->isWebpaySectionEnabled()) { ?>
         <div id="tab-webpay" class="tab">
             <input id="input-webpay" type="checkbox" name="tabs2" <?= $webpayTabChecked ?>>
-            <label for="input-webpay"><?= $viewData->getWebpayTabLabel() ?></label>
-            <div class="tab-content">
+            <label for="input-webpay" class="<?= $viewStyle->getTabLabelClass() ?>">
+                <?= $viewData->getWebpayTabLabel() ?>
+            </label>
+            <div class="tab-content <?= $viewStyle->getTabContentClass() ?>">
                 <div id="webpay_details">
                     <?= $viewData->getWebpayDetails() ?>
                     <br/><br/>
@@ -78,8 +84,10 @@ use esas\hutkigrosh\utils\RequestParams; ?>
     <?php if ($viewData->isAlfaclickSectionEnabled()) { ?>
         <div id="tab-alfaclick" class="tab">
             <input id="input-alfaclick" type="checkbox" name="tabs2">
-            <label for="input-alfaclick"><?= $viewData->getAlfaclickTabLabel() ?></label>
-            <div class="tab-content">
+            <label for="input-alfaclick" class="<?= $viewStyle->getTabLabelClass() ?>">
+                <?= $viewData->getAlfaclickTabLabel() ?>
+            </label>
+            <div class="tab-content <?= $viewStyle->getTabContentClass() ?>">
                 <div id="alfaclick_details"><?= $viewData->getAlfaclickDetails() ?></div>
                 <div id="alfaclick_form">
                     <input type="hidden" value="<?= $viewData->getAlfaclickBillID() ?>" id="billID"/>
@@ -135,59 +143,9 @@ use esas\hutkigrosh\utils\RequestParams; ?>
             position: relative;
             display: block;
             padding: 0 0 0 1em;
-            font-weight: bold;
+            /*font-weight: bold;*/
             line-height: 3;
             cursor: pointer;
-        }
-
-        #tab-instructions > label {
-            background: #9fb399;
-            /*color: #fff;*/
-        }
-
-        #tab-instructions .tab-content {
-            /*background: #96b385;*/
-        }
-
-        #tab-qrcode > label {
-            background: #9fb399;
-            /*color: #fff;*/
-        }
-
-        #tab-qrcode .tab-content {
-            /*background: #96b385;*/
-        }
-
-        #tab-webpay label {
-            background: #9fb399;
-            /*color: #fff;*/
-        }
-
-        #tab-webpay .tab-content {
-            /*background: #96b385;*/
-        }
-
-        #webpay_button {
-            background: #9fb399;
-        }
-
-        #alfaclick_button {
-            background: #b94a4b;
-            color: #fff;
-        }
-
-        #tab-alfaclick label {
-            background: #b94a4b;
-            color: #fff;
-        }
-
-        #alfaclick_button {
-            background: #b94a4b;
-            color: #fff;
-        }
-
-        #webpay_message_unavailable {
-            color: #b94a4b;
         }
 
         .tab-content {
@@ -242,5 +200,6 @@ use esas\hutkigrosh\utils\RequestParams; ?>
             transform: rotateX(180deg);
         }
 
+        <?= $viewStyle->getAdditionalCss() ?>
     </style>
 </div>
