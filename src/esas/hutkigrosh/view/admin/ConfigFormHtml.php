@@ -15,6 +15,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldRichtext;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
 
@@ -43,6 +44,9 @@ abstract class ConfigFormHtml extends ConfigForm
         foreach ($this->fieldsToRender as $configField) {
             if ($configField instanceof ConfigFieldPassword) {
                 $ret .= $this->generatePasswordField($configField);
+                continue;
+            } elseif ($configField instanceof ConfigFieldRichtext) {
+                $ret .= $this->generateRichtextField($configField);
                 continue;
             } elseif ($configField instanceof ConfigFieldTextarea) {
                 $ret .= $this->generateTextAreaField($configField);

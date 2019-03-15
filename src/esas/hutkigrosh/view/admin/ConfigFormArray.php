@@ -13,6 +13,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldRichtext;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
 
@@ -40,6 +41,9 @@ abstract class ConfigFormArray extends ConfigForm
         foreach ($this->fieldsToRender as $configField) {
             if ($configField instanceof ConfigFieldPassword) {
                 $ret[$configField->getKey()] = $this->generatePasswordField($configField);
+                continue;
+            } elseif ($configField instanceof ConfigFieldRichtext) {
+                $ret[$configField->getKey()] = $this->generateRichtextField($configField);
                 continue;
             } elseif ($configField instanceof ConfigFieldTextarea) {
                 $ret[$configField->getKey()] = $this->generateTextAreaField($configField);

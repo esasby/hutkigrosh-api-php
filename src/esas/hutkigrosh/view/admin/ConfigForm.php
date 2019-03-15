@@ -16,6 +16,7 @@ use esas\hutkigrosh\view\admin\fields\ConfigFieldCheckbox;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldNumber;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldPassword;
+use esas\hutkigrosh\view\admin\fields\ConfigFieldRichtext;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldStatusList;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldText;
 use esas\hutkigrosh\view\admin\fields\ConfigFieldTextarea;
@@ -120,14 +121,14 @@ abstract class ConfigForm
         $this->registerField(
             (new ConfigFieldCheckbox(ConfigurationFields::webpaySection())));
         $this->registerField(
-            (new ConfigFieldTextarea(ConfigurationFields::completionText()))
+            (new ConfigFieldRichtext(ConfigurationFields::completionText()))
                 ->setRequired(true));
         $this->registerField(
             (new ConfigFieldText(ConfigurationFields::paymentMethodName()))
                 ->setRequired(true)
                 ->setValidator(new ValidatorNotEmpty()));
         $this->registerField(
-            (new ConfigFieldTextarea(ConfigurationFields::paymentMethodDetails()))
+            (new ConfigFieldRichtext(ConfigurationFields::paymentMethodDetails()))
                 ->setRequired(true)
                 ->setValidator(new ValidatorNotEmpty()));
 
@@ -213,6 +214,11 @@ abstract class ConfigForm
     public function generateTextAreaField(ConfigFieldTextarea $configField)
     {
         return $this->generateTextField($configField);
+    }
+
+    public function generateRichtextField(ConfigFieldRichtext $configField)
+    {
+        return $this->generateTextAreaField($configField);
     }
 
     public function generateNumberField(ConfigFieldNumber $configField)
