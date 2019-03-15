@@ -54,12 +54,12 @@ class Attributes
 
     public static function rows($rows)
     {
-        return new Attribute(self::PLACEHOLDER, $rows);
+        return new Attribute(self::ROWS, $rows);
     }
 
     public static function cols($cols)
     {
-        return new Attribute(self::PLACEHOLDER, $cols);
+        return new Attribute(self::COLS, $cols);
     }
 
     public static function forr($forr)

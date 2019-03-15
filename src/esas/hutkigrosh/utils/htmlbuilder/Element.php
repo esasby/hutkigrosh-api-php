@@ -64,10 +64,14 @@ class Element
 
     public static function safeImplode($glue, $objects)
     {
-        if ($objects != null && is_array($objects)) {
+        if ($objects == null)
+            return "";
+
+        if (is_array($objects)) {
+            $objects = ArrayUtils::flatten($objects);
             return implode($glue, $objects);
         } else
-            return "";
+            return $objects->__toString();
 
     }
 
