@@ -92,14 +92,11 @@ abstract class ConfigForm
                 ->setValidator(new ValidatorNumeric())
                 ->setRequired(true));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::sandbox()))
-                ->setDefault(true));
+            (new ConfigFieldCheckbox(ConfigurationFields::sandbox())));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::notificationEmail()))
-                ->setDefault(true));
+            (new ConfigFieldCheckbox(ConfigurationFields::notificationEmail())));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::notificationSms()))
-                ->setDefault(false));
+            (new ConfigFieldCheckbox(ConfigurationFields::notificationSms())));
         $this->registerField(
             (new ConfigFieldText(ConfigurationFields::eripPath()))
                 ->setRequired(true)
@@ -109,24 +106,19 @@ abstract class ConfigForm
                 ->setMin(1)
                 ->setMax(10)
                 ->setValidator(new ValidatorInteger(1, 10))
-                ->setDefault(2)
                 ->setRequired(true));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusPending()));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusPayed()));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusFailed()));
         $this->registerField(new ConfigFieldStatusList(ConfigurationFields::billStatusCanceled()));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::instructionsSection()))
-                ->setDefault(true));
+            (new ConfigFieldCheckbox(ConfigurationFields::instructionsSection())));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::qrcodeSection()))
-                ->setDefault(true));
+            (new ConfigFieldCheckbox(ConfigurationFields::qrcodeSection())));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::alfaclickSection()))
-                ->setDefault(false));
+            (new ConfigFieldCheckbox(ConfigurationFields::alfaclickSection())));
         $this->registerField(
-            (new ConfigFieldCheckbox(ConfigurationFields::webpaySection()))
-                ->setDefault(true));
+            (new ConfigFieldCheckbox(ConfigurationFields::webpaySection())));
         $this->registerField(
             (new ConfigFieldTextarea(ConfigurationFields::completionText()))
                 ->setRequired(true));

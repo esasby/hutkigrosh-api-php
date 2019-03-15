@@ -9,6 +9,7 @@
 namespace esas\hutkigrosh\wrappers;
 
 use esas\hutkigrosh\ConfigurationFields;
+use esas\hutkigrosh\Registry;
 use Throwable;
 
 abstract class ConfigurationWrapper extends Wrapper
@@ -206,14 +207,14 @@ abstract class ConfigurationWrapper extends Wrapper
         return $this->getConfig(ConfigurationFields::dueInterval());
     }
 
-    public function getConfig($key, $warn = false)
+    public function getConfig($key)
     {
         try {
             $value = $this->getCmsConfig($key);
-            if ($warn)
-                return $this->warnIfEmpty($value, $key);
-            else
-                return $value;
+            $this->warnIfEmpty($value, $key);
+            if (is_null($value))
+                $value = self::getDefaultConfig($key);
+            return is_null($value) ? "" : $value;
         } catch (Throwable $e) {
             $this->logger->error("Can not load config field[" . $key . "]");
         }
@@ -224,10 +225,12 @@ abstract class ConfigurationWrapper extends Wrapper
         $value = false;
         try {
             $value = $this->getCmsConfig($key);
+            $this->warnIfEmpty($value, $key);
+            if (is_null($value))
+                $value = self::getDefaultConfig($key);
             if (is_bool($value))
                 return $value; //уже boolean
-            else
-                return ("" == $value || "0" == $value) ? false : $this->convertToBoolean($value);
+            return ("" == $value || "0" == $value) ? false : $this->convertToBoolean($value);
         } catch (Throwable $e) {
             $this->logger->error("Can not load config field[" . $key . "]");
         }
@@ -236,7 +239,8 @@ abstract class ConfigurationWrapper extends Wrapper
 
 
     /**
-     * Получение свойства из харнилища настроек конкретной CMS
+     * Получение свойства из харнилища настроек конкретной CMS.
+     * Если свойства в хранилище нет, должен вернуть null
      * @param string $key
      * @return mixed
      * @throws Exception
@@ -343,6 +347,33 @@ abstract class ConfigurationWrapper extends Wrapper
     public function createCmsRelatedKey($key)
     {
         return "hutkigrosh_" . $key;
+    }
+
+    /**
+     * Нельзя делать в конструкторе
+     */
+    public static function getDefaultConfig($key)
+    {
+        switch ($key) {
+            case ConfigurationFields::sandbox():
+                return true;
+            case ConfigurationFields::notificationEmail():
+                return true;
+            case ConfigurationFields::notificationSms():
+                return true;
+            case ConfigurationFields::dueInterval():
+                return 2;
+            case ConfigurationFields::instructionsSection():
+                return true;
+            case ConfigurationFields::qrcodeSection():
+                return true;
+            case ConfigurationFields::alfaclickSection():
+                return false;
+            case ConfigurationFields::webpaySection():
+                return true;
+            default:
+                return Registry::getRegistry()->getTranslator()->getConfigFieldDefault($key);
+        }
     }
 
 }

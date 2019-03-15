@@ -83,9 +83,7 @@ abstract class ConfigField
             $this->validator = $validator;
         else
             $this->validator = new ValidatorImpl("");
-        $defaultFromTranslator = Registry::getRegistry()->getTranslator()->getConfigFieldDefault($key);
-        if ($defaultFromTranslator != null && $defaultFromTranslator != "") // делаем через промежуточную переменную, чтобы корректно работал методж hasDefault   
-            $this->default = $defaultFromTranslator;
+        $this->default = Registry::getRegistry()->getConfigurationWrapper()->getDefaultConfig($key);
         return $this;
     }
 
