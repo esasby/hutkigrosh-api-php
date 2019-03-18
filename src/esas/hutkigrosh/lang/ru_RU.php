@@ -57,7 +57,7 @@ return array(
 
     ConfigurationFields::paymentMethodName() => 'Название способы оплаты',
     ConfigurationFields::paymentMethodName() . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',
-    ConfigurationFields::paymentMethodName() . _DEFAULT => 'Через систему *Расчет* (ЕРИП)',
+    ConfigurationFields::paymentMethodName() . _DEFAULT => 'Через систему «Расчет» (ЕРИП)',
 
     ConfigurationFields::paymentMethodDetails() => 'Описание способа оплаты',
     ConfigurationFields::paymentMethodDetails() . _DESC => 'Описание, отображаемое клиенту, при выборе способа оплаты',
