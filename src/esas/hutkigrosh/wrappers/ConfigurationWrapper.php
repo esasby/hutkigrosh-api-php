@@ -221,7 +221,7 @@ abstract class ConfigurationWrapper extends Wrapper
         try {
             $value = $this->getCmsConfig($key);
             $this->warnIfEmpty($value, $key);
-            if (is_null($value))
+            if (is_null($value) && $this->needDefaults())
                 $value = self::getDefaultConfig($key);
             return is_null($value) ? "" : $value;
         } catch (Throwable $e) {
@@ -235,7 +235,7 @@ abstract class ConfigurationWrapper extends Wrapper
         try {
             $value = $this->getCmsConfig($key);
             $this->warnIfEmpty($value, $key);
-            if (is_null($value))
+            if (is_null($value) && $this->needDefaults())
                 $value = self::getDefaultConfig($key);
             if (is_bool($value))
                 return $value; //уже boolean
@@ -244,6 +244,19 @@ abstract class ConfigurationWrapper extends Wrapper
             $this->logger->error("Can not load config field[" . $key . "]");
         }
         return $value;
+    }
+
+    /**
+     * Определяет, надо ли подставлять значение по умолчанию. Значения по умолчанию должны подставляться только
+     * при первом конфигурировании. Простой проверки значения на null не достаточно в некоторых CMS (например в CSCart если убрать
+     * checkbox параметр просто удалится из БД и getCmsConfig будет возращать для него null, хотя должен false)
+     * @return bool
+     */
+    public function needDefaults()
+    {
+        // предполагаем, что если в хранилище есть логин, это не первая инциализация и значения по умолчанию не нужны
+        $loginValue = $this->getCmsConfig(ConfigurationFields::login());
+        return is_null($loginValue);
     }
 
 
