@@ -53,7 +53,7 @@ return array(
     интернет-эквайринг</p>',
 
     ConfigurationFields::completionCssFile() => 'CSS файл для итогового экрана',
-    ConfigurationFields::completionCssFile() . _DESC => 'Позволяет задать путь к CSS файлк для экрана успешного выставления счета',
+    ConfigurationFields::completionCssFile() . _DESC => 'Позволяет задать путь к CSS файлу для экрана успешного выставления счета',
 
     ConfigurationFields::paymentMethodName() => 'Название способы оплаты',
     ConfigurationFields::paymentMethodName() . _DESC => 'Название, отображаемое клиенту, при выборе способа оплаты',

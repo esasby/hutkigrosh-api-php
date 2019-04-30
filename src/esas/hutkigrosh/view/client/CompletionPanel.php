@@ -20,6 +20,10 @@ use Throwable;
 class CompletionPanel
 {
     /**
+     * @var Logger
+     */
+    protected $logger;
+    /**
      * @var ConfigurationWrapper
      */
     private $configurationWrapper;
@@ -56,13 +60,19 @@ class CompletionPanel
      */
     public function __construct(OrderWrapper $orderWrapper)
     {
+        $this->logger = Logger::getLogger(get_class($this));
         $this->configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
         $this->translator = Registry::getRegistry()->getTranslator();
         $this->orderWrapper = $orderWrapper;
         $this->viewStyle = new ViewStyle();
-        $file = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
+        if ("default" == $this->configurationWrapper->getCompletionCssFile())
+            $file = dirname(__FILE__) . "/completion-default.css" ;
+        else
+            $file = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
         if (file_exists($file))
             $this->viewStyle->setAdditionalCss(file_get_contents($file));
+        else
+            $this->logger->error("Can not load CSS file: " . $file);
     }
 
     /**

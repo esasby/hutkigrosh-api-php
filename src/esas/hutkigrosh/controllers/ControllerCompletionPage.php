@@ -35,10 +35,10 @@ class ControllerCompletionPage extends Controller
      * @return CompletionPanel
      * @throws Throwable
      */
-    public function process($orderInfo)
+    public function process($orderNumber)
     {
         try {
-            $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderInfo);
+            $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderNumber);
             $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
             $configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
