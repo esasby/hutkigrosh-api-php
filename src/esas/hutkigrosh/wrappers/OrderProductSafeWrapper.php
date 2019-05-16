@@ -8,6 +8,7 @@
 
 namespace esas\hutkigrosh\wrappers;
 
+use Exception;
 use Throwable;
 
 /**
@@ -28,6 +29,9 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
         try {
             return $this->getInvIdUnsafe();
         } catch (Throwable $e) {
+            $this->logger->error("Can not get order product invid. Using empty!", $e);
+            return "";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get order product invid. Using empty!", $e);
             return "";
         }
@@ -51,6 +55,9 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product name. Using empty!", $e);
             return "";
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not get order product name. Using empty!", $e);
+            return "";
         }
     }
 
@@ -72,6 +79,9 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
         } catch (Throwable $e) {
             $this->logger->error("Can not get order product caount. Using 0!", $e);
             return "0";
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not get order product caount. Using 0!", $e);
+            return "0";
         }
     }
 
@@ -91,6 +101,9 @@ abstract class OrderProductSafeWrapper extends OrderProductWrapper
         try {
             return $this->getUnitPriceUnsafe();
         } catch (Throwable $e) {
+            $this->logger->error("Can not get order product price. Using 0!", $e);
+            return "0";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get order product price. Using 0!", $e);
             return "0";
         }

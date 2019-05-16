@@ -12,6 +12,7 @@ use esas\hutkigrosh\Registry;
 use esas\hutkigrosh\utils\RequestParams;
 use esas\hutkigrosh\view\client\CompletionPanel;
 use esas\hutkigrosh\wrappers\OrderWrapper;
+use Exception;
 use Throwable;
 
 class ControllerCompletionPage extends Controller
@@ -55,6 +56,9 @@ class ControllerCompletionPage extends Controller
             }
             return $completionPanel;
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
+            throw $e;
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
             throw $e;
         }

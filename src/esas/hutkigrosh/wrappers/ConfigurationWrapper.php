@@ -10,6 +10,7 @@ namespace esas\hutkigrosh\wrappers;
 
 use esas\hutkigrosh\ConfigurationFields;
 use esas\hutkigrosh\Registry;
+use Exception;
 use Throwable;
 
 abstract class ConfigurationWrapper extends Wrapper
@@ -226,6 +227,8 @@ abstract class ConfigurationWrapper extends Wrapper
             return is_null($value) ? "" : $value;
         } catch (Throwable $e) {
             $this->logger->error("Can not load config field[" . $key . "]");
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not load config field[" . $key . "]");
         }
     }
 
@@ -241,6 +244,8 @@ abstract class ConfigurationWrapper extends Wrapper
                 return $value; //уже boolean
             return ("" == $value || "0" == $value) ? false : $this->convertToBoolean($value);
         } catch (Throwable $e) {
+            $this->logger->error("Can not load config field[" . $key . "]");
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not load config field[" . $key . "]");
         }
         return $value;

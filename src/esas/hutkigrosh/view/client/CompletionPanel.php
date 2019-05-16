@@ -15,6 +15,7 @@ use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\utils\QRUtils;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
+use Exception;
 use Throwable;
 
 class CompletionPanel
@@ -318,6 +319,8 @@ class CompletionPanel
         try {
             include(dirname(__FILE__) . "/completionAccordion.php");
         } catch (Throwable $e) {
+            Logger::getLogger("CompletionPanel")->error("Exception:", $e);
+        } catch (Exception $e) { // для совместимости с php 5
             Logger::getLogger("CompletionPanel")->error("Exception:", $e);
         }
     }

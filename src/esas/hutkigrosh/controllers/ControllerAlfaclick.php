@@ -44,6 +44,9 @@ class ControllerAlfaclick extends Controller
         } catch (Throwable $e) {
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
             $this->outputResult(true);
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
+            $this->outputResult(true);
         }
     }
 

@@ -179,6 +179,10 @@ class HutkigroshProtocol
             $this->logger->error($loggerMainString . "apiBillNew exception", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error($loggerMainString . "apiBillNew exception", $e);
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -210,6 +214,10 @@ class HutkigroshProtocol
             }
             $this->logger->debug($loggerMainString . "apiAlfaClick ended");
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "apiAlfaClick exception:", $e);
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error($loggerMainString . "apiAlfaClick exception:", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());
@@ -250,6 +258,10 @@ class HutkigroshProtocol
             $this->logger->error($loggerMainString . "apiWebPay exception: ", $e);
             $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
             $resp->setResponseMessage($e->getMessage());
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error($loggerMainString . "apiWebPay exception: ", $e);
+            $resp->setResponseCode(HutkigroshRs::ERROR_DEFAULT);
+            $resp->setResponseMessage($e->getMessage());
         }
         return $resp;
     }
@@ -284,6 +296,10 @@ class HutkigroshProtocol
             //todo переложить продукты
             $this->logger->debug($loggerMainString . "apiBillInfo ended");
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "apiBillInfo exception.", $e);
+            $resp->setResponseCode($e->getCode());
+            $resp->setResponseMessage($e->getMessage());
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error($loggerMainString . "apiBillInfo exception.", $e);
             $resp->setResponseCode($e->getCode());
             $resp->setResponseMessage($e->getMessage());

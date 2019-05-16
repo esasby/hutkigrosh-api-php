@@ -79,6 +79,8 @@ class ControllerNotify extends Controller
             $this->logger->info($loggerMainString . "Controller ended");
         } catch (Throwable $e) {
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
         }
     }
 

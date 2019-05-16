@@ -9,6 +9,7 @@
 namespace esas\hutkigrosh\wrappers;
 
 
+use Exception;
 use Throwable;
 
 /**
@@ -32,6 +33,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         } catch (Throwable $e) {
             $this->logger->fatal("Can not get order id!", $e);
             throw $e;
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->fatal("Can not get order id!", $e);
+            throw $e;
         }
     }
 
@@ -51,6 +55,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return trim($this->getFullNameUnsafe());
         } catch (Throwable $e) {
+            $this->logger->error("Can not get full name from order. Using empty!", $e);
+            return "";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get full name from order. Using empty!", $e);
             return "";
         }
@@ -73,6 +80,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return trim($this->getMobilePhoneUnsafe());
         } catch (Throwable $e) {
+            $this->logger->error("Can not get mobile phone from order. Using empty!", $e);
+            return "";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get mobile phone from order. Using empty!", $e);
             return "";
         }
@@ -98,6 +108,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         } catch (Throwable $e) {
             $this->logger->error("Can not get email from order. Using empty!", $e);
             return "";
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not get email from order. Using empty!", $e);
+            return "";
         }
     }
 
@@ -118,6 +131,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return trim($this->getAddressUnsafe());
         } catch (Throwable $e) {
+            $this->logger->error("Can not get address from order. Using empty!", $e);
+            return "";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get address from order. Using empty!", $e);
             return "";
         }
@@ -141,6 +157,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         } catch (Throwable $e) {
             $this->logger->error("Can not get amount from order. Using 0!", $e);
             return "0";
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not get amount from order. Using 0!", $e);
+            return "0";
         }
     }
 
@@ -160,6 +179,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return $this->getCurrencyUnsafe();
         } catch (Throwable $e) {
+            $this->logger->error("Can not get currency from order. Using BYN!", $e);
+            return "BYN";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get currency from order. Using BYN!", $e);
             return "BYN";
         }
@@ -187,6 +209,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         } catch (Throwable $e) {
             $this->logger->error("Can not get products from order. Using empty list!", $e);
             return [];
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error("Can not get products from order. Using empty list!", $e);
+            return [];
         }
     }
 
@@ -206,6 +231,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return $this->getBillIdUnsafe();
         } catch (Throwable $e) {
+            $this->logger->error("Can not get billid from order. Using empty!", $e);
+            return "";
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error("Can not get billid from order. Using empty!", $e);
             return "";
         }
@@ -228,6 +256,9 @@ abstract class OrderSafeWrapper extends OrderWrapper
         try {
             return $this->getStatusUnsafe();
         } catch (Throwable $e) {
+            $this->logger->fatal("Can not get status from order!", $e);
+            throw $e;
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->fatal("Can not get status from order!", $e);
             throw $e;
         }

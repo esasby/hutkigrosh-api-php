@@ -46,6 +46,8 @@ abstract class ControllerWebpayForm extends Controller
             return $webPayRs;
         } catch (Throwable $e) {
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
+        } catch (Exception $e) { // для совместимости с php 5
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
         }
     }
 

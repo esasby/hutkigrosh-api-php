@@ -66,13 +66,16 @@ class ControllerAddBill extends Controller
             if ($resp->hasError()) {
                 $this->logger->error($loggerMainString . "Bill was not added. Setting status[" . $this->configurationWrapper->getBillStatusFailed() . "]...");
                 $this->onFailed($orderWrapper, $resp);
-                throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
+                throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());  
             } else {
                 $this->logger->info($loggerMainString . "Bill[" . $resp->getBillId() . "] was successfully added. Updating status[" . $this->configurationWrapper->getBillStatusPending() . "]...");
                 $this->onSuccess($orderWrapper, $resp);
             }
             return $resp;
         } catch (Throwable $e) {
+            $this->logger->error($loggerMainString . "Controller exception! ", $e);
+            throw $e;
+        } catch (Exception $e) { // для совместимости с php 5
             $this->logger->error($loggerMainString . "Controller exception! ", $e);
             throw $e;
         }
