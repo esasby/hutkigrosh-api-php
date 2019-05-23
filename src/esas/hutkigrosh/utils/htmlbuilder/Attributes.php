@@ -22,6 +22,8 @@ class Attributes
     const VALUE = "value";
     const CHECKED = "checked";
     const SELECTED = "selected";
+    const DATA_TOGLE = "data-toggle";
+    const TITLE = "title";
 
     /**
      * @param $id
@@ -80,5 +82,15 @@ class Attributes
     public static function selected($selected)
     {
         return new AttributeBoolean(self::SELECTED, $selected);
+    }
+
+    public static function data_toggle($dataToggle)
+    {
+        return new Attribute(self::DATA_TOGLE, $dataToggle);
+    }
+
+    public static function title($title)
+    {
+        return new Attribute(self::TITLE, $title);
     }
 }

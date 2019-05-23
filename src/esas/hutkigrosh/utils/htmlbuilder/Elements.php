@@ -20,6 +20,7 @@ class Elements
     const SELECT = "select";
     const VALUE = "value";
     const OPTION = "option";
+    const SPAN = "span";
 
     public static function div(...$elementAndAttributes)
     {
@@ -49,6 +50,11 @@ class Elements
     public static function option(...$elementAndAttributes)
     {
         return new Element(self::OPTION, $elementAndAttributes);
+    }
+
+    public static function span(...$elementAndAttributes)
+    {
+        return new Element(self::SPAN, $elementAndAttributes);
     }
 
     public static function value($value)
