@@ -12,6 +12,7 @@ namespace esas\hutkigrosh;
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\view\admin\ConfigForm;
+use esas\hutkigrosh\view\client\CompletionPanel;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
 
@@ -26,6 +27,7 @@ abstract class Registry
     private $configurationWrapper;
     private $translator;
     private $configForm;
+    private $cssHelper;
 
     public function init()
     {
@@ -46,7 +48,7 @@ abstract class Registry
         return $this->configurationWrapper;
     }
 
-    public abstract function createConfigurationWrapper();
+    protected abstract function createConfigurationWrapper();
 
     /**
      * @return Translator
@@ -58,7 +60,7 @@ abstract class Registry
         return $this->translator;
     }
 
-    public abstract function createTranslator();
+    protected abstract function createTranslator();
 
     public static function getRegistry()
     {
@@ -90,5 +92,15 @@ abstract class Registry
         return $this->configForm;
     }
 
-    public abstract function createConfigForm();
+    /**
+     * @return ConfigForm
+     */
+    protected abstract function createConfigForm();
+
+    public function getCompletionPanel($orderWrapper)
+    {
+        $completionPanel = new CompletionPanel($orderWrapper);
+        return $completionPanel;
+    }
+
 }

@@ -24,4 +24,17 @@ class ArrayUtils
         });
         return $return;
     }
+
+    public static function safeImplode($glue, $objects)
+    {
+        if ($objects == null)
+            return "";
+
+        if (is_array($objects)) {
+            $objects = self::flatten($objects);
+            return implode($glue, $objects);
+        } else
+            return $objects->__toString();
+
+    }
 }

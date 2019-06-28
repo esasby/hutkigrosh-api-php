@@ -76,7 +76,7 @@ abstract class ConfigFormHtml extends ConfigForm
             $ret[] = element::option(
                 attribute::value($option->getValue()),
                 attribute::selected($option->getValue() == $configField->getValue()),
-                element::value($option->getName())
+                element::content($option->getName())
             );
         }
         return $ret;

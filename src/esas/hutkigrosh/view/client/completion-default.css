@@ -1,4 +1,4 @@
-#tab-instructions > label {
+#tab-instructions .tab-header {
     background: #9fb399;
     /*color: #fff;*/
 }
@@ -7,7 +7,7 @@
     /*background: #96b385;*/
 }
 
-#tab-qrcode > label {
+#tab-qrcode .tab-header {
     background: #9fb399;
     /*color: #fff;*/
 }
@@ -16,7 +16,7 @@
     /*background: #96b385;*/
 }
 
-#tab-webpay label {
+#tab-webpay .tab-header {
     background: #9fb399;
     /*color: #fff;*/
 }
@@ -34,7 +34,7 @@
     color: #fff;
 }
 
-#tab-alfaclick label {
+#tab-alfaclick .tab-header {
     background: #b94a4b;
     color: #fff;
 }

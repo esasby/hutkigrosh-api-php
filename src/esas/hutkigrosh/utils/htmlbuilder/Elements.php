@@ -8,8 +8,7 @@
 
 namespace esas\hutkigrosh\utils\htmlbuilder;
 
-
-use esas\hutkigrosh\utils\htmlbuilder\Div;
+use Cardinity\Exception\NotAcceptable;
 
 class Elements
 {
@@ -21,15 +20,27 @@ class Elements
     const VALUE = "value";
     const OPTION = "option";
     const SPAN = "span";
+    const IMG = "img";
+    const AREA = "area";
+    const BASE = "base";
+    const LINK = "link";
+    const META = "meta";
+    const PARAM = "param";
+    const COL = "col";
+    const A = "a";
+    const BR = "br";
+    const HR = "hr";
+    const SCRIPT = "script";
+    const STYLE = "style";
 
     public static function div(...$elementAndAttributes)
     {
         return new Element(self::DIV, $elementAndAttributes);
     }
 
-    public static function input(...$elementAndAttributes)
+    public static function input(...$attributes)
     {
-        return new Element(self::INPUT, $elementAndAttributes);
+        return new ElementVoid(self::INPUT, $attributes);
     }
 
     public static function select(...$elementAndAttributes)
@@ -47,6 +58,11 @@ class Elements
         return new Element(self::LABEL, $elementAndAttributes);
     }
 
+    public static function styleFile($fileLocation)
+    {
+        return new Element(self::STYLE, [new ReadContentFile($fileLocation)]);
+    }
+
     public static function option(...$elementAndAttributes)
     {
         return new Element(self::OPTION, $elementAndAttributes);
@@ -57,10 +73,73 @@ class Elements
         return new Element(self::SPAN, $elementAndAttributes);
     }
 
-    public static function value($value)
+    public static function img(...$attributes)
     {
-        return new Value($value);
+        return new ElementVoid(self::IMG, $attributes);
     }
 
+    public static function link(...$attributes)
+    {
+        return new ElementVoid(self::LINK, $attributes);
+    }
 
+    public static function meta(...$attributes)
+    {
+        return new ElementVoid(self::META, $attributes);
+    }
+
+    public static function param(...$attributes)
+    {
+        return new ElementVoid(self::PARAM, $attributes);
+    }
+
+    public static function area(...$attributes)
+    {
+        return new ElementVoid(self::AREA, $attributes);
+    }
+
+    public static function base(...$attributes)
+    {
+        return new ElementVoid(self::BASE, $attributes);
+    }
+
+    public static function col(...$attributes)
+    {
+        return new ElementVoid(self::COL, $attributes);
+    }
+
+    public static function a(...$elementAndAttributes)
+    {
+        return new Element(self::A, $elementAndAttributes);
+    }
+
+    public static function br()
+    {
+        return new ElementVoid(self::BR, null);
+    }
+
+    public static function hr()
+    {
+        return new ElementVoid(self::HR, null);
+    }
+
+    public static function content(...$elementsAndContent)
+    {
+        return new Content($elementsAndContent);
+    }
+
+    public static function includeFile($scriptFileLocation, $scriptData)
+    {
+        return new IncludeFile($scriptFileLocation, $scriptData);
+    }
+
+    public static function includeFileWithCurrentScope($includeFileLocation, $context)
+    {
+        return new IncludeFile($includeFileLocation, $context);
+    }
+
+    public static function includeFileNoData($includeFileLocation)
+    {
+        return new IncludeFile($includeFileLocation, null);
+    }
 }

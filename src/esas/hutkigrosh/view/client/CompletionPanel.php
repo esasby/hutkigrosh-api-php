@@ -11,13 +11,21 @@ namespace esas\hutkigrosh\view\client;
 
 use esas\hutkigrosh\lang\Translator;
 use esas\hutkigrosh\Registry;
+use esas\hutkigrosh\utils\htmlbuilder\Attributes as attribute;
+use esas\hutkigrosh\utils\htmlbuilder\Elements as element;
 use esas\hutkigrosh\utils\Logger;
 use esas\hutkigrosh\utils\QRUtils;
+use esas\hutkigrosh\utils\ResourceUtils;
 use esas\hutkigrosh\wrappers\ConfigurationWrapper;
 use esas\hutkigrosh\wrappers\OrderWrapper;
-use Exception;
-use Throwable;
 
+/**
+ * Class CompletionPanel используется для формирования итоговой страницы. Основной класс
+ * для темазависимого представления (HGCMS-23).
+ * Разбит на множество мелких методов для возможности легкого переопрделения. Что позволяет формировать итоговоую
+ * страницу в тегах и CSS-классах принятых в конкретных CMS
+ * @package esas\hutkigrosh\view\client
+ */
 class CompletionPanel
 {
     /**
@@ -38,9 +46,7 @@ class CompletionPanel
      * @var OrderWrapper
      */
     private $orderWrapper;
-    /**
-     * @var bool
-     */
+
     private $webpayForm;
     private $webpayStatus;
 
@@ -49,10 +55,7 @@ class CompletionPanel
      */
     private $alfaclickUrl;
 
-    /**
-     * @var ViewStyle
-     */
-    private $viewStyle;
+    private $additionalCssFile;
 
     /**
      * ViewData constructor.
@@ -65,15 +68,31 @@ class CompletionPanel
         $this->configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
         $this->translator = Registry::getRegistry()->getTranslator();
         $this->orderWrapper = $orderWrapper;
-        $this->viewStyle = new ViewStyle();
         if ("default" == $this->configurationWrapper->getCompletionCssFile())
-            $file = dirname(__FILE__) . "/completion-default.css" ;
+            $this->additionalCssFile = dirname(__FILE__) . "/completion-default.css";
         else
-            $file = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
-        if (file_exists($file))
-            $this->viewStyle->setAdditionalCss(file_get_contents($file));
-        else
-            $this->logger->error("Can not load CSS file: " . $file);
+            $this->additionalCssFile = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
+    }
+
+    public function render()
+    {
+        $completionPanel = element::content(
+            element::div(
+                attribute::id("completion-text"),
+                attribute::clazz($this->getCssClass4CompletionTextDiv()),
+                element::content($this->getCompletionText())
+            ),
+            element::div(
+                attribute::id("hutkigrosh-completion-tabs"),
+                attribute::clazz($this->getCssClass4TabsGroup()),
+                $this->elementInstructionsTab(),
+                $this->elementQRCodeTab(),
+                $this->elementWebpayTab(),
+                $this->elementAlfaclickTab()),
+            element::styleFile(dirname(__FILE__) . "/accordion.css"),
+            element::styleFile($this->additionalCssFile)
+        );
+        echo $completionPanel;
     }
 
     /**
@@ -94,7 +113,7 @@ class CompletionPanel
 
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCompletionText()
     {
@@ -304,24 +323,297 @@ class CompletionPanel
         return $this->translator->translate(ViewFields::ALFACLICK_MSG_UNSUCCESS);
     }
 
-    /**
-     * @return ViewStyle
-     */
-    public function getViewStyle()
+
+    public function elementTab($key, $header, $body)
     {
-        return $this->viewStyle;
+        return
+            element::div(
+                attribute::id("tab-" . $key),
+                attribute::clazz("tab " . $this->getCssClass4Tab()),
+                element::input(
+                    attribute::id("input-" . $key),
+                    attribute::type("radio"),
+                    attribute::name("tabs2"),
+                    attribute::checked($this->isTabChecked($key))
+                ),
+                element::div(
+                    attribute::clazz("tab-header " . $this->getCssClass4TabHeader()),
+                    element::label(
+                        attribute::forr("input-" . $key),
+                        attribute::clazz($this->getCssClass4TabHeaderLabel()),
+                        element::content($header)
+                    )
+                ),
+                element::div(
+                    attribute::clazz("tab-body " . $this->getCssClass4TabBody()),
+                    element::div(
+                        attribute::id($key . "-content"),
+                        attribute::clazz("tab-body-content " . $this->getCssClass4TabBodyContent()),
+                        element::content($body)
+                    )
+                )
+            )->__toString();
     }
 
-    public function render()
-    {
-        $viewData = $this;
-        $viewStyle = $this->viewStyle;
-        try {
-            include(dirname(__FILE__) . "/completionAccordion.php");
-        } catch (Throwable $e) {
-            Logger::getLogger("CompletionPanel")->error("Exception:", $e);
-        } catch (Exception $e) { // для совместимости с php 5
-            Logger::getLogger("CompletionPanel")->error("Exception:", $e);
+    public function isTabChecked($tabKey) {
+        $webpayStatusPresent = '' != $this->getWebpayStatus();
+        switch ($tabKey) {
+            case self::TAB_KEY_INSTRUCTIONS:
+                return !$webpayStatusPresent;
+            case self::TAB_KEY_WEBPAY:
+                return $webpayStatusPresent;
+            default:
+                return false;
         }
+    }
+
+    const TAB_KEY_WEBPAY = "webpay";
+    const TAB_KEY_INSTRUCTIONS = "instructions";
+    const TAB_KEY_QRCODE = "qrcode";
+    const TAB_KEY_ALFACLICK = "alfaclick";
+
+    public function elementWebpayTab()
+    {
+        if ($this->isWebpaySectionEnabled()) {
+            return $this->elementTab(
+                self::TAB_KEY_WEBPAY,
+                $this->getWebpayTabLabel(),
+                $this->elementWebpayTabContent($this->getWebpayStatus(), $this->getWebpayForm()));
+        }
+        return "";
+    }
+
+    public function elementInstructionsTab()
+    {
+        if ($this->isInstructionsSectionEnabled()) {
+            return $this->elementTab(
+                self::TAB_KEY_INSTRUCTIONS,
+                $this->getInstructionsTabLabel(),
+                $this->getInstructionsText());
+        }
+        return "";
+    }
+
+    public function elementQRCodeTab()
+    {
+        if ($this->isQRCodeSectionEnabled()) {
+            return $this->elementTab(
+                self::TAB_KEY_QRCODE,
+                $this->getQRCodeTabLabel(),
+                $this->getQRCodeDetails());
+        }
+        return "";
+    }
+
+    public function elementAlfaclickTab()
+    {
+        if ($this->isAlfaclickSectionEnabled()) {
+            return $this->elementTab(
+                self::TAB_KEY_ALFACLICK,
+                $this->getAlfaclickTabLabel(),
+                $this->elementAlfaclickTabContent());
+        }
+        return "";
+    }
+
+    const STATUS_PAYED = 'payed';
+    const STATUS_FAILED = 'failed';
+
+    public function elementWebpayTabContent($status, $webpayForm)
+    {
+        $ret =
+            element::div(
+                attribute::id("webpay_details"),
+                element::content($this->translator->translate(ViewFields::WEBPAY_DETAILS)),
+                element::br());
+
+        $ret .= $this->elementWebpayTabContentResultMsg($status);
+
+        if ("" != $webpayForm) {
+            $ret .=
+                element::div(
+                    attribute::id("webpay"),
+                    attribute::align("right"),
+                    element::img(
+                        attribute::src(ResourceUtils::getImageUrl('ps_icons.png')),
+                        attribute::alt("")
+                    ),
+                    element::br(),
+                    element::br(),
+                    element::content($webpayForm),
+                    element::includeFile(dirname(__FILE__) . "/webpayJs.php", ["completionPanel" => $this]));
+        } else {
+            $ret .=
+                element::div(
+                    attribute::id("webpay_message_unavailable"),
+                    element::content($this->translator->translate(ViewFields::WEBPAY_MSG_UNAVAILABLE)));
+        }
+        return $ret;
+    }
+
+    public function elementWebpayTabContentResultMsg($status)
+    {
+        if (self::STATUS_PAYED == $status) {
+            return
+                element::div(
+                    attribute::clazz($this->getCssClass4MsgSuccess()),
+                    attribute::id("webpay_message"),
+                    element::content($this->translator->translate(ViewFields::WEBPAY_MSG_SUCCESS)));
+        } elseif (self::STATUS_FAILED == $status) {
+            return
+                element::div(
+                    attribute::clazz($this->getCssClass4MsgUnsuccess()),
+                    attribute::id("webpay_message"),
+                    element::content($this->translator->translate(ViewFields::WEBPAY_MSG_UNSUCCESS)));
+        } else
+            return "";
+    }
+
+    const ALFACLICK_URL = "alfaclickurl";
+
+    public function elementAlfaclickTabContent()
+    {
+        $content =
+            element::content(
+                element::div(
+                    attribute::id("alfaclick_details"),
+                    element::content($this->getAlfaclickDetails()),
+                    element::br()),
+                $this->elementAlfaclickTabContentForm(),
+                element::includeFile(dirname(__FILE__) . "/alfaclickJs.php", ["completionPanel" => $this]));
+
+        return $content;
+    }
+
+    public function elementAlfaclickTabContentForm()
+    {
+        return
+            element::div(
+                attribute::id("alfaclick_form"),
+                attribute::clazz($this->getCssClass4AlfaclickForm()),
+                attribute::align("right"),
+                element::input(
+                    attribute::id("billID"),
+                    attribute::type('hidden'),
+                    attribute::value($this->getAlfaclickBillID())),
+                element::input(
+                    attribute::id("phone"),
+                    attribute::type('tel'),
+                    attribute::value($this->getAlfaclickPhone()),
+                    attribute::clazz($this->getCssClass4FormInput()),
+                    attribute::maxlength('20')),
+                element::a(
+                    attribute::clazz($this->getCssClass4AlfaclickButton()),
+                    attribute::id("alfaclick_button"),
+                    element::content($this->getAlfaclickButtonLabel()))
+            );
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCssClass4Tab()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4TabHeader()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4TabHeaderLabel()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4TabBody()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4TabBodyContent()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4MsgSuccess()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4MsgUnsuccess()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4CompletionTextDiv()
+    {
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4TabsGroup()
+    {
+        return "";
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getCssClass4AlfaclickButton()
+    {
+        return $this->getCssClass4Button();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4WebpayButton()
+    {
+        return $this->getCssClass4Button();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass4Button()
+    {
+        return "";
+    }
+
+    public function getCssClass4AlfaclickForm()
+    {
+        return "";
+    }
+
+    public function getCssClass4FormInput()
+    {
+        return "";
     }
 }

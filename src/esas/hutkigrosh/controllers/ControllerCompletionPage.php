@@ -43,7 +43,7 @@ class ControllerCompletionPage extends Controller
             $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
             $configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
-            $completionPanel = new CompletionPanel($orderWrapper);
+            $completionPanel = Registry::getRegistry()->getCompletionPanel($orderWrapper);
             if ($configurationWrapper->isAlfaclickSectionEnabled()) {
                 $completionPanel->setAlfaclickUrl($this->alfaclickUrl);
             }
