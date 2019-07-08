@@ -32,6 +32,8 @@ class Elements
     const HR = "hr";
     const SCRIPT = "script";
     const STYLE = "style";
+    const LI = "li";
+    const UL = "ul";
 
     public static function div(...$elementAndAttributes)
     {
@@ -111,6 +113,16 @@ class Elements
     public static function a(...$elementAndAttributes)
     {
         return new Element(self::A, $elementAndAttributes);
+    }
+
+    public static function li(...$elementAndAttributes)
+    {
+        return new Element(self::LI, $elementAndAttributes);
+    }
+
+    public static function ul(...$elementAndAttributes)
+    {
+        return new Element(self::UL, $elementAndAttributes);
     }
 
     public static function br()

@@ -55,8 +55,6 @@ class CompletionPanel
      */
     private $alfaclickUrl;
 
-    protected $additionalCssFile;
-
     /**
      * ViewData constructor.
      * @param ConfigurationWrapper $configurationWrapper
@@ -68,10 +66,6 @@ class CompletionPanel
         $this->configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
         $this->translator = Registry::getRegistry()->getTranslator();
         $this->orderWrapper = $orderWrapper;
-        if ("default" == $this->configurationWrapper->getCompletionCssFile())
-            $this->additionalCssFile = dirname(__FILE__) . "/completion-default.css";
-        else
-            $this->additionalCssFile = $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
     }
 
     public function render()
@@ -89,8 +83,9 @@ class CompletionPanel
                 $this->elementQRCodeTab(),
                 $this->elementWebpayTab(),
                 $this->elementAlfaclickTab()),
-            element::styleFile($this->getAccordionCSSFilePath()),
-            element::styleFile($this->additionalCssFile)
+            element::styleFile($this->getCoreCSSFilePath()), // CSS для аккордеона, общий для всех
+            element::styleFile($this->getModuleCSSFilePath()), // CSS, специфичный для модуля
+            element::styleFile($this->getAdditionalCSSFilePath()) // CSS заданный администратором в настройках модуля
         );
         echo $completionPanel;
     }
@@ -416,8 +411,19 @@ class CompletionPanel
         return "";
     }
 
-    public function getAccordionCSSFilePath() {
+    public function getCoreCSSFilePath() {
         return dirname(__FILE__) . "/accordion.css";
+    }
+
+    public function getModuleCSSFilePath() {
+        return "";
+    }
+
+    public function getAdditionalCSSFilePath() {
+        if ("default" == $this->configurationWrapper->getCompletionCssFile())
+            return dirname(__FILE__) . "/completion-default.css";
+        else
+            return $_SERVER['DOCUMENT_ROOT'] . $this->configurationWrapper->getCompletionCssFile();
     }
 
     const STATUS_PAYED = 'payed';
