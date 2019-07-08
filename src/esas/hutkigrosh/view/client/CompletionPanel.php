@@ -55,7 +55,7 @@ class CompletionPanel
      */
     private $alfaclickUrl;
 
-    private $additionalCssFile;
+    protected $additionalCssFile;
 
     /**
      * ViewData constructor.
@@ -89,7 +89,7 @@ class CompletionPanel
                 $this->elementQRCodeTab(),
                 $this->elementWebpayTab(),
                 $this->elementAlfaclickTab()),
-            element::styleFile(dirname(__FILE__) . "/accordion.css"),
+            element::styleFile($this->getAccordionCSSFilePath()),
             element::styleFile($this->additionalCssFile)
         );
         echo $completionPanel;
@@ -414,6 +414,10 @@ class CompletionPanel
                 $this->elementAlfaclickTabContent());
         }
         return "";
+    }
+
+    public function getAccordionCSSFilePath() {
+        return dirname(__FILE__) . "/accordion.css";
     }
 
     const STATUS_PAYED = 'payed';
