@@ -13,7 +13,7 @@ $completionPanel = $this->scriptData["completionPanel"];
 
 <script type="text/javascript"
         src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
-<script>
+<script style="display: none">
     var webpay_form_button = $('#webpay input[type="submit"]');
     webpay_form_button.attr('id', 'webpay_button');
     webpay_form_button.addClass('<?= $completionPanel->getCssClass4WebpayButton() ?>');

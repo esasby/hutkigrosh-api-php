@@ -17,7 +17,7 @@ $completionPanel = $this->scriptData["completionPanel"];
 
 <script type="text/javascript"
         src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
-<script>
+<script style="display: none">
     jQuery(document).ready(function ($) {
         $('#alfaclick_button').click(function () {
             jQuery.post('<?= $completionPanel->getAlfaclickUrl() ?>',
