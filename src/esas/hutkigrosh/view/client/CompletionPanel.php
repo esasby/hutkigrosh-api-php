@@ -79,15 +79,29 @@ class CompletionPanel
             element::div(
                 attribute::id("hutkigrosh-completion-tabs"),
                 attribute::clazz($this->getCssClass4TabsGroup()),
-                $this->elementInstructionsTab(),
-                $this->elementQRCodeTab(),
-                $this->elementWebpayTab(),
-                $this->elementAlfaclickTab()),
-            element::styleFile($this->getCoreCSSFilePath()), // CSS для аккордеона, общий для всех
-            element::styleFile($this->getModuleCSSFilePath()), // CSS, специфичный для модуля
-            element::styleFile($this->getAdditionalCSSFilePath()) // CSS заданный администратором в настройках модуля
+                $this->addTabs()),
+            $this->addCss()
         );
         echo $completionPanel;
+    }
+
+    public function addTabs()
+    {
+        return array(
+            $this->elementInstructionsTab(),
+            $this->elementQRCodeTab(),
+            $this->elementWebpayTab(),
+            $this->elementAlfaclickTab()
+        );
+    }
+
+    public function addCss()
+    {
+        return array(
+            element::styleFile($this->getCoreCSSFilePath()), // CSS для аккордеона, общий для всех
+            element::styleFile($this->getModuleCSSFilePath()), // CSS, специфичный для модуля
+            element::styleFile($this->getAdditionalCSSFilePath())
+        );
     }
 
     /**
@@ -350,7 +364,10 @@ class CompletionPanel
             )->__toString();
     }
 
-    public function isTabChecked($tabKey) {
+    public function isTabChecked($tabKey)
+    {
+        if ($this->isOnlyOneTabEnabled())
+            return true;
         $webpayStatusPresent = '' != $this->getWebpayStatus();
         switch ($tabKey) {
             case self::TAB_KEY_INSTRUCTIONS:
@@ -360,6 +377,20 @@ class CompletionPanel
             default:
                 return false;
         }
+    }
+
+    public function isOnlyOneTabEnabled()
+    {
+        $enabledTabsCount = 0;
+        if ($this->configurationWrapper->isInstructionsSectionEnabled())
+            $enabledTabsCount++;
+        if ($this->configurationWrapper->isQRCodeSectionEnabled())
+            $enabledTabsCount++;
+        if ($this->configurationWrapper->isWebpaySectionEnabled())
+            $enabledTabsCount++;
+        if ($this->configurationWrapper->isAlfaclickSectionEnabled())
+            $enabledTabsCount++;
+        return $enabledTabsCount == 1;
     }
 
     const TAB_KEY_WEBPAY = "webpay";
@@ -411,15 +442,18 @@ class CompletionPanel
         return "";
     }
 
-    public function getCoreCSSFilePath() {
+    public function getCoreCSSFilePath()
+    {
         return dirname(__FILE__) . "/accordion.css";
     }
 
-    public function getModuleCSSFilePath() {
+    public function getModuleCSSFilePath()
+    {
         return "";
     }
 
-    public function getAdditionalCSSFilePath() {
+    public function getAdditionalCSSFilePath()
+    {
         if ("default" == $this->configurationWrapper->getCompletionCssFile())
             return dirname(__FILE__) . "/completion-default.css";
         else

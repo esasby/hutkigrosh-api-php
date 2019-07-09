@@ -13,6 +13,7 @@ class Attributes
 {
     const ID = "id";
     const CLAZZ = "class";
+    const STYLE = "style";
     const ALIGN = "align";
     const TYPE = "type";
     const NAME = "name";
@@ -42,6 +43,11 @@ class Attributes
     public static function clazz($class)
     {
         return new Attribute(self::CLAZZ, $class);
+    }
+
+    public static function style($style)
+    {
+        return new Attribute(self::STYLE, $style);
     }
 
     public static function align($align)

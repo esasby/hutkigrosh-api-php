@@ -89,7 +89,7 @@ return array(
     <li>Выбрать услугу: <strong>@erip_path</strong></li>
     <li>Ввести номер счета: <strong>@order_number</strong></li>
     <li>Проверить корректность информации</li>
-    <li>Совершить платеж.</li>
+    <li>Совершить платеж</li>
 </ol>',
 
 
