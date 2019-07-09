@@ -28,3 +28,9 @@
 .tab > input:checked ~ .tab-body {
     max-height: 100vh;
 }
+
+#webpay #webpay-ps-image {
+    all: initial;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

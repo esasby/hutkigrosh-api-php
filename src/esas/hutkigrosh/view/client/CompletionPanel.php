@@ -445,10 +445,10 @@ class CompletionPanel
                     attribute::id("webpay"),
                     attribute::align("right"),
                     element::img(
+                        attribute::id("webpay-ps-image"),
                         attribute::src(ResourceUtils::getImageUrl('ps_icons.png')),
                         attribute::alt("")
                     ),
-                    element::br(),
                     element::br(),
                     element::content($webpayForm),
                     element::includeFile(dirname(__FILE__) . "/webpayJs.php", ["completionPanel" => $this]));
