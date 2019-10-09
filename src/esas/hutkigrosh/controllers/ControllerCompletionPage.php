@@ -42,6 +42,11 @@ class ControllerCompletionPage extends Controller
             $orderWrapper = Registry::getRegistry()->getOrderWrapper($orderNumber);
             $loggerMainString = "Order[" . $orderWrapper->getOrderNumber() . "]: ";
             $this->logger->info($loggerMainString . "Controller started");
+            // Проверяем, привязан ли к заказу billid. Если нет, то генерируем исключени.
+            // Здесь не стоит вызывать ControllerAddBill с точки зрения безопасности
+            if (empty($orderWrapper->getBillId())) {
+                throw new Exception("Bill was not added. Please try to recreate order");
+            }
             $configurationWrapper = Registry::getRegistry()->getConfigurationWrapper();
             $completionPanel = Registry::getRegistry()->getCompletionPanel($orderWrapper);
             if ($configurationWrapper->isAlfaclickSectionEnabled()) {

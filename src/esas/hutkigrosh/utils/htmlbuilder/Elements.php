@@ -8,8 +8,6 @@
 
 namespace esas\hutkigrosh\utils\htmlbuilder;
 
-use Cardinity\Exception\NotAcceptable;
-
 class Elements
 {
     const DIV = "div";
