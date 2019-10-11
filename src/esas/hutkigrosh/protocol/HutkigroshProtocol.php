@@ -158,7 +158,7 @@ class HutkigroshProtocol
                     if (!empty($pr->getInvId())) {
                         $ProductInfo->addChild('invItemId', $pr->getInvId()); // опционально
                     }
-                    $ProductInfo->addChild('desc', htmlentities($pr->getName()));
+                    $ProductInfo->addChild('desc', htmlentities($pr->getName(), ENT_XML1));
                     $ProductInfo->addChild('count', $pr->getCount());
                     if (!empty($pr->getUnitPrice())) {
                         $ProductInfo->addChild('amt', $pr->getUnitPrice()); // опционально
