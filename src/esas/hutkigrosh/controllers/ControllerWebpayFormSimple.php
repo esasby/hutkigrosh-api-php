@@ -40,7 +40,7 @@ class ControllerWebpayFormSimple extends ControllerWebpayForm
     public function getReturnUrl(OrderWrapper $orderWrapper)
     {
         return $this->returnUrl
-            . "&" . RequestParams::ORDER_NUMBER . "=" . $orderWrapper->getOrderId()
+            . "&" . RequestParams::ORDER_NUMBER . "=" . $orderWrapper->getOrderNumber()
             . "&" . RequestParams::BILL_ID . "=" . $orderWrapper->getBillId();
     }
 }

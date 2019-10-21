@@ -167,7 +167,7 @@ class CompletionPanel
     public function getQRCodeDetails()
     {
         return strtr($this->translator->translate(ViewFields::QRCODE_DETAILS), array(
-            "@qr_code" => QRUtils::getEripBillQR($this->orderWrapper->getOrderNumber())
+            "@qr_code" => QRUtils::getEripBillQR($this->orderWrapper->getOrderId())
         ));
     }
 
