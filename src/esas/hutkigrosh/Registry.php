@@ -79,7 +79,7 @@ abstract class Registry
      * @param $orderId
      * @return OrderWrapper
      */
-    public abstract function getOrderWrapper($orderNumber);
+    public abstract function getOrderWrapper($orderId);
 
     /**
      * Получение формы с настройками сделано через Registry, т.к. в некоторых CMS создание формы и ее валидация разнесены в разные хуки

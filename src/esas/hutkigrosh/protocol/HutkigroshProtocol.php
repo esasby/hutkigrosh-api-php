@@ -285,6 +285,7 @@ class HutkigroshProtocol
                 throw new Exception("Wrong message format", HutkigroshRs::ERROR_RESP_FORMAT);
             }
             $resp->setResponseCode($resArray['status']);
+            $resp->setBillId($resArray["bill"]["billID"]);
             $resp->setInvId($resArray["bill"]["invId"]);
             $resp->setEripId($resArray["bill"]["eripId"]);
             $resp->setFullName($resArray["bill"]["fullName"]);

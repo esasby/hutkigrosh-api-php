@@ -11,10 +11,13 @@ namespace esas\hutkigrosh\protocol;
 
 class BillNewRs extends HutkigroshRs
 {
+    /**
+     * @var string
+     */
     private $billId;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBillId()
     {
@@ -22,7 +25,7 @@ class BillNewRs extends HutkigroshRs
     }
 
     /**
-     * @param mixed $billId
+     * @param string $billId
      */
     public function setBillId($billId)
     {

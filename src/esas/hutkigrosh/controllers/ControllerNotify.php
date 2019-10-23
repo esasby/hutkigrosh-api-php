@@ -55,7 +55,7 @@ class ControllerNotify extends Controller
             if ($this->billInfoRs->hasError())
                 throw new Exception($resp->getResponseMessage(), $resp->getResponseCode());
             $this->logger->info($loggerMainString . 'Loading local order object for id[' . $this->billInfoRs->getInvId() . "]");
-            $this->localOrderWrapper = Registry::getRegistry()->getOrderWrapper($this->billInfoRs->getInvId());
+            $this->localOrderWrapper = $this->getOrderWrapperForBill($this->billInfoRs);
             if (empty($this->localOrderWrapper))
                 throw new Exception('Can not load order info for id[' . $this->billInfoRs->getInvId() . "]");
             if (!$this->configurationWrapper->isSandbox() // на тестовой системе это пока не работает
@@ -85,6 +85,15 @@ class ControllerNotify extends Controller
     }
 
     /**
+     * @param BillInfoRs $billInfoRs
+     * @return OrderWrapper
+     */
+    public function getOrderWrapperForBill($billInfoRs)
+    {
+        return Registry::getRegistry()->getOrderWrapper($billInfoRs->getInvId()); // будет работать, только если orderId = orderNumber
+    }
+
+    /**
      * @param $status
      * @throws Throwable
      */
@@ -96,16 +105,25 @@ class ControllerNotify extends Controller
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     public function onStatusPayed()
     {
         $this->updateStatus($this->configurationWrapper->getBillStatusPayed());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function onStatusCanceled()
     {
         $this->updateStatus($this->configurationWrapper->getBillStatusCanceled());
     }
 
+    /**
+     * @throws Throwable
+     */
     public function onStatusPending()
     {
         $this->updateStatus($this->configurationWrapper->getBillStatusPending());
