@@ -27,14 +27,14 @@ class Logger
     }
 
 
-    public static function init()
+    public static function init($logLevel = 'INFO')
     {
         $dir = dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/logs';
         self::createSafeDir($dir);
         Log4php::configure(array(
             'rootLogger' => array(
                 'appenders' => array('fileAppender'),
-                'level' => 'INFO',
+                'level' => $logLevel,
             ),
             'appenders' => array(
                 'fileAppender' => array(

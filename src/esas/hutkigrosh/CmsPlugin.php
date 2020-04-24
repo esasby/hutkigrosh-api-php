@@ -56,9 +56,9 @@ class CmsPlugin
         return $this;
     }
 
-    public function init()
+    public function init($logLevel = 'INFO')
     {
-        Logger::init();
+        Logger::init($logLevel);
         $this->registry->init();
     }
 
