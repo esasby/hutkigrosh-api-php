@@ -217,6 +217,15 @@ abstract class ConfigurationWrapper extends Wrapper
         return $this->getConfig(ConfigurationFields::dueInterval());
     }
 
+    /**
+     * Кастомный путь к директории cookie файлов
+     * @return string
+     */
+    public function getCookiePath()
+    {
+        return $this->getConfig(ConfigurationFields::cookiePath());
+    }
+
     public function getConfig($key)
     {
         try {
@@ -335,6 +344,8 @@ abstract class ConfigurationWrapper extends Wrapper
                 return $this->getDueInterval();
             case ConfigurationFields::eripPath():
                 return $this->getEripPath();
+            case ConfigurationFields::cookiePath():
+                return $this->getCookiePath();
             default:
                 return $this->getConfig($config_key);
         }

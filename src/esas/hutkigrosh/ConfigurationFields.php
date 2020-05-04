@@ -136,4 +136,9 @@ class ConfigurationFields
     {
         return self::getCmsRelatedKey("due_interval");
     }
+
+    public static function cookiePath()
+    {
+        return self::getCmsRelatedKey("cookie_path");
+    }
 }
